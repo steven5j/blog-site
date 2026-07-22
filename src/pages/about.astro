@@ -1,0 +1,31 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Reveal from '@/components/Reveal.astro';
+---
+
+<BaseLayout
+  title="關於"
+  description="認識 Steven J. Hu —— 軟體工程師，專注產品與工程交界。"
+>
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <Reveal>
+      <h1 class="font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+        關於
+      </h1>
+      <div class="mt-8 space-y-5 text-lg leading-relaxed text-mist-muted">
+        <p>
+          我是 Steven J. Hu，一位喜歡把複雜系統拆成清楚介面的工程師。白天寫產品與基礎設施，晚上在這裡整理想法。
+        </p>
+        <p>
+          這個網站以 Astro 靜態輸出為核心，文章用 Markdown／MDX，重動畫則交給 React
+          islands。目標很單純：讀起來舒服，載入要快，偶爾也有一點視覺驚喜。
+        </p>
+        <p>
+          若你想看更完整的滾動敘事，可以造訪
+          <a href="/showcase" class="text-teal hover:text-glow">旗艦頁</a>；日常筆記則在
+          <a href="/blog" class="text-teal hover:text-glow">文章列表</a>。
+        </p>
+      </div>
+    </Reveal>
+  </section>
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = '提示' } = Astro.props;
+---
+
+<aside
+  class="my-8 rounded-lg border border-teal/30 bg-teal/5 px-5 py-4 text-base not-italic"
+  role="note"
+>
+  <p class="mb-2 text-sm font-semibold tracking-wide text-teal">{title}</p>
+  <div class="text-mist [&_p]:m-0">
+    <slot />
+  </div>
+</aside>

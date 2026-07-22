@@ -1,0 +1,64 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, pubDate, updatedDate, tags = [], jsonLd } =
+  Astro.props;
+
+const dateFmt = new Intl.DateTimeFormat('zh-TW', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  type="article"
+  jsonLd={jsonLd}
+>
+  <article class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <header class="mb-12" data-reveal>
+      <p class="mb-4 text-sm text-mist-muted">
+        <time datetime={pubDate.toISOString()}>{dateFmt.format(pubDate)}</time>
+        {
+          updatedDate && (
+            <>
+              <span class="mx-2 text-white/20" aria-hidden="true">
+                ·
+              </span>
+              <span>更新於 {dateFmt.format(updatedDate)}</span>
+            </>
+          )
+        }
+      </p>
+      <h1 class="font-display text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+        {title}
+      </h1>
+      <p class="mt-5 text-lg text-mist-muted">{description}</p>
+      {
+        tags.length > 0 && (
+          <ul class="mt-6 flex flex-wrap gap-2" aria-label="標籤">
+            {tags.map((tag) => (
+              <li class="rounded-md bg-white/5 px-2.5 py-1 text-xs text-teal">
+                {tag}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+    <div class="prose-blog" data-reveal style="--reveal-delay: 80ms">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

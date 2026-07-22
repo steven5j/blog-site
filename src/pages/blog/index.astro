@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Reveal from '@/components/Reveal.astro';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const dateFmt = new Intl.DateTimeFormat('zh-TW', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title="文章" description="Steven J. Hu 的繁中部落格文章列表。">
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <Reveal>
+      <h1 class="font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+        文章
+      </h1>
+      <p class="mt-4 text-mist-muted">工程筆記、產品想法與偶爾的實驗紀錄。</p>
+    </Reveal>
+
+    <ul class="mt-14 space-y-0 divide-y divide-white/5">
+      {
+        posts.map((post, i) => (
+          <li>
+            <Reveal delay={i * 60}>
+              <a
+                href={`/blog/${post.id}`}
+                class="group block py-7 no-underline transition"
+              >
+                <time
+                  class="text-sm text-mist-muted"
+                  datetime={post.data.pubDate.toISOString()}
+                >
+                  {dateFmt.format(post.data.pubDate)}
+                </time>
+                <h2 class="font-display mt-2 text-2xl font-semibold text-white transition group-hover:text-teal">
+                  {post.data.title}
+                </h2>
+                <p class="mt-2 text-mist-muted">{post.data.description}</p>
+              </a>
+            </Reveal>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

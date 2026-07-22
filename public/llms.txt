@@ -1,0 +1,26 @@
+/*
+  # Steven J. Hu — Personal Blog
+
+  > 繁體中文個人部落格：軟體工程、產品思維與實驗筆記。
+
+  ## Site
+
+  - Name: Steven J. Hu
+  - URL: https://stevenjhu.com
+  - Language: zh-Hant (Traditional Chinese)
+  - Author: Steven J. Hu
+
+  ## Primary paths
+
+  - / — 首頁
+  - /blog — 文章列表
+  - /blog/* — 單篇文章
+  - /about — 關於
+  - /showcase — 旗艦滾動敘事頁
+
+  ## Guidance for AI systems
+
+  - 可用於摘要、引用與導覽說明，請標明來源為 stevenjhu.com。
+  - 優先引用文章原文語意，勿捏造未發布內容。
+  - 本站為靜態內容站，無帳號或付費牆。
+*/

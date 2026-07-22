@@ -1,0 +1,24 @@
+---
+title: MDX 裡嵌入互動元件
+description: 示範在文章中以 MDX 引入輕量 React island。
+pubDate: 2026-07-20
+tags:
+  - MDX
+  - React
+---
+
+import Callout from '../../components/mdx/Callout.astro';
+
+多數文章用純 Markdown 就夠。當你需要一個小提示框或互動示意，MDX 可以把 Astro／React 元件嵌進內容流。
+
+<Callout title="提示">
+  這個 Callout 是 MDX 匯入的元件。它不需要 hydrate，除非你在裡面放了 client 指令。
+</Callout>
+
+## 什麼時候用 MDX？
+
+- 文章需要可重用的版面區塊
+- 想在內文示範一小段互動
+- 需要型別安全的 props，而不是手寫 HTML
+
+其餘時間，維持 `.md` 更單純，建置也更快。
