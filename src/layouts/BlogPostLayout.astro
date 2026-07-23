@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { TOPIC_LABELS, type Topic } from '@/utils/permalinks';
 
 interface Props {
   title: string;
@@ -7,11 +8,21 @@ interface Props {
   pubDate: Date;
   updatedDate?: Date;
   tags?: string[];
+  topic?: Topic;
+  series?: string;
   jsonLd?: Record<string, unknown>[];
 }
 
-const { title, description, pubDate, updatedDate, tags = [], jsonLd } =
-  Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  tags = [],
+  topic,
+  series,
+  jsonLd,
+} = Astro.props;
 
 const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   year: 'numeric',
@@ -26,22 +37,46 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   type="article"
   jsonLd={jsonLd}
 >
-  <article class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
-    <header class="mb-12" data-reveal>
-      <p class="mb-4 text-sm text-mist-muted">
+  <article class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+    <header class="mb-12 border-b border-line pb-10" data-reveal>
+      <p class="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-mist-muted">
         <time datetime={pubDate.toISOString()}>{dateFmt.format(pubDate)}</time>
         {
           updatedDate && (
             <>
-              <span class="mx-2 text-white/20" aria-hidden="true">
-                ·
-              </span>
+              <span aria-hidden="true">·</span>
               <span>更新於 {dateFmt.format(updatedDate)}</span>
             </>
           )
         }
+        {
+          topic && (
+            <>
+              <span aria-hidden="true">·</span>
+              <a
+                href={`/topics/${topic}`}
+                class="text-brand no-underline hover:text-brand-hover"
+              >
+                {TOPIC_LABELS[topic]}
+              </a>
+            </>
+          )
+        }
+        {
+          series && (
+            <>
+              <span aria-hidden="true">·</span>
+              <a
+                href={`/series/${series}`}
+                class="text-brand no-underline hover:text-brand-hover"
+              >
+                {series}
+              </a>
+            </>
+          )
+        }
       </p>
-      <h1 class="font-display text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+      <h1 class="font-display text-balance text-4xl font-bold tracking-tight text-ink sm:text-5xl">
         {title}
       </h1>
       <p class="mt-5 text-lg text-mist-muted">{description}</p>
@@ -49,7 +84,7 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
         tags.length > 0 && (
           <ul class="mt-6 flex flex-wrap gap-2" aria-label="標籤">
             {tags.map((tag) => (
-              <li class="rounded-md bg-white/5 px-2.5 py-1 text-xs text-teal">
+              <li class="border border-line bg-paper-elevated px-2.5 py-1 text-xs text-mist-muted">
                 {tag}
               </li>
             ))}

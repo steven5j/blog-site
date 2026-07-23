@@ -2,6 +2,8 @@
 title: 為什麼選擇 Astro 做個人站
 description: 靜態優先、islands 按需載入，剛好適合內容站與少數動畫頁。
 pubDate: 2026-07-10
+topic: software
+series: architecture
 tags:
   - Astro
   - 架構

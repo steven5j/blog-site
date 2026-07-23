@@ -6,7 +6,22 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   site: 'https://stevenjhu.com',
-  integrations: [react(), mdx(), sitemap()],
+  integrations: [
+    react(),
+    mdx(),
+    sitemap({
+      filter: (page) => {
+        try {
+          const { pathname } = new URL(page);
+          // Exclude legacy /blog/:slug paths if any appear; keep /blog/
+          if (pathname.startsWith('/blog/') && pathname !== '/blog/') return false;
+          return true;
+        } catch {
+          return true;
+        }
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

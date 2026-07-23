@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Reveal from '@/components/Reveal.astro';
+
+const items = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const projects = items.filter((i) => i.data.type === 'project');
+const certs = items.filter((i) => i.data.type === 'cert');
+---
+
+<BaseLayout
+  title="專案與證照"
+  description="職涯專案、Side Project 與證照成就摘要。"
+>
+  <div
+    class="page-banner"
+    style="background-image: url('/images/wp/project.jpg')"
+  >
+    <div class="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8">
+      <h1 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
+        Project And Certification
+      </h1>
+      <p class="mt-3 max-w-xl text-white/75">
+        於職涯中經手、發展並完成的開發專案與證照。部分內容屬公司機密，僅公開可分享資訊。
+      </p>
+    </div>
+  </div>
+
+  <section class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+    <Reveal>
+      <h2 class="font-display text-2xl font-semibold text-ink">專案</h2>
+    </Reveal>
+    <ul class="mt-6 space-y-4">
+      {
+        projects.map((item, i) => (
+          <li>
+            <Reveal delay={i * 50}>
+              <div class="border border-line bg-paper-elevated px-5 py-5">
+                <div class="flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 class="font-display text-xl font-semibold text-ink">
+                    {item.data.link ? (
+                      <a
+                        href={item.data.link}
+                        class="text-ink no-underline transition hover:text-brand"
+                      >
+                        {item.data.title}
+                      </a>
+                    ) : (
+                      item.data.title
+                    )}
+                  </h3>
+                  {item.data.year && (
+                    <span class="text-sm text-mist-muted">{item.data.year}</span>
+                  )}
+                </div>
+                <p class="mt-2 text-mist-muted">{item.data.summary}</p>
+              </div>
+            </Reveal>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-16">
+      <Reveal>
+        <h2 class="font-display text-2xl font-semibold text-ink">證照與成就</h2>
+      </Reveal>
+      <ul class="mt-6 space-y-4">
+        {
+          certs.map((item, i) => (
+            <li>
+              <Reveal delay={i * 50}>
+                <div class="border border-line bg-paper-elevated px-5 py-5">
+                  <div class="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 class="font-display text-xl font-semibold text-ink">
+                      {item.data.title}
+                    </h3>
+                    {item.data.year && (
+                      <span class="text-sm text-mist-muted">{item.data.year}</span>
+                    )}
+                  </div>
+                  <p class="mt-2 text-mist-muted">{item.data.summary}</p>
+                </div>
+              </Reveal>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

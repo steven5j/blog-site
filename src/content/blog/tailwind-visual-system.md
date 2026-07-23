@@ -2,6 +2,8 @@
 title: Tailwind 定制視覺，而不是套組件庫
 description: 用 design tokens 建立品牌感，避開預設 UI kit 的千篇一律。
 pubDate: 2026-07-15
+topic: software
+series: frontend
 tags:
   - 設計
   - Tailwind

@@ -1,0 +1,57 @@
+---
+title: UI/UX-個人網站Logo設計
+description: "早期想說隨便做一個部落格Logo，原本用Designevo(https://www.designevo.com [&hellip;]"
+pubDate: 2019-10-27
+topic: software
+series: frontend
+wpId: 3481
+legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/27/ui-ux-%e5%80%8b%e4%ba%ba%e7%b6%b2%e7%ab%99logo%e8%a8%ad%e8%a8%88/"
+---
+
+早期想說隨便做一個部落格Logo，原本用Designevo([https://www.designevo.com/tw/](https://www.designevo.com/tw/))去製作一個Logo，後來覺得我的Logo實在太簡單了，於是改用PowerPoint製作一次就好了，第一版的Logo就簡單的設計出來了!
+
+最初版
+
+![](https://wordpress-1652732-6572997.cloudwaysapps.com/wp-content/uploads/2019/04/LOGO4.png)
+
+非常的簡單，把名稱的其中一個字，用比較書法型的字體表現出來。
+
+後來經過職訓局的三個月半的訓練以後，學會了photoshop和illustrator，決定認真一下，想一下新長期使用的Logo。
+
+第一版：
+
+![](https://lh3.googleusercontent.com/mVp3JC4A9RkVNTz3kaB6Nz0f3hheAqo4iAbtCeAJ0_PpnTEsdFj8BNnP6nw1oenO9InVqYXoV363brJKa-O9BtnNwWEtp5VHKs18oPgfi0HfkGQvot5wexW8OxcnSGMBppCgJaF3gL8dFa7EO4-oXxzvnZJd2Ts29CYIDwGhAO8FLLdk7oVlarHPzvcJBDSehd8ap7PKD2gXRBFNDQEtwBNgkhbQfyyY57JbAp-TJx1GP1FFm5dnNgYvo6EHkR3JnV3njHLlg3WMRFWZq-4QIl17pjGHaazpaeFvEkLZrB27S0HurKw26DPUrnycf5XNZYOGq4z9VDxU26EJXH2FQh1LFQCgTukbB8SFvz8QRaUIC5JkWujHQ_mfdzjIeg6FtLa2fwGzRc57GzJTIpCom1yC1eqtxn1q405t_-i2QtnFt-FCyXEO74etpU3ybXE762JlaPL7TjTbZPQzc2A-iW674tYcjo7X40s1KPpXkyP2D_weQg1lYfE45SzW3CATdJmLsNSoqsqp9WG4LwR24ORPNNZ0nI_ECCtahTk6UBt2lKVfWClxoc_iX9K-cXgNQO8o7XYlwia_oC70YeZX8CAQ5My6xc4pU-QmUDYvvLDD4DdH1AsRNoXbJycC48NHgXG7zB-MxdKDAwFdyjQqT6ReJD7jUc-dQ72HllNKr7f4y10Z-CzJEu6zgvsszLinGW9tk7TRsdovUWvgnLIbfUVhEOBHikdCaJ4yEXES4gAad6Ka=w137-h178-no)![](https://lh3.googleusercontent.com/zkye6GfzQRd1MmXt-q2bPIL9hyIYI_A7EjGu7YSshwFPZNwxTmF2GZCB7Nx4yyuN3EZLEyX6XK85LYY7KpuVSDJamUm1JZiHWOPfwBOA_hN-vWIa2J0a5AR--q5cTJ-lraPWVQWZgT5zX61GRC_w5GA_TN12_31Zqs9Y_wVB87M8goheZPfx0Y_EkvEdmOKzvs2soqRjMJrnyNTA2Iz_nziv8kR1mAGU0jhNmyV-jKai66nwu89MAvsRrmOm2VrQt2gxsCxAKQT8VkUvl_99C2ZzGF5-DefqkIv0nZ58Iq9eUe8ZmUAfFjFOxc3NKoi7q3uqR4O4qiuAlQ9IoeuUNfj61CA41BTeB0dWAM9d-JWo29RATAUVzl3QFrQaxtpH3Yry8yGZyDN_OJY_aPgW6QJB9HE9N0yYGH-TpWG8HO6vswmN0K_adUnHtRU437KMQMAt3UPJ3_RhK1t4VLGVcDs_Hw9Pf24eBnoO5z7KvTWdrkpFgrI2RCovt8rUCuZMMMmSuXbJxvxeWPicgwDP0hxHlJRIH5yppw6uAYyykq9lo2KI-lvyr5vRuQhnkiDlwClsrboHZZHdrcEF4_HlyTHkl9HCJwfTb5MrWU4YHvdQ1gr24zxN6p234lPMJu1jO_0WubWoOFuSn6mJ3IRFqYnese2jAY4gBhiz_X4cLK-TWg-J_RLu9kiM7eoe7mMN9OdisWoEaSVJDlJrjWkjBR6ZGGZ-YoX9tNcwJgrV4P45bh-g=s300-no)
+
+這個logo也是參考 Designevo([https://www.designevo.com/tw/](https://www.designevo.com/tw/)) ，使用以後覺得在網頁上有點太難識別了，不是很清楚。
+
+於是又重新製作了一份!
+
+第二版：
+
+![](https://lh3.googleusercontent.com/6IMDkdhw_0N_wMNA1zOeAb4nmGXvxhT359x3wX510bC-K1e0T3cMETS2jSk_8Cq-SHTQijritedw3etxlDl5TWPt7c9xsO8fscS02KRsZWwec44t0WrFjVHgO7QpYkDGlw8OqQAwVBSxRllCobRe03qc7Axegrh-9cNcNFxzRyM0g552Ty6BStbm8PkIkKkiHRLF_qNrdoTugzyvZYaRmaP3GcWGYEvWkZo15r4SYd6uth_4g56or9WibscLgPDkZhkHo3V6zPlgQwXStJINzGTiz8yr1BHczxF_G2psJqtdI3M1O3KL9MTY3rTrywJTL-PtUxpxPkuXNjOluDe75RC-HgJAseXHgfYPxcoe6kgbUkyAID2jm4ampLHNie6CLYywSy51qG7v1An3e1d5funRL_tmp2C6C9kOJzXd4vJV7kzT3bGb4akmXVfeT6UxHCywBJFINtPxup20AdErITgLf9GrwUIjkvd-_ATT0DVrsMYJ2Xgl41Ph2TjcHesikCbDOxUquci_DCDafzjvGGMKEDNAmW9l38VqpbuGo3gRyKGuGkj3S6_ChOh2WHRd1Nt6gnMVKgYTslDkVBSh_r16krbXYl2e0yabW5k8UgXcpyk8EjRUxNUCOj7VbIgMAsikY-Av69rJer5ErsFtYPbC75-M_vm-GlvGbRtv_JL2IeGNocxllcNYHyu1tdG3ODrlRIp8Mq8rDVfTRSY4cg1INhVMM7KK7XoILe2DuUfitjLp=w120-h60-no)
+
+120X60
+
+![](https://lh3.googleusercontent.com/he4c-MtD8RZ9WAXtALz-UdFuLNd2bDr58dqmbolicz1HGbUinYoQFJGBhwzK3O-o64qe7R_Jp4pudYdYvxYaivz1y4c4CE2AiWj2Xhan4ihJLYR41FKIkei08HpSxTlCqK1IjbkNmW5eVX7MfLz5OHWCXcf1R4JoZczUXHMyj7Enj0YSdxHvfStqc90WltHXqVtCFTMpmZ2p1HoL0IlhZ_lT3etkUDNuQbBv621ykHXNhOW8wnGAId4n5lXQhwi78oHrJMD-WKKR0hCH3wJxlAE6dNRsMuOqBj-swnC7bo1cKTwmJmI4m2a5b4ykzcRoBzI69A02FsitMUjoZs_ks5sok6ulBDFgf-P3yop3wcD8Ub8i3M2u8cXu12ZxU_Sa23yePCzzCCgyierB4i1KhRGJJ08GduQ38Po6Dq4xIDfWU5U--eLAL-QX5ReQR83gmVagQMRWmbyQ-L54c_hS0kPyutP6kQcHRVoC-8AIXxXSeCyBiroCaP_b1p3lbv6_Ae1h3sqUabmsr4A1BL1sKjNudbcSJL9HXFEdwA6zdA4toK2hwkd5Cg-cDH1Lrg_tuTicnaYPR_Nq0yUzzhnMrZ0HEf6tVe-5ddzkpQJqyurpv2LV3hPGl3MfpedAfecxwQfnS-r3YdpnhHfidGxDzpzxuT7ACVELOuJcx1LCDByRVmvq9RAoraJSaY253w5yp6xXjf3TaGRbHkl9prtieJE3MYuCFy5u7I1OwJPXf_KEZ8un=s120-no)
+
+120X120
+
+這個Logo 的顏色參考了Brandcolors( [http://brandcolors.net/](http://brandcolors.net/) )的 Massachusetts Institute of Technology(麻省理工學院)、 Tesla(特斯拉) 、INSIDE(硬塞的)的紅灰科技感和專業感配色。
+
+科技專業 紅使用  #c13b3b 
+
+質感專業 灰使用 #f7f6f6
+
+白色使用純白 #FFFFFF 
+
+黑色使用Bootstrap的dark  #343a40 
+
+而網站大部分的超連結整體專業紅 使用 #aa1111
+
+讓整體感覺有科技和專業感還帶一點溫暖感的呈現，也是我部落格想要帶給人的感覺。
+
+文字的部分則是  [ Steven玄 ] 縮寫成為 [ St玄 ]，因為[ Steven玄 ]太長了，變成Logo和網站識別圖示的化，塞不下，也顯得繁瑣，最後縮寫成有特色的幾個足夠識別的文字為主
+
+[St 玄] 誕生! 
+
+網站識別更精簡為[ St ]!

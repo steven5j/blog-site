@@ -1,0 +1,31 @@
+---
+title: Java 程式設計(基礎)-進入點main的命令引數Args
+description: 與main一同進入的命令引述，用ArgsDemo來顯示
+pubDate: 2019-09-30
+topic: software
+wpId: 924
+legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/30/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e9%80%b2%e5%85%a5%e9%bb%9emain%e7%9a%84%e5%91%bd%e4%bb%a4%e5%bc%95%e6%95%b8args/"
+---
+
+與main一同進入的命令引述，用ArgsDemo來顯示
+
+```
+`ㄌ//命令引數
+//main在進入的時候自動帶有
+public class ArgsDemo {
+
+	public static void main(String[] args) {
+		        System.out.println("顯示命令列引數..");
+		        for(String arg : args) {
+		            System.out.println(arg);
+		}
+	}
+}
+`
+```
+
+![](https://lh3.googleusercontent.com/6EHtQU8N0XsgeOfRH8BUJ1wwLv-NE2KS90fruJz6jrmfzKnq6rdzXlg55U6VarTarcj1Ey3ifn2XroYCAFONpCVN4s72Y9NUhtMcLXGgOfQARcNBIxmXXLWgzYdDxSNE4jAfrnEdYF_Fw6myUdXxhgqKHTagNZgis3htLQmn2oj1CEXD773xLSw021_dYEuh6EaQcU6f-Z4fR_OcsT0S5Hrb3MxhqYy7Prdd1t7XgNq-Z6W9L9dHDwoma6pc6YIZ0rBCO99UzSlRTcxQ5YNzjfratehFqh_1pnERt_eGSWpyiazeiXaxcm341sq7P2SMR02vq0Gw3jScHYwavqOTXm9Y7zfMlVPRq3Qp5Zq3mD92pTuks-9_ooaof3RUUfEEOD3-PfYCt2mG2RzIMXuefClFL-j7eB1MQmwN7R2gMf8GpxR1ZwINX2AFATS76wZVuwbOerLslK3ylrJfust87wKxfdc4BLQQYs97L3f9kObQP21156_95WpsnoFfYMv_SqKnaWXF-JBMyZBMYxqGnAATkpgUS9LuPIYhUIIYX13URUk7_X_J-8H6fooA3H8TSPd-1w4P_689kIgLkiUfKnbDlm2rygxLYOrSB8jR7ARyKno3Ed3GSKADHfsLaIybw0fa-4L-0mD6-37TAd8sOmaD4rJCBZiovihLJvTOja1RlndWFGWWOhHE9I880dU5exH0NLhpVsmLtel5ZIo9akwIdJMq3n3kK5s4edPiZOLSQm0=w1499-h843-no)
+
+![](https://lh3.googleusercontent.com/31nVbITXHTkbiFojbWNZWZA5E9d4_duTteRhBiAtWz_DDHPZYBCSMVqRJPsjuRzGPiE3RNpDyZJBs7FqQFB8hb_V84iFFKSdMzFS3-mpPN8m14_jr7kPCzs16u1aPVacCqEzVr8UxIkatyOXGGXQb2T9uT0jcoN8PyouMZ2p5_0mNgxIfBTToU22puVAUdliE_kHOkEvtrGidQ7NiFA1NK-S1C8tcC3ndi9WFU9AxzY09IK2BQFdsur7fATU0Fv0f5hFo8GZGdMWZJi_1zUuuH9mBWDIiXQ4J3YBj2zgJnbQfrl0sHXf8wh9l2CoGOqQbvLxmNPtTiXBVvaLicvHL_M-2O34cuU21kFC4aG5VxzghEtQcbxK25kqtqf1ZaqwIppI01-hBfq3woXQkBk8GjcXKICIxIeJ26j6Ze0iv8BRp1M674PAhQkiwAO_C3p7kMML7NhPSlbYFS2Ol2snA8QIuD7m7SgqIyk5pEI1BeSXxK9yZp2dGMKEELjAIfvGV8j05vJcU6hKrma7ZI5mJVXST5sasyahcawxnRCLTKRCQ9tAsy6fb14H11UpUjmkSsHqosDdqFKPrQYeD2e9IeOPoqGiqx8vAlW1r_NknnKW6b9kwqrH9PK_dmj5bqCsGkx1C6nulxSUd7T80cyTJ_Ae38VYsfuZZvEmzkq7n4tDIK7CtTwApBKbssSZaBr0ZmzHp3Fby1944lx-zTAElJk6qhAIutf7bKDsVWGgg75VNOs=w1499-h843-no)Arguments，可填上要命令引數的字
+
+![](https://lh3.googleusercontent.com/CO4ixynbj7rd6V5s5ClNEjssWv3okqhGN0ZnxcCfNR60dGE9r8xOIxcSlE3J4rLdPg_1WwjCney2fJgZx9BWZskcWjOuUJW5Ux9JhOLUcaEvKXpoELl_U5hzt7f2XPlP6nf01OtBs8bxSdGnhZHo2pGknUDEWTnaPMiiTLSvsAuWKutefUNN5z_4yN4E-8d1SGENEPkROJkGubCBHTiOGl1IXUy4ppmhP4vrVYTVhtQ6a_rTb7m5A4hm0SUk4elXekecAKp8_cRCkDcm3XJR1PTqhgDZFWYERitPczK-InQS7WUzWWNRE2s8nkb6oiRNJe1MmW6sfu4_0oTeXOCl01nW0VhiE5pA6NSwEqgW8cQywFFPJSPn6pXHzttgv6Azf3jVPo-f4_E5VhPiz8EyuNR0Qf4Jr9MTGNtg4eIkEBFg1W3jYo13Od47GR71JypBTOZThpWNAHEv-GwGCiVc7YO2EoBtPovQtCh15qNDGGdqkYHPd8B6KDLoxZMAIqiDiZopnFvp5ZhwdPdF-ok-cfTLPEVfVG2XqwLwh-WvmE9hhtnZwjRsrfO8l78msb_if8jRwMxLy-W4Hf4hXAnHqELeMPTGgiQQrmhrizzmW7sCZIT7Z5Qz--VOOnwsizjoYijnBrWOg-VngnJ_kLsN4Kh-dh_fjkJ9njeEV4jGFIVxCDL3f0wj6DarLHJlTWV2fAyiZk9KWDdwwhSx0r462Nlix_AgnhLSqgN3lTKTFpFrDmo=w1499-h843-no)

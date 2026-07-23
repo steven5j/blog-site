@@ -1,50 +1,169 @@
 ---
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
 const pathname = Astro.url.pathname;
 
 const links = [
-  { href: '/', label: '首頁' },
-  { href: '/blog', label: '文章' },
-  { href: '/showcase', label: '旗艦' },
-  { href: '/about', label: '關於' },
+  { href: '/', label: 'Home', match: 'exact' as const },
+  { href: '/about', label: 'About', match: 'prefix' as const },
+  {
+    href: '/blog',
+    label: 'Blog',
+    match: 'blog' as const,
+    children: [
+      { href: '/topics/software', label: '軟體工程筆記' },
+      { href: '/topics/business', label: '產業投資與商業經驗' },
+      { href: '/topics/life', label: '生活心得體驗分享' },
+    ],
+  },
+  { href: '/projects', label: 'Projects', match: 'prefix' as const },
+  { href: '/series', label: 'Study Notes', match: 'prefix' as const },
+  { href: '/showcase', label: 'Showcase', match: 'prefix' as const },
 ];
 
-function isActive(href: string) {
-  if (href === '/') return pathname === '/';
+function isDatePermalink(path: string) {
+  return /^\/\d{4}\/\d{2}\/\d{2}(\/|$)/.test(path);
+}
+
+function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
+  if (match === 'exact') return pathname === '/' || pathname === '';
+  if (match === 'blog') {
+    return (
+      pathname === '/blog' ||
+      pathname.startsWith('/blog/') ||
+      pathname.startsWith('/topics/') ||
+      isDatePermalink(pathname)
+    );
+  }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 ---
 
-<header class="relative z-20 border-b border-white/5">
-  <div class="mx-auto flex max-w-5xl items-center justify-between gap-6 px-6 py-5">
+<header
+  class:list={[
+    'site-header z-40 w-full',
+    transparent
+      ? 'absolute inset-x-0 top-0 bg-transparent'
+      : 'relative bg-ink text-white',
+  ]}
+>
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
     <a
       href="/"
-      class="font-display text-lg tracking-tight text-white no-underline transition-colors hover:text-teal"
+      class="font-display text-lg font-semibold tracking-tight text-brand no-underline transition hover:text-brand-hover sm:text-xl"
       data-astro-prefetch
     >
-      Steven J. Hu
+      Steven玄
     </a>
-    <nav aria-label="主要導覽">
-      <ul class="flex flex-wrap items-center gap-1 sm:gap-2">
+
+    <button
+      type="button"
+      class="menu-toggle inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-1 text-sm uppercase tracking-[0.15em] text-white/90"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      data-menu-toggle
+    >
+      <span class="flex flex-col gap-1" aria-hidden="true">
+        <span class="block h-0.5 w-5 bg-current"></span>
+        <span class="block h-0.5 w-5 bg-current"></span>
+        <span class="block h-0.5 w-5 bg-current"></span>
+      </span>
+      <span>Menu</span>
+    </button>
+  </div>
+
+  <nav
+    id="site-menu"
+    class="site-menu fixed inset-0 z-50 hidden bg-ink/95 text-white backdrop-blur-sm"
+    aria-label="主要導覽"
+    data-menu-panel
+    hidden
+  >
+    <div class="mx-auto flex h-full max-w-lg flex-col px-8 py-10">
+      <div class="mb-10 flex items-center justify-between">
+        <span class="font-display text-lg font-semibold text-brand">Steven玄</span>
+        <button
+          type="button"
+          class="cursor-pointer border-0 bg-transparent text-sm uppercase tracking-[0.15em] text-white/80"
+          data-menu-close
+        >
+          Close
+        </button>
+      </div>
+      <ul class="flex flex-col gap-1">
         {
           links.map((link) => (
             <li>
               <a
                 href={link.href}
                 class:list={[
-                  'rounded-md px-3 py-1.5 text-sm no-underline transition-colors',
-                  isActive(link.href)
-                    ? 'bg-white/5 text-teal'
-                    : 'text-mist-muted hover:bg-white/5 hover:text-mist',
+                  'block py-3 font-display text-2xl font-medium no-underline transition hover:text-brand',
+                  isActive(link.href, link.match) ? 'text-brand' : 'text-white',
                 ]}
-                aria-current={isActive(link.href) ? 'page' : undefined}
+                aria-current={isActive(link.href, link.match) ? 'page' : undefined}
                 data-astro-prefetch
+                data-menu-close
               >
                 {link.label}
               </a>
+              {'children' in link && link.children && (
+                <ul class="mb-2 ml-1 border-l border-white/15 pl-4">
+                  {link.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class="block py-2 text-sm text-white/70 no-underline transition hover:text-brand"
+                        data-astro-prefetch
+                        data-menu-close
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))
         }
       </ul>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </header>
+
+<script>
+  function bindMenu() {
+    const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+    if (!toggle || !panel) return;
+
+    const open = () => {
+      panel.hidden = false;
+      panel.classList.remove('hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      panel.hidden = true;
+      panel.classList.add('hidden');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    toggle.onclick = () => {
+      if (panel.hidden) open();
+      else close();
+    };
+    panel.querySelectorAll('[data-menu-close]').forEach((el) => {
+      el.addEventListener('click', close);
+    });
+    panel.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  }
+
+  bindMenu();
+  document.addEventListener('astro:page-load', bindMenu);
+</script>

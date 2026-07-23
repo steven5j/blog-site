@@ -1,0 +1,60 @@
+---
+title: FinTech 2019 金融科技展 債權理財平台 顧問
+description: "金融科技展簡介 活動網站： https://www.fintechtaipei.tw/ 時間地點： 11月29 [&hellip;]"
+pubDate: 2019-12-16
+topic: business
+wpId: 3743
+legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/12/16/fintech-2019-%e9%87%91%e8%9e%8d%e7%a7%91%e6%8a%80%e5%b1%95-%e5%82%b5%e6%ac%8a%e7%90%86%e8%b2%a1%e5%b9%b3%e5%8f%b0-%e9%a1%a7%e5%95%8f/"
+---
+
+![](https://lh3.googleusercontent.com/h8Zm_WXHjBM3cAqQVpP-f7aMArSE3NPElW6aPm-Men_n3V4QrtiLq-cO0i4mEOY0T3hLfN3WEa8XqbcVpxIl3Yjx3SsUcaPKC5-E-edaQD2q86PK_2eSMskXrYOfBA8xno1RsLVvSO6iZhdPvd5yhLlTf4mzPzFMzSn1XFtZ4MH64NcX3bg6pU7J6T9ELPpBLi_pUgIBu8-HcU9fWJxtPtmF5yBMqb8P1Zhj_PoxVrkx-9nVuRTdnUkLAEhS6kx-DkJeASyCzbiFGNK_kX4GO_j8rX64UKj4JCZpXuuESal5eJ5vc-PGUNsde0IONwmGY0E-vCYc6gg8Z14cNHzs0VJIrrdA91iqNKv9oXZHbZamonpv9nuYY3iIRYaDTX261pqOyxmJWliazg8PuJQmyZDuR3dK2_LmW8p5TBlK-uROARn-NumnvkV5xZoL9d86ZtxHbSWYG3h9GTFBDAQbCJnf9r8vBENUKyXicnpLXyiArQjvbJhCUtkv_UrtYQyeglaXog_jbbCdmtM4cyWHE0b226mFF_hirvn2YVdrnLckBN0fwSDeVwupEwS2OZ-zer0IEiV7VSk50HKKrxXYSbYmpmEfQ96LtR2vePdN1LdAd9QfKwHKWcoVjDpClPfnEBKj2gMPw947iaALmQzE3Hy6VewnMOxqWjSiB8C-h0oA_xQyVZKg7lUmkGXYpZvoy3S4u1UmAvMOjiAXPiBmCqBajJrP61D9ryQLHeJbR0gU3SSR=w1440-h550-no)
+
+金融科技展簡介
+
+活動網站：
+
+[https://www.fintechtaipei.tw/](https://www.fintechtaipei.tw/) 
+
+時間地點：
+
+11月29日(星期五)：11:00-17:00
+
+11月30日(星期六)：10:00-18:00
+
+![](https://www.fintechtaipei.tw/attachfile/exdownload/20191101121017KNEUA/%E5%B9%B3%E9%9D%A2%E5%9C%96.jpg)
+
+我協助的攤位公司
+
+![](https://meethub.bnext.com.tw/wp-content/uploads/2018/08/38851703_2198760420152474_8683929354272505856_o-1038x1038.png)
+
+公司簡介
+
+旭新科技網路理財平台的運作，簡單來說，便是運用金融與科技的結合，讓投資會員在家登入平台，就能選擇來自國內或海外，經過民間融資機構專業審核再讓與到平台上的優質「債權」，One Click輕鬆理財。
+
+![](https://tw.seedin.tech/images/processMap_4.gif)
+
+展覽擔任的角色
+
+債權金融科技服務顧問
+
+主要工作內容
+
+陌生開發顧客，讓他們了解整個新金融科技媒合平台的簡介、適法性、操作流程，並讓他們成功註冊進入平台。
+
+達成成績
+
+17位新朋友 成功註冊
+
+![](https://lh3.googleusercontent.com/h3K2nwaCW1Ye-GXdfgtEaM2fRTDFd8o4KG38mpnNlbKwLO9b9eQ-6pjQz1kyxt-effGvFHaXYx187RwGtMrYSlCxiCzulXOsM5S002a1XNyqjvyhzsgAcfn0eF5bUm5H5YW3VAn6jyAM_3WJ2rJbM0I_bYgT9-58yGUJucutau96MeRiKEZCYSqGZDWh1qZPI_CTEeLZul6nF4MOmXEiV6N0ZPWZ8qRtQx6KPA9q4sggOCDWA2aNfkAu-CnT8DXK6v-15I0v1Igp7uYfNrI4wSG21EVE-tBJ763Y5Yd_S52joP5c_PUcwzFPCWeUfZozIUULlUS82X7S3uEJ8mgrHgD6gbvl7LoyJdMEAJZHrPI2XPCatE-gpHGLxqCEWKu4ytiHl3j77LYTDFGWU4_po_9reRV2vIONV-iley0XbvOhNFIWsRTvttR69T4Mahx7qq2oAU_3Yerki7luVytHRBDRS0jp39FevGhWMM9z7Wer3XRvRPAL7atujJuSZHJuOaJ5wylNdW9_uBaO1GusI_aePUT6Rq_HEp1bWIKfRcfvyTdu-gOogy3PV-EN2fUIAdI9I9ystxyt4wr2XQSW4-uNtt7RJidihfe9oSQ7BW_5-SN24axibsXLDo9Y-P_MBKWktx0SRJc8wQdBU7R_Cjv2cNFHUDsRFe0-AYrLRmHixKwrRyV8a4gvdnxTsSstNJWYZ_ptckv63yqQrl27lD9V7jQHaJuNnOMTWx6yeJbl871T=w934-h699-no)
+
+![](https://lh3.googleusercontent.com/cutFtt1ANeytX6IWMg_3CT5btjPYCo3gqHd7T6VxgiMgu7QamXGY897R1YdZvKbmoKdfOEjuYWmPXs0xzNgi9_1eTStEoUlHW9J84FYOPn7CNKYWjBK2xzY393sOG27wTyfOdtoxauwuN5_oj-hQ0jGcFzW4sPM0jF3xDbH5sygIuubr-uamKeYGYIWxkjjqYw1zNu4QT9Gn-p8b99KFYKyycZyNOjUi_6QUYep7FWWpAGXb5rvxWfvZF0HXAyKSn_IvYzpxcuJFI_4vLxCAsnHmP2mO2zZAMVUb2YEFhtpwtCzHHEKaMSmjhzITyymM4bJPM20uW0DJEn8hpu3sedsP8iubOI1ReOdaoHLeq5DqQkd_oYadJgXKoMa_Bt12WloKi3egZXxKkhow30zJNgT0ymjKhT0zeAIlTX7qsc9uRBMTH5fpE6qSTk98F1Z4q1QVEnAleDdM3ty8xhBS2VT_Sp5_Oo2GKj5wfh_5dkph6FeIhbiq9J0j4Zf-r_1Ufk4jWU-xZL-XJuTBLoUyYeQ5k_AfWXzScxuXaPidYitGDEFBIYVMtUjV-iBty8jhVN36d5Lr3Ep71TDdSIoiJdikppZAzNFz9l1wi2-bkQj8Pn11sfe2o8QMyQx-wTFDoxaRAjNKdWPwLnxAAbZLWmmg_FVcn5WsbYvc4PjHg_DWpUds09IQIMY=w678-h903-no)
+
+心得與思考分析
+
+本次的金融科技展，廠商跟加盟展真的有差，大部分的都是大財團在參加這樣形式的活動，大財團幾乎都有推出新型的金融科技產品出來，智慧選股機器人、智能販賣機、智慧理財機器人..等，還有機器牛肉麵哩，大財團果然出手就是不一樣，科技金融展大部分的攤位裝潢，以之前展覽攤位經驗，這些攤位裝潢都是百萬裝潢攤位。
+
+此科技展大致上可以發現幾大趨勢方向
+
+1.無人商店失敗，退而求其次以智能販賣機發展：因為無人商店以現在的資金與技術門檻過高， 商品獲利還不夠去應付這樣的資金成本與營運成本。 消費者習慣未達到，第三方支付以台灣來說也還不是人人習慣使用。而智能販賣機，剛好可以應對現在的過程狀況，再加上高租金的問題，智能販賣機又更有空間彈性，且一般人對於使用販賣機的習慣較為熟悉。
+
+2.AI、區塊鍊發展：AI發展勢不可擋，目前很大部分都用在金融科技上面，在金融產品上面，AI的操作還有選股、選基金，都讓很多一般人願意嘗試使用。區塊練則是配合著金融科技的發展，在市場上非常活耀，區塊練大部分用在虛擬貨幣上面，目前市場上很多公司都開始發行自己的智慧城市體系的虛擬幣，用區塊鏈虛擬貨幣有合適並且自由的融資環境，讓很多企業都爭相嘗試並發行，即便大公司也有開始部分納入使用。AI操作虛擬貨幣和區塊鍊虛擬貨幣基金，都有企業發展。

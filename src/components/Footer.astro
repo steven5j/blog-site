@@ -2,15 +2,20 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="relative z-10 mt-auto border-t border-white/5">
+<footer class="relative z-10 mt-auto bg-ink text-white/70">
   <div
-    class="mx-auto flex max-w-5xl flex-col gap-2 px-6 py-10 text-sm text-mist-muted sm:flex-row sm:items-center sm:justify-between"
+    class="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-12 sm:flex-row sm:items-center sm:justify-between sm:px-8"
   >
-    <p>© {year} Steven J. Hu</p>
-    <p>
-      <a href="/llms.txt" class="hover:text-teal">llms.txt</a>
-      <span class="mx-2 text-white/20" aria-hidden="true">·</span>
-      <a href="/sitemap-index.xml" class="hover:text-teal">Sitemap</a>
+    <p class="text-sm">
+      Created with
+      <a href="/" class="text-brand no-underline hover:text-glow">Steven玄</a>
+      · © {year}
+    </p>
+    <p class="flex flex-wrap gap-4 text-sm">
+      <a href="/blog" class="no-underline hover:text-brand">Blog</a>
+      <a href="/projects" class="no-underline hover:text-brand">Projects</a>
+      <a href="/about" class="no-underline hover:text-brand">About</a>
+      <a href="/sitemap-index.xml" class="no-underline hover:text-brand">Sitemap</a>
     </p>
   </div>
 </footer>

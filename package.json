@@ -5,9 +5,13 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/generate-redirects.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "redirects": "node scripts/generate-redirects.mjs",
+    "migrate:wp": "node --use-system-ca scripts/migrate-wp.mjs",
+    "migrate:wp:dry": "node --use-system-ca scripts/migrate-wp.mjs --dry-run --limit=5"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

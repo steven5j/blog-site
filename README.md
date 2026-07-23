@@ -48,4 +48,23 @@ npx wrangler pages deploy dist
 
 ## 內容
 
-文章位於 `src/content/blog/`。在 frontmatter 設定 `draft: true` 可於正式建置中隱藏。
+- 文章：`src/content/blog/`（frontmatter：`topic`、`series?`、`pubDate`）
+- 系列 Hub：`src/content/series/`
+- 專案／證照：`src/content/projects/`
+- 單篇 permalink：`/YYYY/MM/DD/{slug}`（與舊 WordPress 日期網址對齊）
+- `draft: true` 可於正式建置中隱藏
+
+### 從 WordPress 遷移
+
+```bash
+# 預覽前 5 篇對應結果（需 Node 可驗證系統 CA）
+npm run migrate:wp:dry
+
+# 匯入全部文章與特色圖片到 public/uploads/wp/
+npm run migrate:wp
+
+# 更新 Cloudflare _redirects（build 前也會自動跑）
+npm run redirects
+```
+
+分類對照見 `scripts/wp-category-map.json`。若本機 TLS 驗證失敗，腳本已使用 `node --use-system-ca`。

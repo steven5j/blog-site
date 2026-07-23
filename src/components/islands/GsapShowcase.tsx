@@ -105,13 +105,13 @@ export default function GsapShowcase() {
   return (
     <div ref={rootRef} className="relative">
       <section className="mx-auto flex min-h-[70vh] max-w-5xl flex-col justify-center px-6 py-24">
-        <p className="mb-4 text-sm font-medium tracking-[0.2em] text-teal uppercase">
+        <p className="mb-4 text-sm font-medium tracking-[0.2em] text-[#3db8a8] uppercase">
           Showcase
         </p>
         <h1 className="font-display max-w-3xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-6xl">
           把網站做成一段可捲動的主張
         </h1>
-        <p className="mt-6 max-w-xl text-lg text-mist-muted">
+        <p className="mt-6 max-w-xl text-lg text-[#8b9bb0]">
           {reduceMotion
             ? '已依系統設定關閉滾動動畫，以下以靜態方式呈現內容。'
             : '向下捲動，看靜態架構如何與動畫 islands 並存。'}
@@ -123,7 +123,7 @@ export default function GsapShowcase() {
           aria-hidden="true"
         >
           <div
-            className="h-full origin-left bg-teal transition-transform duration-300"
+            className="h-full origin-left bg-[#3db8a8] transition-transform duration-300"
             style={{ transform: 'scaleX(var(--p))' }}
           />
         </div>
@@ -131,14 +131,14 @@ export default function GsapShowcase() {
 
       <section
         data-pin
-        className="relative border-y border-white/5 bg-ink-elevated/40"
+        className="relative border-y border-white/5 bg-[#121a2b]/60"
       >
         <div className="mx-auto flex min-h-screen max-w-5xl items-center px-6 py-24">
           <div data-pin-copy className="max-w-2xl">
             <h2 className="font-display text-3xl font-semibold text-white sm:text-5xl">
               品牌先於版面裝飾
             </h2>
-            <p className="mt-6 text-lg leading-relaxed text-mist-muted">
+            <p className="mt-6 text-lg leading-relaxed text-[#8b9bb0]">
               第一視口只留下名字、一句話與明確行動。其餘資訊往下走——讓訪客先記得你是誰。
             </p>
           </div>
@@ -153,31 +153,31 @@ export default function GsapShowcase() {
             className="max-w-2xl"
             style={reduceMotion ? undefined : { opacity: 0 }}
           >
-            <p className="text-sm tracking-[0.18em] text-teal">{panel.eyebrow}</p>
+            <p className="text-sm tracking-[0.18em] text-[#3db8a8]">{panel.eyebrow}</p>
             <h2 className="font-display mt-3 text-3xl font-semibold text-white sm:text-4xl">
               {panel.title}
             </h2>
-            <p className="mt-5 text-lg leading-relaxed text-mist-muted">{panel.body}</p>
+            <p className="mt-5 text-lg leading-relaxed text-[#8b9bb0]">{panel.body}</p>
           </article>
         ))}
       </section>
 
       <section className="mx-auto max-w-5xl px-6 pb-32">
-        <div className="rounded-2xl border border-white/10 bg-ink-elevated/50 px-8 py-12 sm:px-12">
+        <div className="rounded-2xl border border-white/10 bg-[#121a2b]/80 px-8 py-12 sm:px-12">
           <h2 className="font-display text-3xl font-semibold text-white">下一步</h2>
-          <p className="mt-4 max-w-xl text-mist-muted">
+          <p className="mt-4 max-w-xl text-[#8b9bb0]">
             回到文章閱讀實作細節，或從關於頁認識站長。
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href="/blog"
-              className="inline-flex rounded-md bg-teal px-5 py-2.5 text-sm font-medium text-ink no-underline transition hover:bg-glow"
+              className="inline-flex rounded-md bg-[#3db8a8] px-5 py-2.5 text-sm font-medium text-[#0b1220] no-underline transition hover:bg-[#5eead4]"
             >
               前往文章
             </a>
             <a
               href="/about"
-              className="inline-flex rounded-md border border-white/15 px-5 py-2.5 text-sm font-medium text-mist no-underline transition hover:border-teal/50 hover:text-teal"
+              className="inline-flex rounded-md border border-white/15 px-5 py-2.5 text-sm font-medium text-[#c8d2e0] no-underline transition hover:border-[#3db8a8]/50 hover:text-[#3db8a8]"
             >
               關於我
             </a>

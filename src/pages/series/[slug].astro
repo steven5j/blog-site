@@ -1,0 +1,103 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Reveal from '@/components/Reveal.astro';
+import { postPermalink, TOPIC_LABELS } from '@/utils/permalinks';
+
+export async function getStaticPaths() {
+  const seriesList = await getCollection('series');
+  return seriesList.map((entry) => ({
+    params: { slug: entry.id },
+    props: { seriesId: entry.id },
+  }));
+}
+
+const { seriesId } = Astro.props;
+const entry = await getEntry('series', seriesId);
+if (!entry) {
+  return Astro.redirect('/series');
+}
+
+const { Content } = await render(entry);
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft && post.data.series === seriesId)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const dateFmt = new Intl.DateTimeFormat('zh-TW', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+
+const covers: Record<string, string> = {
+  architecture: '/images/wp/architecture.jpg',
+  javascript: '/images/wp/javascript.jpg',
+  react: '/images/wp/react.jpg',
+  frontend: '/images/wp/frontend.jpg',
+  portfolio: '/images/wp/project.jpg',
+  'real-estate': '/images/wp/social-life.jpg',
+};
+const banner = covers[seriesId] || '/images/wp/study-notes.jpg';
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <div class="page-banner" style={`background-image: url('${banner}')`}>
+    <div class="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8">
+      <p class="text-sm text-white/70">
+        <a href="/series" class="no-underline hover:text-white">Study Notes</a>
+        <span class="mx-2 opacity-50">/</span>
+        <a
+          href={`/topics/${entry.data.topic}`}
+          class="no-underline hover:text-white"
+        >
+          {TOPIC_LABELS[entry.data.topic]}
+        </a>
+      </p>
+      <h1 class="font-display mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+        {entry.data.title}
+      </h1>
+      {
+        entry.data.intro && (
+          <p class="mt-4 max-w-2xl text-lg text-white/80">{entry.data.intro}</p>
+        )
+      }
+    </div>
+  </div>
+
+  <section class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+    <div class="prose-blog" data-reveal>
+      <Content />
+    </div>
+
+    <ul class="mt-14 divide-y divide-line">
+      {
+        posts.length === 0 ? (
+          <li class="py-8 text-mist-muted">此系列尚無文章。</li>
+        ) : (
+          posts.map((post, i) => (
+            <li>
+              <Reveal delay={i * 50}>
+                <a
+                  href={postPermalink(post.data.pubDate, post.id)}
+                  class="group block py-7 no-underline"
+                >
+                  <time
+                    class="text-sm text-mist-muted"
+                    datetime={post.data.pubDate.toISOString()}
+                  >
+                    {dateFmt.format(post.data.pubDate)}
+                  </time>
+                  <h2 class="font-display mt-2 text-2xl font-semibold text-ink transition group-hover:text-brand">
+                    {post.data.title}
+                  </h2>
+                  <p class="mt-2 text-mist-muted">{post.data.description}</p>
+                </a>
+              </Reveal>
+            </li>
+          ))
+        )
+      }
+    </ul>
+  </section>
+</BaseLayout>

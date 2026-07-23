@@ -13,9 +13,11 @@ interface Props {
   type?: 'website' | 'article';
   jsonLd?: JsonLd[];
   noindex?: boolean;
+  transparentHeader?: boolean;
 }
 
-const { title, description, ogImage, type, jsonLd, noindex } = Astro.props;
+const { title, description, ogImage, type, jsonLd, noindex, transparentHeader } =
+  Astro.props;
 ---
 
 <!doctype html>
@@ -28,7 +30,7 @@ const { title, description, ogImage, type, jsonLd, noindex } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <Seo
@@ -42,7 +44,7 @@ const { title, description, ogImage, type, jsonLd, noindex } = Astro.props;
     <ClientRouter />
   </head>
   <body class="relative flex min-h-screen flex-col antialiased">
-    <Header />
+    <Header transparent={transparentHeader} />
     <main class="relative z-10 flex-1" transition:animate="fade">
       <slot />
     </main>

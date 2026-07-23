@@ -2,23 +2,40 @@
 import { getCollection, render } from 'astro:content';
 import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
 import { blogPostingJsonLd, SITE } from '@/utils/seo';
+import { datePathParts, postPermalink } from '@/utils/permalinks';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+  return posts.map((post) => {
+    const { year, month, day } = datePathParts(post.data.pubDate);
+    return {
+      params: { year, month, day, slug: post.id },
+      props: { post },
+    };
+  });
 }
 
 const { post } = Astro.props;
+const { year, month, day, slug } = Astro.params;
+const parts = datePathParts(post.data.pubDate);
+
+if (
+  year !== parts.year ||
+  month !== parts.month ||
+  day !== parts.day ||
+  slug !== post.id
+) {
+  return Astro.redirect('/blog');
+}
+
 const { Content } = await render(post);
+const permalink = postPermalink(post.data.pubDate, post.id);
 
 const jsonLd = [
   blogPostingJsonLd({
     title: post.data.title,
     description: post.data.description,
-    url: new URL(`/blog/${post.id}`, SITE.url).toString(),
+    url: new URL(permalink, SITE.url).toString(),
     pubDate: post.data.pubDate,
     updatedDate: post.data.updatedDate,
     tags: post.data.tags,
@@ -32,6 +49,8 @@ const jsonLd = [
   pubDate={post.data.pubDate}
   updatedDate={post.data.updatedDate}
   tags={post.data.tags}
+  topic={post.data.topic}
+  series={post.data.series}
   jsonLd={jsonLd}
 >
   <Content />
