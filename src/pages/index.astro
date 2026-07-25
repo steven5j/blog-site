@@ -18,11 +18,11 @@ const seriesCovers: Record<string, string> = {
   javascript: '/images/wp/javascript.jpg',
   react: '/images/wp/react.jpg',
   frontend: '/images/wp/frontend.jpg',
-  csharp: '/images/wp/frontend.jpg',
+  csharp: '/images/wp/csharp.jpg',
   python: '/images/wp/study-notes.jpg',
-  sql: '/images/wp/study-notes.jpg',
-  android: '/images/wp/study-notes.jpg',
-  mis: '/images/wp/study-notes.jpg',
+  sql: '/images/wp/rdbms.jpg',
+  android: '/images/wp/android.jpg',
+  mis: '/images/wp/mis.jpg',
   portfolio: '/images/wp/project.jpg',
   'real-estate': '/images/wp/social-life.jpg',
 };
@@ -67,28 +67,23 @@ function seriesById(id: string) {
     class="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-ink bg-cover bg-center text-white"
     style="background-image: linear-gradient(rgb(0 0 0 / 0.45), rgb(0 0 0 / 0.5)), url('/images/wp/hero.jpg')"
   >
-    <div class="relative z-10 px-6 py-28 text-center" data-reveal>
-      <p
-        class="font-display text-[clamp(2.75rem,8vw,5.5rem)] leading-[1.05] font-extrabold tracking-tight text-white"
+    <div
+      class="relative z-10 mx-auto w-full max-w-site px-5 py-28 text-center sm:px-6 lg:px-8"
+      data-reveal
+    >
+      <h1
+        class="mx-auto max-w-full font-sans text-[clamp(2rem,9.5vw,6rem)] leading-none font-semibold tracking-tight text-white max-md:px-1 md:whitespace-nowrap"
       >
-        <span class="inline-block">-「</span>
-        <span class="inline-block">STEVEN</span>
-        <span class="mx-1 inline-block text-white/80">-</span>
-      </p>
+        -「STEVEN-朱玄」-
+      </h1>
       <p
-        class="font-display mt-1 text-[clamp(2.75rem,8vw,5.5rem)] leading-[1.05] font-extrabold tracking-tight text-white"
-      >
-        朱玄
-        <span class="inline-block">」-</span>
-      </p>
-      <p
-        class="mt-10 text-sm font-medium tracking-[0.35em] text-white/90 uppercase sm:text-base"
+        class="mt-8 text-sm font-medium tracking-[0.35em] text-white/90 uppercase sm:mt-10 sm:text-base"
       >
         理財 / 程式 / 行銷 / 房產
       </p>
       <a
         href="/about"
-        class="mt-12 inline-block border border-white/70 px-8 py-3 text-xs font-semibold tracking-[0.25em] text-white no-underline uppercase transition hover:bg-white hover:text-ink"
+        class="mt-10 inline-block border border-white/70 px-8 py-3 text-xs font-semibold tracking-[0.25em] text-white no-underline uppercase transition hover:bg-white hover:text-ink sm:mt-12"
       >
         ABOUT ME
       </a>
@@ -97,7 +92,7 @@ function seriesById(id: string) {
 
   <!-- Latest Posts -->
   <section class="bg-paper-elevated">
-    <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+    <div class="mx-auto max-w-site px-5 py-20 sm:px-6 lg:px-8">
       <Reveal>
         <p class="text-xs font-semibold tracking-[0.3em] text-brand uppercase">
           From live Blog
@@ -110,7 +105,7 @@ function seriesById(id: string) {
         </p>
       </Reveal>
 
-      <ul class="mt-12 grid gap-6 sm:grid-cols-2">
+      <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:gap-8">
         {
           latestPosts.map((post, i) => (
             <li>
@@ -158,7 +153,7 @@ function seriesById(id: string) {
     class="relative bg-cover bg-center text-white"
     style="background-image: linear-gradient(rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.78)), url('/images/wp/project.jpg')"
   >
-    <div class="mx-auto max-w-6xl px-5 py-24 sm:px-8">
+    <div class="mx-auto max-w-site px-5 py-24 sm:px-6 lg:px-8">
       <Reveal>
         <h2 class="font-display max-w-xl text-3xl font-bold tracking-tight sm:text-4xl">
           [Project And Certification]
@@ -185,7 +180,7 @@ function seriesById(id: string) {
     class="relative bg-cover bg-center"
     style="background-image: linear-gradient(rgb(244 244 244 / 0.94), rgb(244 244 244 / 0.96)), url('/images/wp/study-notes.jpg')"
   >
-    <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+    <div class="mx-auto max-w-site px-5 py-20 sm:px-6 lg:px-8">
       <Reveal>
         <h2 class="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
           Study Notes
@@ -202,7 +197,7 @@ function seriesById(id: string) {
                   {group.title}
                 </h3>
               </Reveal>
-              <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                 {group.ids.map((id, i) => {
                   const s = seriesById(id);
                   if (!s) return null;
@@ -258,7 +253,7 @@ function seriesById(id: string) {
     class="relative bg-cover bg-center text-white"
     style="background-image: linear-gradient(rgb(0 0 0 / 0.7), rgb(0 0 0 / 0.75)), url('/images/wp/social-life.jpg')"
   >
-    <div class="mx-auto max-w-6xl px-5 py-24 sm:px-8">
+    <div class="mx-auto max-w-site px-5 py-24 sm:px-6 lg:px-8">
       <div class="grid gap-12 lg:grid-cols-2 lg:items-end">
         <Reveal>
           <p class="text-xs font-semibold tracking-[0.3em] text-white/70 uppercase">

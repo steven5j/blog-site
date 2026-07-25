@@ -6,8 +6,9 @@ interface Props {
 const { transparent = false } = Astro.props;
 const pathname = Astro.url.pathname;
 
-const links = [
-  { href: '/', label: 'Home', match: 'exact' as const },
+/** Desktop primary nav — mirrors WP OceanWP menu */
+const primaryLinks = [
+  { href: '/', label: 'Home', match: 'exact' as const, icon: 'home' as const },
   { href: '/about', label: 'About', match: 'prefix' as const },
   {
     href: '/blog',
@@ -19,10 +20,16 @@ const links = [
       { href: '/topics/life', label: '生活心得體驗分享' },
     ],
   },
+];
+
+/** Extra routes — available in mobile overlay */
+const extraLinks = [
   { href: '/projects', label: 'Projects', match: 'prefix' as const },
   { href: '/series', label: 'Study Notes', match: 'prefix' as const },
   { href: '/showcase', label: 'Showcase', match: 'prefix' as const },
 ];
+
+const allLinks = [...primaryLinks, ...extraLinks];
 
 function isDatePermalink(path: string) {
   return /^\/\d{4}\/\d{2}\/\d{2}(\/|$)/.test(path);
@@ -50,7 +57,9 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
       : 'relative bg-ink text-white',
   ]}
 >
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
+  <div
+    class="mx-auto flex max-w-site items-center justify-between gap-4 px-5 py-4 sm:px-6 lg:px-8"
+  >
     <a
       href="/"
       class="font-display text-lg font-semibold tracking-tight text-brand no-underline transition hover:text-brand-hover sm:text-xl"
@@ -59,11 +68,75 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
       Steven玄
     </a>
 
+    <!-- Desktop: WP-style horizontal nav -->
+    <nav class="hidden md:block" aria-label="主要導覽">
+      <ul class="flex items-center gap-1 lg:gap-2">
+        {
+          primaryLinks.map((link) => (
+            <li class="group relative">
+              <a
+                href={link.href}
+                class:list={[
+                  'inline-flex items-center gap-2 px-3 py-2 text-[15px] no-underline transition',
+                  isActive(link.href, link.match)
+                    ? 'text-brand'
+                    : 'text-white/90 hover:text-brand',
+                ]}
+                aria-current={isActive(link.href, link.match) ? 'page' : undefined}
+                data-astro-prefetch
+              >
+                {'icon' in link && link.icon === 'home' ? (
+                  <span class="sr-only">{link.label}</span>
+                ) : (
+                  link.label
+                )}
+                {'icon' in link && link.icon === 'home' && (
+                  <svg
+                    class="h-[1.35rem] w-[1.35rem]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 10.5 12 3l9 7.5" />
+                    <path d="M5 10v10h14V10" />
+                    <path d="M10 20v-6h4v6" />
+                  </svg>
+                )}
+              </a>
+              {'children' in link && link.children && (
+                <ul
+                  class="invisible absolute right-0 top-full z-50 min-w-[14rem] translate-y-1 border border-white/10 bg-ink py-2 opacity-0 shadow-lg transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+                >
+                  {link.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class="block whitespace-nowrap px-4 py-2.5 text-sm text-white/80 no-underline transition hover:bg-white/5 hover:text-brand"
+                        data-astro-prefetch
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <!-- Mobile only: hamburger -->
     <button
       type="button"
-      class="menu-toggle inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-1 text-sm uppercase tracking-[0.15em] text-white/90"
+      class="menu-toggle inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-1 text-sm uppercase tracking-[0.15em] text-white/90 md:hidden"
       aria-expanded="false"
       aria-controls="site-menu"
+      aria-label="開啟選單"
       data-menu-toggle
     >
       <span class="flex flex-col gap-1" aria-hidden="true">
@@ -75,10 +148,11 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
     </button>
   </div>
 
+  <!-- Mobile overlay -->
   <nav
     id="site-menu"
-    class="site-menu fixed inset-0 z-50 hidden bg-ink/95 text-white backdrop-blur-sm"
-    aria-label="主要導覽"
+    class="site-menu fixed inset-0 z-50 hidden bg-ink/95 text-white backdrop-blur-sm md:hidden"
+    aria-label="手機導覽"
     data-menu-panel
     hidden
   >
@@ -95,7 +169,7 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
       </div>
       <ul class="flex flex-col gap-1">
         {
-          links.map((link) => (
+          allLinks.map((link) => (
             <li>
               <a
                 href={link.href}
@@ -162,6 +236,13 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
     panel.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') close();
     });
+
+    // Close overlay if resized to desktop
+    const mq = window.matchMedia('(min-width: 768px)');
+    const onMq = () => {
+      if (mq.matches) close();
+    };
+    mq.addEventListener('change', onMq);
   }
 
   bindMenu();

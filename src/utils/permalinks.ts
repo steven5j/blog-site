@@ -38,9 +38,11 @@ export const TOPIC_LABELS: Record<Topic, string> = {
 };
 
 export const TOPIC_DESCRIPTIONS: Record<Topic, string> = {
-  software: '架構、前後端、資料庫、DevOps 與學習筆記。',
-  business: '產業投資、房地產操作與商業實務經驗。',
-  life: '生活紀錄、講座心得與個人體驗分享。',
+  software:
+    '我從 2019 年正式踏入程式語言與軟體科技產業的發展，並列為本人長期發展領域之一。此記錄我的筆記和發展技術與成果作品。',
+  business:
+    '於各產業經銷、代理、顧問與投資實務經驗，以及房屋不動產操作相關紀錄。',
+  life: '從高中起參與聚會與社團，認識朋友、學習成長，分享筆記與生活體驗。',
 };
 
 export function isTopic(value: string): value is Topic {

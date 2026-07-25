@@ -1,0 +1,48 @@
+---
+import Reveal from '@/components/Reveal.astro';
+import { postPermalink } from '@/utils/permalinks';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  empty?: string;
+}
+
+const { posts, empty = '尚無文章。' } = Astro.props;
+
+const dateFmt = new Intl.DateTimeFormat('zh-TW', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<ul class="divide-y divide-line">
+  {
+    posts.length === 0 ? (
+      <li class="py-8 text-mist-muted">{empty}</li>
+    ) : (
+      posts.map((post, i) => (
+        <li>
+          <Reveal delay={i * 40}>
+            <a
+              href={postPermalink(post.data.pubDate, post.id)}
+              class="group block py-7 no-underline"
+            >
+              <time
+                class="text-sm text-mist-muted"
+                datetime={post.data.pubDate.toISOString()}
+              >
+                {dateFmt.format(post.data.pubDate)}
+              </time>
+              <h3 class="font-display mt-2 text-2xl font-semibold text-ink transition group-hover:text-brand">
+                {post.data.title}
+              </h3>
+              <p class="mt-2 text-mist-muted">{post.data.description}</p>
+            </a>
+          </Reveal>
+        </li>
+      ))
+    )
+  }
+</ul>

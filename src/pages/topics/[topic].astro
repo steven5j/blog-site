@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Reveal from '@/components/Reveal.astro';
+import PostList from '@/components/PostList.astro';
 import {
   isTopic,
-  postPermalink,
   TOPIC_DESCRIPTIONS,
   TOPIC_LABELS,
   TOPICS,
@@ -28,83 +28,425 @@ const seriesList = (await getCollection('series'))
   .filter((s) => s.data.topic === topic)
   .sort((a, b) => a.data.order - b.data.order);
 
-const dateFmt = new Intl.DateTimeFormat('zh-TW', {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-});
+const realEstatePosts = posts.filter((p) => p.data.series === 'real-estate');
+const otherBusinessPosts = posts.filter((p) => p.data.series !== 'real-estate');
+
+const businessPanels = [
+  {
+    eyebrow: '產 業 與 投 資 商 業 經 驗',
+    title: '產業投資與商業經驗',
+    body: '於 20 歲開始嘗試社會的各產業，參與成為過經銷商、代理商、業務顧問、經理主管的相關經驗，股權債權贊助等投資管道和產業規劃、理財的資產分配知識、民間生意和傳統金融管道投資社會實況、對於賺錢和損失錢的檢討。',
+    image: '/images/wp/business-hero.jpg',
+    ctaHref: '#business-posts',
+    ctaLabel: '點擊查看',
+  },
+  {
+    eyebrow: '房 產 紀 錄',
+    title: '房屋不動產操作相關紀錄',
+    body: '2017 年退伍後因為想要為資金找到穩健收益發展的標的，四處尋找合作團隊，在朋友的引薦下，認識到了裝潢、室內設計、代租管、房產價值規劃計算、區域發展評估等，參與進入了做隔套收租房產一條龍的新創公司產業，後在市場品項權衡思考下，覺得房產是一門可長期發展的領域。此紀錄我房地產相關的成果與學習操作心得。',
+    image: '/images/wp/real-estate-hero.jpg',
+    ctaHref: '/series/real-estate',
+    ctaLabel: '點擊查看',
+  },
+] as const;
+
+/** WP hub: /topics/life — single full-bleed panel */
+const lifePanel = {
+  eyebrow: '生 活 日 記',
+  title: '生活心得體驗分享',
+  body: '從高中畢業後，當時為了讓自己的未來更有前瞻性，開始認真的參與很多的聚會活動，還有參加社團，認識新朋友並學習成長，分享學習筆記，分享體驗生活。',
+  image: '/images/wp/life-hero.jpg',
+} as const;
+
+/** WP hub: /topics/software — 軟體工程筆記 */
+const softwareHero = {
+  eyebrow: '軟 體 工 程 筆 記',
+  title: '軟體工程筆記和發展履歷',
+  body: '我從2019年正式踏入程式語言與軟體科技產業的發展，並列為本人長期發展領域之一，主要原因一部份是個人興趣使然，還有是在跑市場的過程當中，許多的趨勢基本上都跟科技有一定程度的相關，科技進步也影響人生生活的發展演變，從事軟體科技也是發展AI、Big Data、Blockchain、工業4.0的相關領域。此記錄我的筆記和發展技術與成果作品。',
+  image: '/images/wp/architecture.jpg',
+} as const;
+
+const portfolioStrip = [
+  { src: '/images/wp/javascript.jpg', alt: 'JavaScript' },
+  { src: '/images/wp/software-engineering.jpg', alt: 'Software Engineering' },
+  { src: '/images/wp/project.jpg', alt: 'Side Project' },
+  { src: '/images/wp/portfolio-b.jpg', alt: 'Portfolio' },
+  { src: '/images/wp/react.jpg', alt: 'React' },
+] as const;
+
+const softwareSeriesCovers: Record<string, string> = {
+  javascript: '/images/wp/javascript.jpg',
+  react: '/images/wp/react.jpg',
+  frontend: '/images/wp/frontend.jpg',
+  csharp: '/images/wp/csharp.jpg',
+  sql: '/images/wp/rdbms.jpg',
+  android: '/images/wp/android.jpg',
+  mis: '/images/wp/mis.jpg',
+  architecture: '/images/wp/architecture.jpg',
+  python: '/images/wp/study-notes.jpg',
+  portfolio: '/images/wp/project.jpg',
+};
+
+const softwareStudyGroups = [
+  {
+    title: 'Front End 前端',
+    ids: ['javascript', 'react', 'frontend'],
+  },
+  {
+    title: 'Back End 後端',
+    ids: ['csharp'],
+  },
+  {
+    title: 'Storage/Cache/Database Management System 資料庫 / 快存',
+    ids: ['sql'],
+  },
+  {
+    title: 'Tools工具、DevOps、其他、版控、雲部屬、資安',
+    ids: ['android', 'mis'],
+  },
+] as const;
+
+function seriesById(id: string) {
+  return seriesList.find((s) => s.id === id);
+}
 ---
 
 <BaseLayout
   title={TOPIC_LABELS[topic]}
   description={TOPIC_DESCRIPTIONS[topic]}
 >
-  <div class="page-banner">
-    <div class="mx-auto w-full max-w-6xl px-5 py-14 sm:px-8">
-      <p class="text-xs tracking-[0.25em] text-white/60 uppercase">主題</p>
-      <h1 class="font-display mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
-        {TOPIC_LABELS[topic]}
-      </h1>
-      <p class="mt-3 max-w-xl text-white/75">{TOPIC_DESCRIPTIONS[topic]}</p>
-    </div>
-  </div>
+  {
+    topic === 'software' ? (
+      <>
+        <section
+          class="relative flex min-h-[550px] items-center bg-cover bg-center text-white"
+          style={`background-image: linear-gradient(rgb(0 0 0 / 0.55), rgb(0 0 0 / 0.55)), url('${softwareHero.image}')`}
+        >
+          <div class="relative z-10 mx-auto w-full max-w-site px-5 py-16 sm:px-6 lg:px-8">
+            <div class="max-w-3xl" data-reveal>
+              <p class="text-sm font-semibold tracking-[0.35em] text-brand sm:text-base">
+                {softwareHero.eyebrow}
+              </p>
+              <h1 class="font-display mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+                {softwareHero.title}
+              </h1>
+              <p class="mt-6 text-base leading-relaxed text-white/85 sm:text-lg">
+                {softwareHero.body}
+              </p>
+              <a
+                href="#software-portfolio"
+                class="mt-8 inline-flex items-center gap-2 border-2 border-white bg-brand px-6 py-2.5 text-sm font-semibold text-white no-underline transition hover:bg-white hover:text-brand"
+              >
+                點擊查看
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </section>
 
-  <section class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
-    {
-      seriesList.length > 0 && (
-        <div class="mb-14">
-          <Reveal>
-            <h2 class="font-display text-xl font-semibold text-ink">相關系列</h2>
-          </Reveal>
-          <ul class="mt-4 grid gap-3 sm:grid-cols-2">
-            {seriesList.map((s, i) => (
-              <li>
-                <Reveal delay={i * 40}>
-                  <a
-                    href={`/series/${s.id}`}
-                    class="block border border-line bg-paper-elevated px-4 py-4 no-underline transition hover:border-brand/40"
-                  >
-                    <span class="font-medium text-ink">{s.data.title}</span>
-                    <span class="mt-1 block text-sm text-mist-muted">
-                      {s.data.description}
-                    </span>
-                  </a>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
+        <section
+          id="software-portfolio"
+          class="scroll-mt-20 bg-paper-elevated"
+        >
+          <div class="mx-auto max-w-site px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+            <Reveal>
+              <p class="text-base leading-relaxed text-mist-muted sm:text-lg">
+                職涯、學習過程中，所陸續產出的小作品，包含一些個人小作品、練功作品，或是動用到許多不同程式語言所建構
+                Side Project..等。
+              </p>
+            </Reveal>
 
-    <ul class="divide-y divide-line">
-      {
-        posts.length === 0 ? (
-          <li class="py-8 text-mist-muted">此主題尚無文章。</li>
-        ) : (
-          posts.map((post, i) => (
-            <li>
-              <Reveal delay={i * 50}>
+            <ul class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 md:gap-4">
+              {portfolioStrip.map((img, i) => (
+                <li>
+                  <Reveal delay={i * 40}>
+                    <a
+                      href="/series/portfolio"
+                      class="group block overflow-hidden border border-line no-underline"
+                    >
+                      <div
+                        class="aspect-[16/10] bg-cover bg-center transition duration-500 group-hover:scale-[1.04]"
+                        style={`background-image: url('${img.src}')`}
+                        role="img"
+                        aria-label={img.alt}
+                      />
+                    </a>
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+
+            <Reveal class="mt-8">
+              <a
+                href="/series/portfolio"
+                class="inline-flex items-center gap-2 border-2 border-ink px-6 py-2.5 text-sm font-semibold text-ink no-underline transition hover:border-brand hover:bg-brand hover:text-white"
+              >
+                點擊查看
+                <span aria-hidden="true">→</span>
+              </a>
+            </Reveal>
+          </div>
+        </section>
+
+        <section
+          class="relative flex min-h-[420px] items-center bg-cover bg-center text-white"
+          style="background-image: linear-gradient(rgb(0 0 0 / 0.6), rgb(0 0 0 / 0.65)), url('/images/wp/project-achievement.jpg')"
+        >
+          <div class="relative z-10 mx-auto w-full max-w-site px-5 py-16 sm:px-6 lg:px-8">
+            <div class="max-w-2xl" data-reveal>
+              <h2 class="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                [ProjectAchievement]專案成就
+              </h2>
+              <p class="mt-5 text-base leading-relaxed text-white/85 sm:text-lg">
+                於職涯中經手過，發展過並完成的開發專案!
+              </p>
+              <a
+                href="/projects"
+                class="mt-8 inline-flex items-center gap-2 border-2 border-white bg-brand px-6 py-2.5 text-sm font-semibold text-white no-underline transition hover:bg-white hover:text-brand"
+              >
+                點擊查看
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="relative bg-cover bg-center"
+          style="background-image: linear-gradient(rgb(244 244 244 / 0.94), rgb(244 244 244 / 0.96)), url('/images/wp/study-notes.jpg')"
+        >
+          <div class="mx-auto max-w-site px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+            <Reveal>
+              <h2 class="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+                Study Notes
+              </h2>
+              <p class="mt-3 text-mist-muted">
+                操作範例、學習筆記、維運紀錄。
+              </p>
+            </Reveal>
+
+            <div class="mt-14 space-y-14">
+              {softwareStudyGroups.map((group, gi) => (
+                <div>
+                  <Reveal delay={gi * 40}>
+                    <h3 class="font-display border-b border-line pb-3 text-xl font-semibold text-ink">
+                      {group.title}
+                    </h3>
+                  </Reveal>
+                  <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {group.ids.map((id, i) => {
+                      const s = seriesById(id);
+                      if (!s) return null;
+                      const cover =
+                        softwareSeriesCovers[id] ||
+                        '/images/wp/study-notes.jpg';
+                      return (
+                        <li>
+                          <Reveal delay={gi * 40 + i * 50}>
+                            <a
+                              href={`/series/${s.id}`}
+                              class="group block overflow-hidden border border-line bg-paper-elevated no-underline transition hover:border-brand/40 hover:shadow-md"
+                            >
+                              <div
+                                class="aspect-[16/10] bg-cover bg-center transition duration-500 group-hover:scale-[1.03]"
+                                style={`background-image: url('${cover}')`}
+                                role="img"
+                                aria-label={s.data.title}
+                              />
+                              <div class="p-5">
+                                <h4 class="font-display text-lg font-semibold text-ink transition group-hover:text-brand">
+                                  {s.data.title}
+                                </h4>
+                                <p class="mt-2 line-clamp-2 text-sm text-mist-muted">
+                                  {s.data.description}
+                                </p>
+                                <span class="mt-4 inline-block text-xs font-semibold tracking-wider text-brand uppercase">
+                                  點擊查看 →
+                                </span>
+                              </div>
+                            </a>
+                          </Reveal>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <Reveal class="mt-12 text-center">
+              <a
+                href="/series"
+                class="inline-block border border-ink px-8 py-3 text-xs font-semibold tracking-[0.2em] text-ink no-underline uppercase transition hover:bg-ink hover:text-white"
+              >
+                全部系列
+              </a>
+            </Reveal>
+          </div>
+        </section>
+
+        <section id="software-posts" class="scroll-mt-20 bg-paper-elevated">
+          <div class="mx-auto max-w-site px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+            <Reveal>
+              <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">
+                軟體工程文章
+              </h2>
+              <p class="mt-2 text-mist-muted">
+                架構、前後端、資料庫、DevOps 與學習筆記。
+              </p>
+            </Reveal>
+            <div class="mt-10">
+              <PostList posts={posts} empty="此主題尚無文章。" />
+            </div>
+          </div>
+        </section>
+      </>
+    ) : topic === 'business' ? (
+      <>
+        {businessPanels.map((panel) => (
+          <section
+            class="relative flex min-h-[550px] items-center bg-cover bg-center text-white"
+            style={`background-image: linear-gradient(rgb(0 0 0 / 0.55), rgb(0 0 0 / 0.55)), url('${panel.image}')`}
+          >
+            <div class="relative z-10 mx-auto w-full max-w-site px-5 py-16 sm:px-6 lg:px-8">
+              <div class="max-w-2xl" data-reveal>
+                <p class="text-sm font-semibold tracking-[0.35em] text-brand sm:text-base">
+                  {panel.eyebrow}
+                </p>
+                <h1 class="font-display mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+                  {panel.title}
+                </h1>
+                <p class="mt-6 text-base leading-relaxed text-white/85 sm:text-lg">
+                  {panel.body}
+                </p>
                 <a
-                  href={postPermalink(post.data.pubDate, post.id)}
-                  class="group block py-7 no-underline"
+                  href={panel.ctaHref}
+                  class="mt-8 inline-flex items-center gap-2 border-2 border-white bg-brand px-6 py-2.5 text-sm font-semibold text-white no-underline transition hover:bg-white hover:text-brand"
                 >
-                  <time
-                    class="text-sm text-mist-muted"
-                    datetime={post.data.pubDate.toISOString()}
-                  >
-                    {dateFmt.format(post.data.pubDate)}
-                  </time>
-                  <h2 class="font-display mt-2 text-2xl font-semibold text-ink transition group-hover:text-brand">
-                    {post.data.title}
-                  </h2>
-                  <p class="mt-2 text-mist-muted">{post.data.description}</p>
+                  {panel.ctaLabel}
+                  <span aria-hidden="true">→</span>
                 </a>
+              </div>
+            </div>
+          </section>
+        ))}
+
+        <section id="business-posts" class="scroll-mt-20 bg-paper-elevated">
+          <div class="mx-auto max-w-site px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+            <Reveal>
+              <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">
+                產業與商業文章
+              </h2>
+              <p class="mt-2 text-mist-muted">投資、生意與實務經驗相關筆記。</p>
+            </Reveal>
+            <div class="mt-10">
+              <PostList posts={otherBusinessPosts} empty="此分類尚無文章。" />
+            </div>
+
+            <div class="mt-16 border-t border-line pt-14">
+              <Reveal>
+                <div class="flex flex-wrap items-end justify-between gap-4">
+                  <div>
+                    <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">
+                      房產相關文章
+                    </h2>
+                    <p class="mt-2 text-mist-muted">不動產操作與收租屋紀錄。</p>
+                  </div>
+                  <a
+                    href="/series/real-estate"
+                    class="text-sm font-semibold text-brand no-underline hover:text-brand-hover"
+                  >
+                    查看房產系列 →
+                  </a>
+                </div>
               </Reveal>
-            </li>
-          ))
-        )
-      }
-    </ul>
-  </section>
+              <div class="mt-10">
+                <PostList posts={realEstatePosts} empty="此系列尚無文章。" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    ) : topic === 'life' ? (
+      <>
+        <section
+          class="relative flex min-h-[550px] items-center bg-cover bg-center text-white"
+          style={`background-image: linear-gradient(rgb(0 0 0 / 0.55), rgb(0 0 0 / 0.55)), url('${lifePanel.image}')`}
+        >
+          <div class="relative z-10 mx-auto w-full max-w-site px-5 py-16 sm:px-6 lg:px-8">
+            <div class="max-w-2xl" data-reveal>
+              <p class="text-sm font-semibold tracking-[0.35em] text-brand sm:text-base">
+                {lifePanel.eyebrow}
+              </p>
+              <h1 class="font-display mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+                {lifePanel.title}
+              </h1>
+              <p class="mt-6 text-base leading-relaxed text-white/85 sm:text-lg">
+                {lifePanel.body}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="life-posts" class="scroll-mt-20 bg-paper-elevated">
+          <div class="mx-auto max-w-site px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+            <Reveal>
+              <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">
+                生活心得文章
+              </h2>
+              <p class="mt-2 text-mist-muted">聚會、社團、學習與生活體驗分享。</p>
+            </Reveal>
+            <div class="mt-10">
+              <PostList posts={posts} empty="此主題尚無文章。" />
+            </div>
+          </div>
+        </section>
+      </>
+    ) : (
+      <>
+        <div class="page-banner">
+          <div class="mx-auto w-full max-w-site px-5 py-14 sm:px-6 lg:px-8">
+            <p class="text-xs tracking-[0.25em] text-white/60 uppercase">主題</p>
+            <h1 class="font-display mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+              {TOPIC_LABELS[topic]}
+            </h1>
+            <p class="mt-3 max-w-2xl text-white/75">
+              {TOPIC_DESCRIPTIONS[topic]}
+            </p>
+          </div>
+        </div>
+
+        <section class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+          {seriesList.length > 0 && (
+            <div class="mb-14">
+              <Reveal>
+                <h2 class="font-display text-xl font-semibold text-ink">
+                  相關系列
+                </h2>
+              </Reveal>
+              <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+                {seriesList.map((s, i) => (
+                  <li>
+                    <Reveal delay={i * 40}>
+                      <a
+                        href={`/series/${s.id}`}
+                        class="block border border-line bg-paper-elevated px-4 py-4 no-underline transition hover:border-brand/40"
+                      >
+                        <span class="font-medium text-ink">{s.data.title}</span>
+                        <span class="mt-1 block text-sm text-mist-muted">
+                          {s.data.description}
+                        </span>
+                      </a>
+                    </Reveal>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <PostList posts={posts} empty="此主題尚無文章。" />
+        </section>
+      </>
+    )
+  }
 </BaseLayout>

@@ -37,7 +37,7 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   type="article"
   jsonLd={jsonLd}
 >
-  <article class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+  <article class="mx-auto max-w-prose px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
     <header class="mb-12 border-b border-line pb-10" data-reveal>
       <p class="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-mist-muted">
         <time datetime={pubDate.toISOString()}>{dateFmt.format(pubDate)}</time>

@@ -43,7 +43,7 @@ const banner = covers[seriesId] || '/images/wp/study-notes.jpg';
 
 <BaseLayout title={entry.data.title} description={entry.data.description}>
   <div class="page-banner" style={`background-image: url('${banner}')`}>
-    <div class="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8">
+    <div class="mx-auto w-full max-w-site px-5 py-16 sm:px-6 lg:px-8">
       <p class="text-sm text-white/70">
         <a href="/series" class="no-underline hover:text-white">Study Notes</a>
         <span class="mx-2 opacity-50">/</span>
@@ -59,13 +59,13 @@ const banner = covers[seriesId] || '/images/wp/study-notes.jpg';
       </h1>
       {
         entry.data.intro && (
-          <p class="mt-4 max-w-2xl text-lg text-white/80">{entry.data.intro}</p>
+          <p class="mt-4 max-w-3xl text-lg text-white/80">{entry.data.intro}</p>
         )
       }
     </div>
   </div>
 
-  <section class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+  <section class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
     <div class="prose-blog" data-reveal>
       <Content />
     </div>

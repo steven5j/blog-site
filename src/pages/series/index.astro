@@ -13,6 +13,10 @@ const seriesCovers: Record<string, string> = {
   javascript: '/images/wp/javascript.jpg',
   react: '/images/wp/react.jpg',
   frontend: '/images/wp/frontend.jpg',
+  csharp: '/images/wp/csharp.jpg',
+  sql: '/images/wp/rdbms.jpg',
+  android: '/images/wp/android.jpg',
+  mis: '/images/wp/mis.jpg',
   portfolio: '/images/wp/project.jpg',
   'real-estate': '/images/wp/social-life.jpg',
 };
@@ -26,7 +30,7 @@ const seriesCovers: Record<string, string> = {
     class="page-banner"
     style="background-image: url('/images/wp/study-notes.jpg')"
   >
-    <div class="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8">
+    <div class="mx-auto w-full max-w-site px-5 py-16 sm:px-6 lg:px-8">
       <h1 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
         Study Notes
       </h1>
@@ -34,8 +38,8 @@ const seriesCovers: Record<string, string> = {
     </div>
   </div>
 
-  <section class="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
-    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+  <section class="mx-auto max-w-site px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {
         seriesList.map((s, i) => (
           <li>

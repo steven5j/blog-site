@@ -18,6 +18,10 @@
   --font-display: "Archivo", "Noto Sans TC", sans-serif;
   --font-sans: "Noto Sans TC", "Archivo", sans-serif;
 
+  /* Align with WP Elementor content width (1280px) */
+  --max-width-site: 1280px;
+  --max-width-prose: 48rem;
+
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 

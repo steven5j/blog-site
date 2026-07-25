@@ -1,48 +1,400 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Reveal from '@/components/Reveal.astro';
+
+const highlights = [
+  '國立高雄科大 海洋環境工程系 畢業',
+  '軟體公司「前、後、資料庫軟體工程師」',
+  '資產公司「千萬業務員」',
+  '傳銷公司百萬收入領導兼講師',
+];
+
+const sitePillars = [
+  {
+    title: '自我成長',
+    items: ['自我成長', '品牌建立', '生活瑣事'],
+  },
+  {
+    title: '技術履歷',
+    items: ['程式語言', '科技'],
+  },
+  {
+    title: '生意經驗',
+    items: ['賺錢', '被動收入', '投資理財', '生意經驗', '行銷策略'],
+  },
+  {
+    title: '房地產',
+    items: ['房屋租賃', '收租屋規劃'],
+  },
+];
+
+const socials = [
+  { label: 'GitHub', href: 'https://github.com/steven5j' },
+  { label: 'Facebook', href: 'https://www.facebook.com/shang.ju.5/' },
+  { label: 'CakeResume', href: 'https://www.cakeresume.com/stevenjhu5j' },
+];
 ---
 
 <BaseLayout
-  title="關於"
-  description="認識 Steven玄 —— 軟體工程師，專注產品與工程交界。"
+  title="ABOUT"
+  description="認識 Steven玄 —— 整合性個人網站：技術履歷、生意經驗與房地產。"
 >
   <div class="page-banner">
-    <div class="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8">
-      <h1 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
-        ABOUT
-      </h1>
-      <p class="mt-3 text-white/75">Steven玄 · 理財 / 程式 / 行銷 / 房產</p>
+    <div class="mx-auto w-full max-w-site px-5 py-14 sm:px-6 lg:px-8">
+      <h1 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">ABOUT</h1>
+      <nav class="mt-4 text-sm text-white/65" aria-label="麵包屑">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li>
+            <a href="/" class="no-underline hover:text-white">Home</a>
+          </li>
+          <li aria-hidden="true">&gt;</li>
+          <li class="text-brand">ABOUT</li>
+        </ol>
+      </nav>
     </div>
   </div>
 
-  <section class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
-    <Reveal>
-      <div class="space-y-5 text-lg leading-relaxed text-mist">
-        <p>
-          我是 Steven玄，一位喜歡把複雜系統拆成清楚介面的工程師。白天寫產品與基礎設施，晚上在這裡整理想法。
+  <div class="bg-paper-elevated">
+    <article class="about-page mx-auto max-w-site px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <!-- Portrait + highlights -->
+      <Reveal>
+        <div class="grid items-start gap-8 md:grid-cols-[minmax(0,280px)_1fr] lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-12">
+          <figure class="mx-auto w-full max-w-[320px] md:mx-0">
+            <img
+              src="/images/wp/avatar-full.jpg"
+              alt="Steven玄"
+              width="939"
+              height="1024"
+              class="aspect-[939/1024] w-full object-cover object-top shadow-md"
+              loading="eager"
+              decoding="async"
+            />
+            <figcaption class="mt-3 text-center text-sm text-mist-muted md:text-left">
+              Steven玄
+            </figcaption>
+          </figure>
+          <ul class="grid gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+            {
+              highlights.map((item) => (
+                <li class="flex gap-3 border border-line bg-paper px-4 py-4 text-mist">
+                  <span class="mt-0.5 text-brand" aria-hidden="true">
+                    ◆
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </Reveal>
+
+      <!-- Intro -->
+      <section class="mt-14" data-reveal>
+        <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">
+          這是我的整合性個人網站
+        </h2>
+        <p class="mt-5 max-w-4xl leading-relaxed text-mist">
+          2009
+          年左右撰寫 Blogspot 生活經歷相關文章，後來在 2019
+          年初轉職工程師，覺得應該把自身經驗與履歷都整理起來，也把自己的技術整理起來，方便查閱。
         </p>
-        <p>
-          這個網站以 Astro 靜態輸出為核心，文章用 Markdown／MDX，重動畫則交給
-          React islands。目標很單純：讀起來舒服，載入要快，偶爾也有一點視覺驚喜。
+        <dl class="mt-8 grid gap-5 sm:grid-cols-2">
+          {
+            sitePillars.map((pillar) => (
+              <div class="border-l-2 border-brand pl-4">
+                <dt class="font-semibold text-ink">{pillar.title}</dt>
+                <dd class="mt-1 text-sm leading-relaxed text-mist-muted">
+                  {pillar.items.map((t) => `「${t}」`).join('、')}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+        <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          {
+            socials.map((s) => (
+              <li>
+                <span class="text-mist-muted">{s.label}：</span>
+                <a
+                  href={s.href}
+                  class="text-brand break-all no-underline hover:text-brand-hover"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {s.href}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- Bio -->
+      <section class="mt-16 border-t border-line pt-12" data-reveal>
+        <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">
+          關於 Steven玄的經驗
+        </h2>
+        <hr class="mt-4 max-w-xs border-0 border-t-2 border-brand" />
+        <p class="mt-6 max-w-4xl leading-relaxed text-mist">
+          西元 93
+          年次的魔羯男，國立高雄海洋科技大學（現為高雄科技大學）畢業，個性上屬於比較好勝，且常常未雨綢繆。
         </p>
-        <p>
-          內容依三大主題整理：
-          <a href="/topics/software" class="text-brand hover:text-brand-hover"
-            >軟體工程</a
-          >、
-          <a href="/topics/business" class="text-brand hover:text-brand-hover"
-            >產業與商業</a
-          >、
-          <a href="/topics/life" class="text-brand hover:text-brand-hover"
-            >生活心得</a
-          >。 專案與證照在
-          <a href="/projects" class="text-brand hover:text-brand-hover">專案頁</a
-          >；若想看滾動敘事，可造訪
-          <a href="/showcase" class="text-brand hover:text-brand-hover">旗艦頁</a
-          >。
+
+        <h3 class="font-display mt-10 text-xl font-semibold text-ink">大學期間</h3>
+        <ul class="mt-4 list-disc space-y-2 pl-5 text-mist">
+          <li>
+            校園內服務性社團［主席］、環保社團［社長］— 與統一集團 7-11
+            聯合辦過愛地球日等活動、七校聯合畢業晚會主辦單位幹部
+          </li>
+          <li>
+            ATC 全方位人才培訓營［人資組幹部］— 招募甄選、教育訓練、人事管理
+          </li>
+          <li>競技啦啦校隊［隊員］— 參加國內校際比賽全隊曾獲得過冠軍</li>
+        </ul>
+
+        <h3 class="font-display mt-10 text-xl font-semibold text-ink">社會大學</h3>
+        <div class="mt-4 max-w-4xl space-y-4 leading-relaxed text-mist">
+          <p>
+            <strong class="text-ink">傳直銷、組織項目：</strong>
+            曾位階［三星鑽領導］，在過程中體會人情冷暖、服務客戶、快速成交、陌生開發與職場陰暗面等。
+          </p>
+          <p>
+            <strong class="text-ink">投資：</strong>
+            外匯、企業股權、債權平台、私募基金、數字貨幣、美股、台股、資金盤、不動產等，對真實市面上運轉項目十分清楚。
+          </p>
+          <p>
+            <strong class="text-ink">合夥創業：</strong>
+            黃金貿易、房產隔套、代理數字貨幣交易所，因此對黃金貿易產業鏈、不動產產業、區塊鏈數字貨幣有一定程度的認識與人脈。
+          </p>
+          <p>
+            <strong class="text-ink">工作經營：</strong>
+            軟體業。Work Hard. Play Hard.
+            努力工作努力玩，也喜歡體會創新技術與事物、了解市場流向。以軟體科技業為職涯發展，投資面以房地產和股票為主要標的，偶爾合夥創業，也不排斥企業內部創業。
+          </p>
+        </div>
+      </section>
+
+      <!-- Traits -->
+      <section class="mt-16 border-t border-line pt-12" data-reveal>
+        <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">特質</h2>
+        <p class="mt-5 max-w-4xl leading-relaxed text-mist">
+          整合多工型的人，解決問題搞定事情，專注於產生結果，記錄過程以達到最有效率最佳解。基本上只要是只需自己努力一點就可以達成的成果與目標都算簡單的。
         </p>
-      </div>
-    </Reveal>
-  </section>
+        <p class="mt-4 text-mist">
+          <strong class="text-ink">專長：</strong>
+          專案管理與顧問／行銷策劃／商務開發／程式語言／投資規劃
+        </p>
+      </section>
+
+      <!-- Work experience -->
+      <section class="mt-16 border-t border-line pt-12" data-reveal>
+        <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">
+          大致工作經歷
+        </h2>
+
+        <div class="mt-8 space-y-10">
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              科技資訊公司，工程師，2019 年 11 月～至今
+            </h3>
+            <ol class="mt-3 list-decimal space-y-2 pl-5 text-mist">
+              <li>
+                軟體開發：政府和民間軟體客製化設計專案，主要使用 MSSQL、C# .NET、HTML／CSS／JavaScript
+              </li>
+              <li>程式規劃：設計整體架構與規格、程式架構模式</li>
+              <li>分析需求：與甲方承辦人討論需求與溝通分析</li>
+              <li>
+                團隊管理：管理開發進度、技術能力，自產教學影片與學習視頻
+              </li>
+              <li>
+                教育訓練與發佈說明會：系統交接、教育訓練，以及對金控法人代表的系統發佈說明會
+              </li>
+            </ol>
+            <div class="mt-5 border border-line bg-paper p-5">
+              <p class="font-semibold text-ink">重要專案</p>
+              <ul class="mt-3 space-y-3 text-sm text-mist">
+                <li>
+                  <strong class="text-ink">【產、壽險資料庫系統升級改版案】</strong>
+                  <br />
+                  開發成果：五階段驗收完成；系統發佈會、教育訓練完成。
+                </li>
+                <li>
+                  <strong class="text-ink"
+                    >【壽險公司送件資料修正與檢核輔助系統】</strong
+                  >
+                  <br />
+                  開發成果：增加商品設定手機呈現、數據分析，為後台最高客戶滿意度專案。
+                </li>
+              </ul>
+              <p class="mt-4 text-sm leading-relaxed text-mist-muted">
+                概述：派駐於某保險事業發展基金會駐點與開發小組長，同時開發其它金控人壽公司送報件系統，具備前端與後端、資料庫開發技術，大型資料庫專案經驗，也擅長尋找適當工具與影像處理技術。
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              職訓局，泰山職訓局培訓，2019 年 6 月～9 月
+            </h3>
+            <ul class="mt-3 list-disc space-y-1 pl-5 text-mist">
+              <li>6 月：網頁前端 HTML／CSS、程式語言 PHP、Photoshop</li>
+              <li>7 月：Git／GitKraken、MySQL、Illustrator</li>
+              <li>8 月：JavaScript／jQuery、Bootstrap、Adobe XD</li>
+              <li>
+                9 月：Vue.js、Node.js、Line 聊天機器人、Web 專題—物業管理系統網站
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              比特幣衍伸品交易所，代理顧問，2018 年 9 月～2019 年 2 月
+            </h3>
+            <p class="mt-3 max-w-4xl leading-relaxed text-mist">
+              2018 年 12
+              月上線之衍伸品交易所，做比特幣、以太幣、EOS 等槓桿合約交易。從事市場發展、企劃策略管理；主要工作：講師、市場策略、業務推廣、操作教學、助教、FB
+              管理、資源提供。
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              資產管理股份有限公司，顧問主管，2017 年 10 月～2018 年 5 月
+            </h3>
+            <p class="mt-3 max-w-4xl leading-relaxed text-mist">
+              幫公司進行加盟展品牌加盟規劃，帶領 50
+              幾位顧問進行業務培訓與場控，加盟展期間拿到 80 幾張紅帖。
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              地產顧問公司，顧問經理，2017 年 3 月～2018 年 5 月
+            </h3>
+            <p class="mt-3 max-w-4xl leading-relaxed text-mist">
+              招募新人、帶領業務、教育訓練與講師，每月約為公司創造業績
+              15%～20%。經營評估低價買房、隔套收租、租房管理與業務開發，把老舊公寓透過重新裝潢拉皮改造成多套房。主要工作：講師、業務開發、房屋裝潢評估、施工、文宣美編、FB
+              管理。
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              網路科技公司（傳直銷／小 P 團購網），業務領導，2015 年 2 月～2016 年 7
+              月
+            </h3>
+            <p class="mt-3 max-w-4xl leading-relaxed text-mist">
+              公司創立初期即參與約 10
+              人團隊，以電商、網路行銷、組織推廣等方式建立團隊，人數達百人，兩個月成為公司三星領導人之一，每週凝聚、建立教育訓練與商業模式規劃。
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              科技股份有限公司，電機工程師，2011 年 6 月～9 月
+            </h3>
+            <p class="mt-3 max-w-4xl leading-relaxed text-mist">
+              大型機台配裝。主要工作：配電盤配電、故障排除、焊接、鎖螺絲、操作測試。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="mt-16 border-t border-line pt-12 pb-6" data-reveal>
+        <h2 class="font-display text-2xl font-bold text-ink sm:text-3xl">
+          軟體工程專業技能 Skill
+        </h2>
+        <hr class="mt-4 max-w-xs border-0 border-t-2 border-brand" />
+
+        <div class="mt-10 space-y-10">
+          <div>
+            <h3 class="font-display text-xl font-semibold text-ink">Front End</h3>
+            <p class="mt-3 text-sm font-medium text-brand">—熟悉— 可完全獨立完成</p>
+            <ul class="mt-3 list-disc space-y-2 pl-5 text-mist">
+              <li>Javascript：原型鍊、babel、Promise、Ajax、axios</li>
+              <li>
+                HTML5、CSS3、jQuery、Bootstrap4，可獨立切版、完成 RWD
+                網頁；DataTables、Chart.js 等套件
+              </li>
+            </ul>
+            <p class="mt-4 text-sm font-medium text-mist-muted">
+              —無實際收費專案經驗，但曾學習過或有練功作品—
+            </p>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-mist">
+              <li>React：function／Class、hook、redux</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-display text-xl font-semibold text-ink">Back End</h3>
+            <p class="mt-3 text-sm font-medium text-brand">—熟悉— 可完全獨立完成</p>
+            <ul class="mt-3 list-disc space-y-2 pl-5 text-mist">
+              <li>C#.NET：WebForm、.NET Core MVC、WebAPI</li>
+              <li>
+                Razor Page、PartialView、ComponentView、DI、Linq、ViewModel、Entity
+                Framework Core、Dapper、Identity、Authorization、Filter
+              </li>
+            </ul>
+            <p class="mt-4 text-sm font-medium text-mist-muted">
+              —無實際收費專案經驗，但曾學習過或有練功作品—
+            </p>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-mist">
+              <li>PHP、JAVA、Python</li>
+              <li>Node.js：Express</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-display text-xl font-semibold text-ink">
+              Database Management
+            </h3>
+            <p class="mt-3 text-sm font-medium text-brand">—熟悉— 可完全獨立完成</p>
+            <ul class="mt-3 list-disc space-y-2 pl-5 text-mist">
+              <li>
+                MSSQL：資料庫規劃、主鍵／外鍵、Join、View、Try-catch、Transaction
+              </li>
+              <li>Stored Procedure、Function、定序、Agent、效能調校、DeadLock</li>
+              <li>Excel／MSSQL 連接、樞紐分析、Access 報表；千萬～上億筆資料處理經驗</li>
+            </ul>
+            <p class="mt-4 text-sm font-medium text-mist-muted">
+              —無實際收費專案經驗，但曾學習過或有練功作品—
+            </p>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-mist">
+              <li>MySQL、MongoDB</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-display text-xl font-semibold text-ink">
+              版控、雲部署、資安
+            </h3>
+            <p class="mt-3 text-sm font-medium text-brand">—熟悉— 可完全獨立完成</p>
+            <ul class="mt-3 list-disc space-y-2 pl-5 text-mist">
+              <li>
+                Git：Diff、差異報告書 HTML 呈現、只複製差異檔做更新
+              </li>
+              <li>SVN：GUI 介面軟體</li>
+              <li>資安：SonarQube 使用與調整、自拍視頻教學</li>
+            </ul>
+            <p class="mt-4 text-sm font-medium text-mist-muted">
+              —無實際收費專案經驗，但曾學習過或有練功作品—
+            </p>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-mist">
+              <li>雲部署：Azure</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-display text-xl font-semibold text-ink">擅長工具</h3>
+            <p class="mt-3 max-w-4xl leading-relaxed text-mist">
+              因接案性質公司，各種技術都多少需學習。軟體開發：Visual Studio、VS
+              Code；外掛：ReSharper；流程圖：Draw.io；辦公室：Word、Excel；影像：Illustrator、Photoshop；介面：Adobe
+              XD。
+            </p>
+          </div>
+        </div>
+      </section>
+    </article>
+  </div>
 </BaseLayout>
