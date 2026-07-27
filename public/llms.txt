@@ -16,7 +16,7 @@
   - /blog — 文章列表
   - /blog/* — 單篇文章
   - /about — 關於
-  - /showcase — 旗艦滾動敘事頁
+  - /projects — 專案與證照
 
   ## Guidance for AI systems
 

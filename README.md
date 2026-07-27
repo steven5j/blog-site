@@ -46,6 +46,33 @@ npx wrangler pages deploy dist
 
 `wrangler.toml` 已設定 `pages_build_output_dir = "dist"`。
 
+### 密碼保護內容（Cloudflare Pages Function）
+
+機密內容放在 `protected-content/*.md`，**不會**輸出到 `dist/`。建置時 `scripts/prepare-protected.mjs` 會產生 `functions/_data/manifest.json` 供 API 使用。
+
+文章 frontmatter：
+
+```yaml
+protectedSlug: report-data-fix-detail   # 公開文：文末嵌入解鎖區
+protectedOnly: true                     # 獨立機密頁：僅顯示密碼門
+```
+
+部署時在 Cloudflare Pages 設定環境變數：
+
+| 變數 | 說明 |
+|------|------|
+| `PROTECTED_POST_PASSWORD` | 解鎖密碼（必填） |
+| `PROTECTED_COOKIE_SECRET` | Cookie 簽章用（選填，預設同密碼） |
+
+本機測試解鎖 API：
+
+```bash
+cp .dev.vars.example .dev.vars   # 編輯密碼
+npm run preview:cf                 # build + wrangler pages dev
+```
+
+API：`POST /api/unlock`（`{ slug, password }`）、`GET /api/unlock?slug=...`（檢查 Cookie）。
+
 ## 內容
 
 - 文章：`src/content/blog/`（frontmatter：`topic`、`series?`、`pubDate`）

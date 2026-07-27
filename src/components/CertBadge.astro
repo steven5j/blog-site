@@ -1,0 +1,103 @@
+---
+interface Props {
+  title: string;
+  summary: string;
+  year?: number;
+  image?: string;
+  link?: string;
+  credlyUrl?: string;
+  delay?: number;
+}
+
+const {
+  title,
+  summary,
+  year,
+  image,
+  link,
+  credlyUrl,
+  delay = 0,
+} = Astro.props;
+
+const badgeHref = credlyUrl ?? link;
+---
+
+<article
+  class="group relative flex h-full flex-col items-center border border-line bg-paper-elevated px-5 py-8 text-center transition duration-300 hover:-translate-y-1 hover:border-brand/40"
+  data-reveal
+  style={delay ? `--reveal-delay: ${delay}ms` : undefined}
+>
+  <span
+    class="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-brand transition duration-300 group-hover:scale-x-100"
+    aria-hidden="true"
+  ></span>
+
+  {
+    image && (
+      <a
+        href={badgeHref}
+        class="mb-5 block no-underline"
+        target={credlyUrl ? '_blank' : undefined}
+        rel={credlyUrl ? 'noopener noreferrer' : undefined}
+        aria-label={`${title} 證照徽章`}
+      >
+        <img
+          src={image}
+          alt=""
+          width="140"
+          height="140"
+          class="mx-auto h-28 w-28 object-contain transition duration-500 group-hover:scale-105 sm:h-32 sm:w-32"
+          loading="lazy"
+        />
+      </a>
+    )
+  }
+
+  <h3 class="font-display text-base font-semibold leading-snug text-ink sm:text-lg">
+    {
+      link ? (
+        <a
+          href={link}
+          class="text-ink no-underline transition hover:text-brand"
+        >
+          {title}
+        </a>
+      ) : (
+        title
+      )
+    }
+  </h3>
+
+  {
+    year && (
+      <p class="mt-2 text-xs tracking-wide text-mist-muted uppercase">{year}</p>
+    )
+  }
+
+  <p class="mt-3 text-sm leading-relaxed text-mist-muted">{summary}</p>
+
+  <div class="mt-5 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold tracking-wide">
+    {
+      link && (
+        <a
+          href={link}
+          class="text-brand no-underline transition hover:text-brand-hover"
+        >
+          考試心得
+        </a>
+      )
+    }
+    {
+      credlyUrl && (
+        <a
+          href={credlyUrl}
+          class="text-mist-muted no-underline transition hover:text-brand"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Credly 驗證
+        </a>
+      )
+    }
+  </div>
+</article>

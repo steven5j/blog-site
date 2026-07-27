@@ -1,0 +1,136 @@
+---
+interface Props {
+  title: string;
+  summary: string;
+  year?: number;
+  image?: string;
+  link?: string;
+  role?: string;
+  outcomes?: string[];
+  tech?: string[];
+  ctaLabel?: string;
+  reverse?: boolean;
+  delay?: number;
+}
+
+const {
+  title,
+  summary,
+  year,
+  image,
+  link,
+  role,
+  outcomes = [],
+  tech = [],
+  ctaLabel = '點擊查看',
+  reverse = false,
+  delay = 0,
+} = Astro.props;
+---
+
+<article
+  class="group grid items-center gap-8 border-b border-line py-12 last:border-b-0 md:grid-cols-2 md:gap-10 md:py-16"
+  data-reveal
+  style={delay ? `--reveal-delay: ${delay}ms` : undefined}
+>
+  <div class:list={['relative overflow-hidden bg-ink/5', reverse && 'md:order-2']}>
+    {
+      image ? (
+        link ? (
+          <a href={link} class="block no-underline" aria-label={title}>
+            <img
+              src={image}
+              alt=""
+              width="960"
+              height="540"
+              class="aspect-[16/10] w-full object-cover transition duration-700 group-hover:scale-105"
+              loading="lazy"
+            />
+          </a>
+        ) : (
+          <img
+            src={image}
+            alt=""
+            width="960"
+            height="540"
+            class="aspect-[16/10] w-full object-cover"
+            loading="lazy"
+          />
+        )
+      ) : (
+        <div class="aspect-[16/10] w-full bg-line" />
+      )
+    }
+  </div>
+
+  <div class:list={['flex flex-col', reverse && 'md:order-1']}>
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h3 class="font-display text-2xl font-semibold text-ink sm:text-3xl">
+        {
+          link ? (
+            <a
+              href={link}
+              class="text-ink no-underline transition hover:text-brand"
+            >
+              {title}
+            </a>
+          ) : (
+            title
+          )
+        }
+      </h3>
+      {
+        year && (
+          <span class="text-sm tracking-wide text-mist-muted">{year}</span>
+        )
+      }
+    </div>
+
+    {
+      role && (
+        <p class="mt-3 text-sm text-mist-muted">
+          <span class="font-semibold text-ink">角色</span>：{role}
+        </p>
+      )
+    }
+
+    <p class="mt-4 leading-relaxed text-mist">{summary}</p>
+
+    {
+      outcomes.length > 0 && (
+        <div class="mt-5">
+          <p class="text-sm font-semibold tracking-wide text-ink">成效</p>
+          <ul class="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-mist">
+            {outcomes.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    {
+      tech.length > 0 && (
+        <div class="mt-5 flex flex-wrap gap-2">
+          {tech.map((t) => (
+            <span class="border border-line bg-paper px-2.5 py-1 text-xs text-mist-muted">
+              {t}
+            </span>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      link && (
+        <a
+          href={link}
+          class="mt-8 inline-flex w-fit items-center gap-2 border border-ink px-7 py-2.5 text-xs font-semibold tracking-[0.18em] text-ink no-underline uppercase transition hover:border-brand hover:bg-brand hover:text-white"
+        >
+          {ctaLabel}
+          <span aria-hidden="true">→</span>
+        </a>
+      )
+    }
+  </div>
+</article>

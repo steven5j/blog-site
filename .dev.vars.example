@@ -1,0 +1,5 @@
+# Copy to .dev.vars for local `wrangler pages dev dist`
+PROTECTED_POST_PASSWORD=change-me
+
+# Optional: separate secret for unlock cookie signing (defaults to PROTECTED_POST_PASSWORD)
+# PROTECTED_COOKIE_SECRET=

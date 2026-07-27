@@ -17,6 +17,10 @@ const blog = defineCollection({
     heroImage: z.string().optional(),
     wpId: z.number().optional(),
     legacyUrl: z.string().optional(),
+    /** Key for protected-content/{slug}.md — unlock via /api/unlock */
+    protectedSlug: z.string().optional(),
+    /** When true, public body is hidden; only password gate + unlocked HTML */
+    protectedOnly: z.boolean().default(false),
   }),
 });
 
@@ -41,6 +45,11 @@ const projects = defineCollection({
     type: z.enum(['project', 'cert']),
     image: z.string().optional(),
     link: z.string().optional(),
+    credlyUrl: z.string().url().optional(),
+    role: z.string().optional(),
+    outcomes: z.array(z.string()).default([]),
+    tech: z.array(z.string()).default([]),
+    ctaLabel: z.string().default('點擊查看'),
     order: z.number().default(0),
   }),
 });

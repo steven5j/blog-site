@@ -6,16 +6,31 @@ import { datePathParts, postPermalink } from '@/utils/permalinks';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+  const standaloneByProtectedSlug = new Map<string, string>();
+  for (const entry of posts) {
+    if (entry.data.protectedOnly && entry.data.protectedSlug) {
+      standaloneByProtectedSlug.set(
+        entry.data.protectedSlug,
+        postPermalink(entry.data.pubDate, entry.id),
+      );
+    }
+  }
+
   return posts.map((post) => {
     const { year, month, day } = datePathParts(post.data.pubDate);
+    const protectedStandaloneUrl = post.data.protectedSlug
+      ? standaloneByProtectedSlug.get(post.data.protectedSlug)
+      : undefined;
+
     return {
       params: { year, month, day, slug: post.id },
-      props: { post },
+      props: { post, protectedStandaloneUrl },
     };
   });
 }
 
-const { post } = Astro.props;
+const { post, protectedStandaloneUrl } = Astro.props;
 const { year, month, day, slug } = Astro.params;
 const parts = datePathParts(post.data.pubDate);
 
@@ -52,6 +67,9 @@ const jsonLd = [
   topic={post.data.topic}
   series={post.data.series}
   jsonLd={jsonLd}
+  protectedSlug={post.data.protectedSlug}
+  protectedOnly={post.data.protectedOnly}
+  protectedStandaloneUrl={protectedStandaloneUrl}
 >
   <Content />
 </BlogPostLayout>

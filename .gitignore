@@ -24,3 +24,6 @@ Thumbs.db
 # wrangler
 .wrangler/
 .dev.vars
+
+# generated for Pages Functions (from protected-content/)
+functions/_data/

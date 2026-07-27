@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProtectedContentGate from '@/components/islands/ProtectedContentGate';
 import { TOPIC_LABELS, type Topic } from '@/utils/permalinks';
 
 interface Props {
@@ -11,6 +12,9 @@ interface Props {
   topic?: Topic;
   series?: string;
   jsonLd?: Record<string, unknown>[];
+  protectedSlug?: string;
+  protectedOnly?: boolean;
+  protectedStandaloneUrl?: string;
 }
 
 const {
@@ -22,6 +26,9 @@ const {
   topic,
   series,
   jsonLd,
+  protectedSlug,
+  protectedOnly = false,
+  protectedStandaloneUrl,
 } = Astro.props;
 
 const dateFmt = new Intl.DateTimeFormat('zh-TW', {
@@ -92,8 +99,35 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
         )
       }
     </header>
-    <div class="prose-blog" data-reveal style="--reveal-delay: 80ms">
-      <slot />
-    </div>
+    {
+      protectedOnly ? (
+        <div class="prose-blog mb-8" data-reveal>
+          <slot />
+        </div>
+      ) : (
+        <div class="prose-blog" data-reveal style="--reveal-delay: 80ms">
+          <slot />
+        </div>
+      )
+    }
+
+    {
+      protectedSlug && (
+        <div
+          class:list={[
+            protectedOnly ? 'mt-0' : 'mt-16 border-t border-line pt-12',
+          ]}
+          data-reveal
+          style={protectedOnly ? undefined : '--reveal-delay: 120ms'}
+        >
+          <ProtectedContentGate
+            client:load
+            slug={protectedSlug}
+            mode={protectedOnly ? 'page' : 'embed'}
+            standaloneUrl={protectedStandaloneUrl}
+          />
+        </div>
+      )
+    }
   </article>
 </BaseLayout>
