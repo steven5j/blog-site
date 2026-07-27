@@ -20,7 +20,7 @@
 
   /* Align with WP Elementor content width (1280px) */
   --max-width-site: 1280px;
-  --max-width-prose: 48rem;
+  --max-width-prose: 64rem;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -97,7 +97,6 @@
 
 /* Prose for blog posts — light paper */
 .prose-blog {
-  max-width: 42rem;
   font-size: 1.0625rem;
   line-height: 1.8;
   color: var(--color-mist);

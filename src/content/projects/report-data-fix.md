@@ -4,7 +4,7 @@ summary: 千萬筆資料修正預覽與流程統一化，背景雙系統減少�
 year: 2021
 type: project
 order: 50
-image: /uploads/wp/6578.jpg
+image: /uploads/wp/教育訓練20210907.jpg
 link: /2021/10/11/專案成就送報件資料修正輔助系統
 role: 規劃者、小組長
 outcomes:
