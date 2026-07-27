@@ -50,6 +50,8 @@ const { title, description, ogImage, type, jsonLd, noindex, transparentHeader } 
     </main>
     <Footer />
     <script>
+      let revealFallbackTimer: number | undefined;
+
       function initReveal() {
         const nodes = document.querySelectorAll<HTMLElement>(
           '[data-reveal]:not(.is-visible)',
@@ -69,14 +71,24 @@ const { title, description, ogImage, type, jsonLd, noindex, transparentHeader } 
               observer.unobserve(entry.target);
             }
           },
-          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+          // threshold 0: long article bodies only need a sliver in view to reveal
+          { rootMargin: '0px 0px -4% 0px', threshold: 0 },
         );
 
         nodes.forEach((el) => observer.observe(el));
+
+        if (revealFallbackTimer) clearTimeout(revealFallbackTimer);
+        revealFallbackTimer = window.setTimeout(() => {
+          document
+            .querySelectorAll<HTMLElement>('[data-reveal]:not(.is-visible)')
+            .forEach((el) => el.classList.add('is-visible'));
+        }, 1200);
       }
 
       initReveal();
-      document.addEventListener('astro:page-load', initReveal);
+      document.addEventListener('astro:page-load', () => {
+        requestAnimationFrame(() => requestAnimationFrame(initReveal));
+      });
     </script>
   </body>
 </html>

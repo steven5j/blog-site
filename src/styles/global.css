@@ -191,6 +191,23 @@
   margin: 0 auto;
 }
 
+.prose-blog .video-embed {
+  position: relative;
+  margin: 1.25rem 0 2.5rem;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper-elevated);
+}
+
+.prose-blog .video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .prose-blog table {
   width: 100%;
   border-collapse: collapse;
@@ -342,6 +359,41 @@
   padding-left: 1.2rem;
 }
 
+@media (min-width: 640px) {
+  .prose-blog .tech-stack-card--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.prose-blog .content-lead {
+  margin: 1.25rem 0 2rem;
+  padding: 1.35rem 1.4rem;
+  border: 1px solid var(--color-line);
+  border-left: 3px solid var(--color-brand);
+  background: var(--color-paper-elevated);
+}
+
+.prose-blog .content-lead p {
+  margin: 0;
+}
+
+.prose-blog .content-lead p + p {
+  margin-top: 1rem;
+}
+
+.prose-blog .note-callout--protected {
+  border-left-color: var(--color-ink);
+  background: linear-gradient(
+    135deg,
+    var(--color-paper-elevated) 0%,
+    rgb(0 0 0 / 0.02) 100%
+  );
+}
+
+.prose-blog .note-callout--protected a {
+  font-weight: 600;
+}
+
 .prose-blog .note-callout {
   margin: 1.25rem 0 2rem;
   border: 1px solid var(--color-line);
@@ -381,8 +433,44 @@
   margin-top: 0;
 }
 
+[data-protected-callout][hidden],
+[data-protected-intro][hidden] {
+  display: none !important;
+}
+
+.protected-only-lead {
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  color: var(--color-mist-muted);
+}
+
 .protected-gate {
-  margin: 0;
+  margin: 1.25rem 0 2rem;
+}
+
+.protected-gate--page {
+  margin-top: 0;
+}
+
+.protected-gate--page .protected-gate__panel {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.protected-gate--page .protected-gate__form {
+  max-width: 20rem;
+}
+
+.protected-gate--page .protected-gate__submit {
+  width: 100%;
+}
+
+.protected-gate__hint--page {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-mist);
 }
 
 .protected-gate--loading {

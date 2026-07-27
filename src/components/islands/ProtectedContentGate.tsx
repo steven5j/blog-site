@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useId, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 
 type Props = {
   slug: string;
   mode?: 'embed' | 'page';
   standaloneUrl?: string;
+  publicPostUrl?: string;
 };
 
 type UnlockResponse = {
@@ -13,23 +14,30 @@ type UnlockResponse = {
   error?: string;
 };
 
+function extractBodyHtml(html: string) {
+  const wrapped = html.match(
+    /^<div class="prose-blog protected-body">([\s\S]*)<\/div>\s*$/,
+  );
+  return wrapped ? wrapped[1] : html;
+}
+
 export default function ProtectedContentGate({
   slug,
   mode = 'embed',
   standaloneUrl,
+  publicPostUrl,
 }: Props) {
   const formId = useId();
+  const contentRef = useRef<HTMLDivElement>(null);
   const [password, setPassword] = useState('');
   const [html, setHtml] = useState<string | null>(null);
-  const [title, setTitle] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const applyResponse = useCallback((data: UnlockResponse) => {
     if (data.unlocked && data.html) {
-      setHtml(data.html);
-      setTitle(data.title ?? null);
+      setHtml(extractBodyHtml(data.html));
       setError(null);
       return true;
     }
@@ -51,7 +59,7 @@ export default function ProtectedContentGate({
         }
       } catch {
         if (!cancelled) {
-          setError('無法連線至解鎖服務（本機開發請使用 wrangler pages dev）。');
+          setError(null);
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -63,6 +71,11 @@ export default function ProtectedContentGate({
       cancelled = true;
     };
   }, [slug, applyResponse]);
+
+  useEffect(() => {
+    if (!html) return;
+    contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [html]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -78,7 +91,7 @@ export default function ProtectedContentGate({
       });
       const data = (await res.json()) as UnlockResponse;
       if (!res.ok) {
-        setError(data.error ?? '解鎖失敗');
+        setError(data.error ?? '密碼錯誤，請再試一次。');
         return;
       }
       applyResponse({ unlocked: true, ...data });
@@ -100,14 +113,13 @@ export default function ProtectedContentGate({
 
   if (html) {
     return (
-      <section className="protected-gate protected-gate--unlocked" aria-live="polite">
-        {title && mode === 'page' && (
-          <h2 className="protected-gate__unlocked-title font-display text-2xl font-semibold text-ink">
-            {title}
-          </h2>
-        )}
-        <div dangerouslySetInnerHTML={{ __html: html }} />
-      </section>
+      <div
+        ref={contentRef}
+        id="protected-content-start"
+        className="protected-body"
+        aria-live="polite"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     );
   }
 
@@ -117,17 +129,25 @@ export default function ProtectedContentGate({
       aria-labelledby={`${formId}-label`}
     >
       <div className="protected-gate__panel">
-        <p className="protected-gate__eyebrow">Protected Content</p>
-        <h2 id={`${formId}-label`} className="protected-gate__title font-display">
-          {mode === 'page' ? '此內容需要密碼' : '機密細節（密碼解鎖）'}
-        </h2>
-        <p className="protected-gate__hint">
-          輸入密碼以檢視公司機密補充內容。解鎖後 24 小時內無需重複輸入。
-        </p>
+        {mode === 'page' ? (
+          <p id={`${formId}-label`} className="protected-gate__hint protected-gate__hint--page">
+            這篇內容受到密碼保護。如需檢視內容，請於下方欄位輸入密碼：
+          </p>
+        ) : (
+          <>
+            <p className="protected-gate__eyebrow">Protected Content</p>
+            <h3 id={`${formId}-label`} className="protected-gate__title font-display">
+              機密細節（密碼解鎖）
+            </h3>
+            <p className="protected-gate__hint">
+              輸入密碼以檢視公司機密補充內容。解鎖後 24 小時內無需重複輸入。
+            </p>
+          </>
+        )}
 
         <form className="protected-gate__form" onSubmit={handleSubmit}>
           <label className="protected-gate__label" htmlFor={`${formId}-password`}>
-            密碼
+            密碼：
           </label>
           <input
             id={`${formId}-password`}
@@ -141,13 +161,23 @@ export default function ProtectedContentGate({
             required
           />
           <button className="protected-gate__submit" type="submit" disabled={submitting}>
-            {submitting ? '驗證中…' : '解鎖內容'}
+            {submitting ? '驗證中…' : mode === 'page' ? '送出' : '解鎖內容'}
           </button>
         </form>
 
         {error && (
           <p className="protected-gate__error" role="alert">
             {error}
+          </p>
+        )}
+
+        {mode === 'page' && publicPostUrl && (
+          <p className="protected-gate__footer">
+            公開摘要請見
+            <a href={publicPostUrl} className="protected-gate__link">
+              送報件資料修正輔助系統
+            </a>
+            。
           </p>
         )}
 

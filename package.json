@@ -4,11 +4,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "predev": "node scripts/prepare-protected.mjs",
     "dev": "astro dev",
     "prebuild": "node scripts/generate-redirects.mjs && node scripts/prepare-protected.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "preview:cf": "npm run build && wrangler pages dev dist",
+    "preview:cf": "npm run build && npx wrangler pages dev dist",
     "astro": "astro",
     "redirects": "node scripts/generate-redirects.mjs",
     "migrate:wp": "node --use-system-ca scripts/migrate-wp.mjs",
@@ -27,5 +28,8 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "wrangler": "^4.24.0"
   }
 }

@@ -68,7 +68,8 @@ protectedOnly: true                     # 獨立機密頁：僅顯示密碼門
 
 ```bash
 cp .dev.vars.example .dev.vars   # 編輯密碼
-npm run preview:cf                 # build + wrangler pages dev
+npm run dev                      # Astro dev，已內建 /api/unlock（讀 .dev.vars）
+npm run preview:cf               # 完整模擬 Cloudflare Pages（需先 npm install）
 ```
 
 API：`POST /api/unlock`（`{ slug, password }`）、`GET /api/unlock?slug=...`（檢查 Cookie）。

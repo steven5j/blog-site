@@ -19,10 +19,45 @@ function parseFrontmatter(raw) {
   }
   const meta = {};
   for (const line of match[1].split('\n')) {
-    const m = line.match(/^(\w+):\s*(.+)$/);
+    const trimmed = line.replace(/\r$/, '').trim();
+    if (!trimmed) continue;
+    const m = trimmed.match(/^(\w+):\s*(.+)$/);
     if (m) meta[m[1]] = m[2].replace(/^["']|["']$/g, '');
   }
   return { meta, body: match[2].trim() };
+}
+
+function resolveBody(meta, inlineBody) {
+  if (meta.bodyFile) {
+    const bodyPath = path.join(sourceDir, meta.bodyFile);
+    if (!fs.existsSync(bodyPath)) {
+      throw new Error(`Missing protected body file: ${meta.bodyFile}`);
+    }
+    return fs.readFileSync(bodyPath, 'utf8').trim();
+  }
+  return inlineBody;
+}
+
+export function buildProtectedManifest() {
+  if (!fs.existsSync(sourceDir)) {
+    return {};
+  }
+
+  const manifest = {};
+  const files = fs.readdirSync(sourceDir).filter((f) => f.endsWith('.md'));
+
+  for (const file of files) {
+    const slug = path.basename(file, '.md');
+    const raw = fs.readFileSync(path.join(sourceDir, file), 'utf8');
+    const { meta, body } = parseFrontmatter(raw);
+    const htmlBody = resolveBody(meta, body);
+    manifest[slug] = {
+      title: meta.title ?? slug,
+      html: `<div class="prose-blog protected-body">${htmlBody}</div>`,
+    };
+  }
+
+  return manifest;
 }
 
 function buildManifest() {
@@ -33,19 +68,7 @@ function buildManifest() {
     return;
   }
 
-  const manifest = {};
-  const files = fs.readdirSync(sourceDir).filter((f) => f.endsWith('.md'));
-
-  for (const file of files) {
-    const slug = path.basename(file, '.md');
-    const raw = fs.readFileSync(path.join(sourceDir, file), 'utf8');
-    const { meta, body } = parseFrontmatter(raw);
-    manifest[slug] = {
-      title: meta.title ?? slug,
-      html: `<div class="prose-blog protected-body">${body}</div>`,
-    };
-  }
-
+  const manifest = buildProtectedManifest();
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(outFile, JSON.stringify(manifest, null, 2), 'utf8');
   console.log(
@@ -53,4 +76,10 @@ function buildManifest() {
   );
 }
 
-buildManifest();
+const isMain =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
+
+if (isMain) {
+  buildManifest();
+}

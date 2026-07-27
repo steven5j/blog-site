@@ -14,7 +14,9 @@ interface Props {
   jsonLd?: Record<string, unknown>[];
   protectedSlug?: string;
   protectedOnly?: boolean;
+  protectedInline?: boolean;
   protectedStandaloneUrl?: string;
+  protectedPublicUrl?: string;
 }
 
 const {
@@ -28,8 +30,12 @@ const {
   jsonLd,
   protectedSlug,
   protectedOnly = false,
+  protectedInline = false,
   protectedStandaloneUrl,
+  protectedPublicUrl,
 } = Astro.props;
+
+const showFooterGate = protectedSlug && !protectedInline && !protectedOnly;
 
 const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   year: 'numeric',
@@ -45,7 +51,7 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   jsonLd={jsonLd}
 >
   <article class="mx-auto max-w-prose px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
-    <header class="mb-12 border-b border-line pb-10" data-reveal>
+    <header class="mb-12 border-b border-line pb-10">
       <p class="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-mist-muted">
         <time datetime={pubDate.toISOString()}>{dateFmt.format(pubDate)}</time>
         {
@@ -86,9 +92,13 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
       <h1 class="font-display text-balance text-4xl font-bold tracking-tight text-ink sm:text-5xl">
         {title}
       </h1>
-      <p class="mt-5 text-lg text-mist-muted">{description}</p>
       {
-        tags.length > 0 && (
+        !protectedOnly && (
+          <p class="mt-5 text-lg text-mist-muted">{description}</p>
+        )
+      }
+      {
+        tags.length > 0 && !protectedOnly && (
           <ul class="mt-6 flex flex-wrap gap-2" aria-label="標籤">
             {tags.map((tag) => (
               <li class="border border-line bg-paper-elevated px-2.5 py-1 text-xs text-mist-muted">
@@ -99,31 +109,31 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
         )
       }
     </header>
+
     {
-      protectedOnly ? (
-        <div class="prose-blog mb-8" data-reveal>
-          <slot />
+      protectedOnly && protectedSlug ? (
+        <div class="prose-blog">
+          <ProtectedContentGate
+            client:load
+            slug={protectedSlug}
+            mode="page"
+            publicPostUrl={protectedPublicUrl}
+          />
         </div>
       ) : (
-        <div class="prose-blog" data-reveal style="--reveal-delay: 80ms">
+        <div class="prose-blog">
           <slot />
         </div>
       )
     }
 
     {
-      protectedSlug && (
-        <div
-          class:list={[
-            protectedOnly ? 'mt-0' : 'mt-16 border-t border-line pt-12',
-          ]}
-          data-reveal
-          style={protectedOnly ? undefined : '--reveal-delay: 120ms'}
-        >
+      showFooterGate && (
+        <div class="mt-16 border-t border-line pt-12">
           <ProtectedContentGate
             client:load
-            slug={protectedSlug}
-            mode={protectedOnly ? 'page' : 'embed'}
+            slug={protectedSlug!}
+            mode="embed"
             standaloneUrl={protectedStandaloneUrl}
           />
         </div>

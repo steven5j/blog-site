@@ -21,6 +21,10 @@ const blog = defineCollection({
     protectedSlug: z.string().optional(),
     /** When true, public body is hidden; only password gate + unlocked HTML */
     protectedOnly: z.boolean().default(false),
+    /** When true, unlock gate is rendered inside the post body (MDX), not at footer */
+    protectedInline: z.boolean().default(false),
+    /** Link to the public summary post (for protected-only pages) */
+    protectedPublicUrl: z.string().optional(),
   }),
 });
 

@@ -58,6 +58,14 @@ for (const file of fs.readdirSync(blogDir)) {
   lines.push(`/blog/${id} ${to} 301`);
 }
 
+lines.push('', '# Emoji slug aliases (WP legacy URLs)');
+lines.push(
+  '/2022/02/18/專案成就送報件資料修正輔助系統專案🔒 /2022/02/18/專案成就送報件資料修正輔助系統專案 301',
+);
+lines.push(
+  '/2022/02/18/專案成就送報件資料修正輔助系統專案🔒/ /2022/02/18/專案成就送報件資料修正輔助系統專案/ 301',
+);
+
 lines.push('', '# WordPress hub / category → Astro topics & series');
 for (const { from, to } of map.hubRedirects) {
   const fromPath = from.endsWith('/') ? from.slice(0, -1) : from;

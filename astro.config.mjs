@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
+import { protectedUnlockApi } from './scripts/vite-protected-api.mjs';
 
 export default defineConfig({
   site: 'https://stevenjhu.com',
@@ -23,6 +24,6 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), protectedUnlockApi()],
   },
 });
