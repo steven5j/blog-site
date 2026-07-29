@@ -3,6 +3,7 @@ title: FinTech 2019 金融科技展 債權理財平台 顧問
 description: "金融科技展簡介 活動網站： https://www.fintechtaipei.tw/ 時間地點： 11月29 [&hellip;]"
 pubDate: 2019-12-16
 topic: business
+series: fintech
 wpId: 3743
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/12/16/fintech-2019-%e9%87%91%e8%9e%8d%e7%a7%91%e6%8a%80%e5%b1%95-%e5%82%b5%e6%ac%8a%e7%90%86%e8%b2%a1%e5%b9%b3%e5%8f%b0-%e9%a1%a7%e5%95%8f/"
 ---

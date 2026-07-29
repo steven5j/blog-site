@@ -6,9 +6,12 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   posts: CollectionEntry<'blog'>[];
   empty?: string;
+  /** Show only the first N posts (after the provided sort order). */
+  limit?: number;
 }
 
-const { posts, empty = '尚無文章。' } = Astro.props;
+const { posts, empty = '尚無文章。', limit } = Astro.props;
+const visible = typeof limit === 'number' ? posts.slice(0, limit) : posts;
 
 const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   year: 'numeric',
@@ -19,10 +22,10 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
 
 <ul class="divide-y divide-line">
   {
-    posts.length === 0 ? (
+    visible.length === 0 ? (
       <li class="py-8 text-mist-muted">{empty}</li>
     ) : (
-      posts.map((post, i) => (
+      visible.map((post, i) => (
         <li>
           <Reveal delay={i * 40}>
             <a

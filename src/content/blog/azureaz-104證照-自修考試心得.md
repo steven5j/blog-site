@@ -2,9 +2,11 @@
 title: "[Azure]AZ-104證照 自修考試心得"
 description: "認證連結： Microsoft Certified: Azure Administrator Associat [&hellip;]"
 pubDate: 2023-01-02
-topic: business
+topic: software
+series: mis
 tags:
-  - AWS
+  - Azure
+  - 證照
 heroImage: /public/uploads/wp/7537.jpg
 wpId: 7537
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2023/01/02/azureaz-104%e8%ad%89%e7%85%a7-%e8%87%aa%e4%bf%ae%e8%80%83%e8%a9%a6%e5%bf%83%e5%be%97/"

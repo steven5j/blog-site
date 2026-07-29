@@ -13,6 +13,16 @@ const allSeries = (await getCollection('series')).sort(
   (a, b) => a.data.order - b.data.order,
 );
 
+/** Soft featured series under the software pillar */
+const featuredSeriesIds = [
+  'architecture',
+  'javascript',
+  'react',
+  'csharp',
+  'sql',
+  'portfolio',
+];
+
 const seriesCovers: Record<string, string> = {
   architecture: '/images/wp/architecture.jpg',
   javascript: '/images/wp/javascript.jpg',
@@ -27,28 +37,32 @@ const seriesCovers: Record<string, string> = {
   'real-estate': '/images/wp/social-life.jpg',
 };
 
-const studyGroups = [
+const pillars = [
   {
-    title: 'Architecture',
-    ids: ['architecture'],
+    label: '程式',
+    href: '/topics/software',
+    description: '軟體工程筆記、系列合集與技術發展紀錄。',
+    image: '/images/wp/architecture.jpg',
   },
   {
-    title: 'Front End 前端',
-    ids: ['javascript', 'react', 'frontend'],
+    label: '理財／商業',
+    href: '/topics/business',
+    description: '產業經驗、投資理財與生意實務筆記。',
+    image: '/images/wp/business-hero.jpg',
   },
   {
-    title: 'Back End 後端',
-    ids: ['csharp', 'python'],
+    label: '房產',
+    href: '/series/real-estate',
+    description: '不動產操作、收租與區域評估紀錄。',
+    image: '/images/wp/real-estate-hero.jpg',
   },
   {
-    title: 'Database 資料庫',
-    ids: ['sql'],
+    label: '生活',
+    href: '/topics/life',
+    description: '聚會、社團、學習與生活體驗分享。',
+    image: '/images/wp/life-hero.jpg',
   },
-  {
-    title: 'Tools / DevOps / MIS',
-    ids: ['android', 'mis'],
-  },
-];
+] as const;
 
 const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   year: 'numeric',
@@ -56,13 +70,13 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   day: 'numeric',
 });
 
-function seriesById(id: string) {
-  return allSeries.find((s) => s.id === id);
-}
+const featuredSeries = featuredSeriesIds
+  .map((id) => allSeries.find((s) => s.id === id))
+  .filter((s): s is NonNullable<typeof s> => Boolean(s));
 ---
 
 <BaseLayout transparentHeader>
-  <!-- Hero — full-bleed like WP -->
+  <!-- Hero -->
   <section
     class="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-ink bg-cover bg-center text-white"
     style="background-image: linear-gradient(rgb(0 0 0 / 0.45), rgb(0 0 0 / 0.5)), url('/images/wp/hero.jpg')"
@@ -81,38 +95,96 @@ function seriesById(id: string) {
       >
         理財 / 程式 / 行銷 / 房產
       </p>
-      <a
-        href="/about"
-        class="mt-10 inline-block border border-white/70 px-8 py-3 text-xs font-semibold tracking-[0.25em] text-white no-underline uppercase transition hover:bg-white hover:text-ink sm:mt-12"
-      >
-        ABOUT ME
-      </a>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3 sm:mt-12">
+        <a
+          href="#paths"
+          class="inline-block border border-white/70 bg-white px-8 py-3 text-xs font-semibold tracking-[0.25em] text-ink no-underline uppercase transition hover:bg-transparent hover:text-white"
+        >
+          開始閱讀
+        </a>
+        <a
+          href="/about"
+          class="inline-block border border-white/70 px-8 py-3 text-xs font-semibold tracking-[0.25em] text-white no-underline uppercase transition hover:bg-white hover:text-ink"
+        >
+          關於我
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Four content paths -->
+  <section id="paths" class="scroll-mt-20 bg-paper-elevated">
+    <div class="mx-auto max-w-site px-5 py-20 sm:px-6 lg:px-8">
+      <Reveal>
+        <p class="text-xs font-semibold tracking-[0.3em] text-brand uppercase">
+          內容主線
+        </p>
+        <h2 class="font-display mt-3 text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+          從這裡開始
+        </h2>
+        <p class="mt-4 max-w-2xl text-mist-muted">
+          四條主線對應站上主題：選一條進入，再用系列或文章列表往下讀。
+        </p>
+      </Reveal>
+
+      <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          pillars.map((pillar, i) => (
+            <li>
+              <Reveal delay={i * 60}>
+                <a
+                  href={pillar.href}
+                  class="group flex h-full flex-col overflow-hidden border border-line bg-paper no-underline transition hover:border-brand/40 hover:shadow-md"
+                >
+                  <div
+                    class="aspect-[16/10] bg-cover bg-center transition duration-500 group-hover:scale-[1.03]"
+                    style={`background-image: url('${pillar.image}')`}
+                    role="img"
+                    aria-hidden="true"
+                  />
+                  <div class="flex flex-1 flex-col p-5">
+                    <h3 class="font-display text-xl font-semibold text-ink transition group-hover:text-brand">
+                      {pillar.label}
+                    </h3>
+                    <p class="mt-2 flex-1 text-sm text-mist-muted">
+                      {pillar.description}
+                    </p>
+                    <span class="mt-4 text-xs font-semibold tracking-wider text-brand uppercase">
+                      進入 →
+                    </span>
+                  </div>
+                </a>
+              </Reveal>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
   <!-- Latest Posts -->
-  <section class="bg-paper-elevated">
+  <section class="bg-paper">
     <div class="mx-auto max-w-site px-5 py-20 sm:px-6 lg:px-8">
       <Reveal>
         <p class="text-xs font-semibold tracking-[0.3em] text-brand uppercase">
-          From live Blog
+          最新文章
         </p>
         <h2 class="font-display mt-3 text-4xl font-bold tracking-tight text-ink sm:text-5xl">
           Latest Posts
         </h2>
         <p class="mt-4 max-w-2xl text-mist-muted">
-          近期最新的生活紀錄、部落格、軟體工程履歷、房地產操作紀錄、專案作品、講座心得…等
+          依時間排列的近期文章；完整清單請至文章頁。
         </p>
       </Reveal>
 
-      <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:gap-8">
+      <ul class="mt-12 grid gap-6 sm:grid-cols-2 xl:gap-8">
         {
           latestPosts.map((post, i) => (
             <li>
               <Reveal delay={i * 60}>
                 <a
                   href={postPermalink(post.data.pubDate, post.id)}
-                  class="group block border border-line bg-paper p-6 no-underline transition hover:border-brand/40 hover:shadow-sm"
+                  class="group block border border-line bg-paper-elevated p-6 no-underline transition hover:border-brand/40 hover:shadow-sm"
                 >
                   <div class="flex items-center gap-2 text-xs tracking-wide text-mist-muted uppercase">
                     <time datetime={post.data.pubDate.toISOString()}>
@@ -128,7 +200,7 @@ function seriesById(id: string) {
                     {post.data.description}
                   </p>
                   <span class="mt-4 inline-block text-xs font-semibold tracking-wider text-brand uppercase">
-                    點擊查看 →
+                    閱讀 →
                   </span>
                 </a>
               </Reveal>
@@ -148,94 +220,85 @@ function seriesById(id: string) {
     </div>
   </section>
 
-  <!-- Project & Certification -->
+  <!-- Projects -->
   <section
     class="relative bg-cover bg-center text-white"
     style="background-image: linear-gradient(rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.78)), url('/images/wp/project.jpg')"
   >
     <div class="mx-auto max-w-site px-5 py-24 sm:px-6 lg:px-8">
       <Reveal>
-        <h2 class="font-display max-w-xl text-3xl font-bold tracking-tight sm:text-4xl">
-          [Project And Certification]
-          <span class="mt-2 block">專案成就與證照</span>
+        <p class="text-xs font-semibold tracking-[0.3em] text-white/70 uppercase">
+          作品
+        </p>
+        <h2 class="font-display mt-3 max-w-xl text-3xl font-bold tracking-tight sm:text-4xl">
+          專案成就與證照
         </h2>
         <p class="mt-5 max-w-lg text-white/80">
-          於職涯中經手過、發展過並完成的開發專案！
-        </p>
-        <p class="mt-2 text-sm text-white/55">
-          註：專案內容多屬公司機密，僅截取重要資訊
+          職涯中經手、發展並完成的開發專案與認證。部分內容屬公司機密，僅公開可分享資訊。
         </p>
         <a
           href="/projects"
           class="mt-10 inline-block border border-white/80 px-8 py-3 text-xs font-semibold tracking-[0.2em] text-white no-underline uppercase transition hover:bg-white hover:text-ink"
         >
-          點擊查看
+          查看作品
         </a>
       </Reveal>
     </div>
   </section>
 
-  <!-- Study Notes -->
+  <!-- Featured series (software pillar) -->
   <section
     class="relative bg-cover bg-center"
     style="background-image: linear-gradient(rgb(244 244 244 / 0.94), rgb(244 244 244 / 0.96)), url('/images/wp/study-notes.jpg')"
   >
     <div class="mx-auto max-w-site px-5 py-20 sm:px-6 lg:px-8">
       <Reveal>
-        <h2 class="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-          Study Notes
+        <p class="text-xs font-semibold tracking-[0.3em] text-brand uppercase">
+          系列精選
+        </p>
+        <h2 class="font-display mt-3 text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+          精選系列
         </h2>
-        <p class="mt-3 text-mist-muted">操作範例、學習筆記、維運紀錄。</p>
+        <p class="mt-3 max-w-2xl text-mist-muted">
+          依主題整理的文章合集；完整目錄請至系列頁。
+        </p>
       </Reveal>
 
-      <div class="mt-14 space-y-14">
+      <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {
-          studyGroups.map((group, gi) => (
-            <div>
-              <Reveal delay={gi * 40}>
-                <h3 class="font-display border-b border-line pb-3 text-xl font-semibold text-ink">
-                  {group.title}
-                </h3>
-              </Reveal>
-              <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                {group.ids.map((id, i) => {
-                  const s = seriesById(id);
-                  if (!s) return null;
-                  const cover = seriesCovers[id] || '/images/wp/study-notes.jpg';
-                  return (
-                    <li>
-                      <Reveal delay={gi * 40 + i * 50}>
-                        <a
-                          href={`/series/${s.id}`}
-                          class="group block overflow-hidden border border-line bg-paper-elevated no-underline transition hover:border-brand/40 hover:shadow-md"
-                        >
-                          <div
-                            class="aspect-[16/10] bg-cover bg-center transition duration-500 group-hover:scale-[1.03]"
-                            style={`background-image: url('${cover}')`}
-                            role="img"
-                            aria-label={s.data.title}
-                          />
-                          <div class="p-5">
-                            <h4 class="font-display text-lg font-semibold text-ink transition group-hover:text-brand">
-                              {s.data.title}
-                            </h4>
-                            <p class="mt-2 line-clamp-2 text-sm text-mist-muted">
-                              {s.data.description}
-                            </p>
-                            <span class="mt-4 inline-block text-xs font-semibold tracking-wider text-brand uppercase">
-                              點擊查看 →
-                            </span>
-                          </div>
-                        </a>
-                      </Reveal>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))
+          featuredSeries.map((s, i) => {
+            const cover = seriesCovers[s.id] || '/images/wp/study-notes.jpg';
+            return (
+              <li>
+                <Reveal delay={i * 50}>
+                  <a
+                    href={`/series/${s.id}`}
+                    class="group block overflow-hidden border border-line bg-paper-elevated no-underline transition hover:border-brand/40 hover:shadow-md"
+                  >
+                    <div
+                      class="aspect-[16/10] bg-cover bg-center transition duration-500 group-hover:scale-[1.03]"
+                      style={`background-image: url('${cover}')`}
+                      role="img"
+                      aria-label={s.data.title}
+                    />
+                    <div class="p-5">
+                      <h3 class="font-display text-lg font-semibold text-ink transition group-hover:text-brand">
+                        {s.data.title}
+                      </h3>
+                      <p class="mt-2 line-clamp-2 text-sm text-mist-muted">
+                        {s.data.description}
+                      </p>
+                      <span class="mt-4 inline-block text-xs font-semibold tracking-wider text-brand uppercase">
+                        進入系列 →
+                      </span>
+                    </div>
+                  </a>
+                </Reveal>
+              </li>
+            );
+          })
         }
-      </div>
+      </ul>
 
       <Reveal class="mt-12 text-center">
         <a
@@ -245,44 +308,6 @@ function seriesById(id: string) {
           全部系列
         </a>
       </Reveal>
-    </div>
-  </section>
-
-  <!-- Social Life -->
-  <section
-    class="relative bg-cover bg-center text-white"
-    style="background-image: linear-gradient(rgb(0 0 0 / 0.7), rgb(0 0 0 / 0.75)), url('/images/wp/social-life.jpg')"
-  >
-    <div class="mx-auto max-w-site px-5 py-24 sm:px-6 lg:px-8">
-      <div class="grid gap-12 lg:grid-cols-2 lg:items-end">
-        <Reveal>
-          <p class="text-xs font-semibold tracking-[0.3em] text-white/70 uppercase">
-            行銷 / 程式 / 理財 / 房產
-          </p>
-          <h2 class="font-display mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-            SOCIAL LIFE
-          </h2>
-          <h3 class="font-display mt-8 text-2xl font-semibold">Life of Ideas</h3>
-          <p class="mt-4 max-w-md leading-relaxed text-white/80">
-            後續網站會整合更多個人資源。我是一個整合多工型的人，多元興趣與開放的態度讓我在各領域上不會退卻，擅長從 0 到
-            1 的事業發展與新項目建置——在思考與行動中創造價值。
-          </p>
-        </Reveal>
-        <Reveal delay={100} class="flex flex-wrap gap-3 lg:justify-end">
-          <a
-            href="/topics/life"
-            class="border border-white/70 px-6 py-3 text-xs font-semibold tracking-[0.2em] text-white no-underline uppercase transition hover:bg-white hover:text-ink"
-          >
-            生活心得
-          </a>
-          <a
-            href="/topics/business"
-            class="border border-white/70 px-6 py-3 text-xs font-semibold tracking-[0.2em] text-white no-underline uppercase transition hover:bg-white hover:text-ink"
-          >
-            產業與商業
-          </a>
-        </Reveal>
-      </div>
     </div>
   </section>
 </BaseLayout>

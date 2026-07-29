@@ -23,18 +23,23 @@ const seriesCovers: Record<string, string> = {
 ---
 
 <BaseLayout
-  title="學習系列"
-  description="操作範例、學習筆記與維運紀錄的系列總覽。"
+  title="系列"
+  description="依主題整理的文章合集與連載總覽。"
 >
   <div
     class="page-banner"
     style="background-image: url('/images/wp/study-notes.jpg')"
   >
     <div class="mx-auto w-full max-w-site px-5 py-16 sm:px-6 lg:px-8">
-      <h1 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
-        Study Notes
+      <p class="text-xs font-semibold tracking-[0.25em] text-white/60 uppercase">
+        系列
+      </p>
+      <h1 class="font-display mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+        系列
       </h1>
-      <p class="mt-3 text-white/75">操作範例、學習筆記、維運紀錄。</p>
+      <p class="mt-3 text-white/75">
+        依主題整理的文章合集，方便連著讀。
+      </p>
     </div>
   </div>
 
@@ -59,7 +64,9 @@ const seriesCovers: Record<string, string> = {
                   <h2 class="font-display mt-2 text-xl font-semibold text-ink transition group-hover:text-brand">
                     {s.data.title}
                   </h2>
-                  <p class="mt-2 text-sm text-mist-muted">{s.data.description}</p>
+                  <p class="mt-2 line-clamp-2 text-sm text-mist-muted">
+                    {s.data.description}
+                  </p>
                 </div>
               </a>
             </Reveal>

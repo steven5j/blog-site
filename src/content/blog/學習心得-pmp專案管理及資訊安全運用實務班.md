@@ -3,6 +3,7 @@ title: 學習心得-PMP專案管理及資訊安全運用實務班
 description: "因為公司老闆是課程的講師，公司也同時有補助我們課程的費用，為了精進學習和成長，也一同參與這次公司合作的產學合作 [&hellip;]"
 pubDate: 2020-03-01
 topic: business
+series: career
 heroImage: /public/uploads/wp/3834.png
 wpId: 3834
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/01/%e5%ad%b8%e7%bf%92%e5%bf%83%e5%be%97-pmp%e5%b0%88%e6%a1%88%e7%ae%a1%e7%90%86%e5%8f%8a%e8%b3%87%e8%a8%8a%e5%ae%89%e5%85%a8%e9%81%8b%e7%94%a8%e5%af%a6%e5%8b%99%e7%8f%ad/"

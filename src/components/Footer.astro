@@ -4,18 +4,39 @@ const year = new Date().getFullYear();
 
 <footer class="relative z-10 mt-auto bg-ink text-white/70">
   <div
-    class="mx-auto flex max-w-site flex-col gap-4 px-5 py-12 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8"
+    class="mx-auto flex max-w-site flex-col gap-6 px-5 py-12 sm:px-6 lg:px-8"
   >
-    <p class="text-sm">
-      Created with
-      <a href="/" class="text-brand no-underline hover:text-glow">Steven玄</a>
-      · © {year}
-    </p>
-    <p class="flex flex-wrap gap-4 text-sm">
-      <a href="/blog" class="no-underline hover:text-brand">Blog</a>
-      <a href="/projects" class="no-underline hover:text-brand">Projects</a>
-      <a href="/about" class="no-underline hover:text-brand">About</a>
-      <a href="/sitemap-index.xml" class="no-underline hover:text-brand">Sitemap</a>
-    </p>
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <p class="font-display text-base font-semibold text-brand">Steven玄</p>
+        <p class="mt-2 max-w-sm text-sm text-white/55">
+          理財 · 程式 · 行銷 · 房產 — 文章、系列、作品與關於。
+        </p>
+      </div>
+      <nav aria-label="頁尾導覽" class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        <a href="/blog" class="no-underline hover:text-brand">文章</a>
+        <a href="/topics/software" class="no-underline hover:text-brand">程式</a>
+        <a href="/topics/business" class="no-underline hover:text-brand">商業</a>
+        <a href="/series/real-estate" class="no-underline hover:text-brand">房產</a>
+        <a href="/topics/life" class="no-underline hover:text-brand">生活</a>
+        <a href="/projects" class="no-underline hover:text-brand">作品</a>
+        <a href="/series" class="no-underline hover:text-brand">系列</a>
+        <a href="/about" class="no-underline hover:text-brand">關於</a>
+      </nav>
+    </div>
+    <div
+      class="flex flex-col gap-2 border-t border-white/10 pt-6 text-sm sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>
+        © {year}
+        <a href="/" class="text-brand no-underline hover:text-glow">Steven玄</a>
+      </p>
+      <a
+        href="/sitemap-index.xml"
+        class="text-white/45 no-underline hover:text-brand"
+      >
+        Sitemap（搜尋引擎）
+      </a>
+    </div>
   </div>
 </footer>
