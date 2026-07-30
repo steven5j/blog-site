@@ -55,10 +55,18 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
   >
     <a
       href="/"
-      class="font-display text-lg font-semibold tracking-tight text-brand no-underline transition hover:text-brand-hover sm:text-xl"
+      class="inline-flex shrink-0 items-center no-underline transition hover:opacity-90"
+      aria-label="Steven玄 首頁"
       data-astro-prefetch
     >
-      Steven玄
+      <img
+        src="/logo.png"
+        alt="Steven玄"
+        width="120"
+        height="60"
+        class="h-7 w-auto sm:h-8"
+        decoding="async"
+      />
     </a>
 
     <!-- Desktop nav -->
@@ -131,7 +139,14 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
   >
     <div class="mx-auto flex h-full max-w-lg flex-col px-8 py-10">
       <div class="mb-10 flex items-center justify-between">
-        <span class="font-display text-lg font-semibold text-brand">Steven玄</span>
+        <img
+          src="/logo.png"
+          alt="Steven玄"
+          width="120"
+          height="60"
+          class="h-7 w-auto"
+          decoding="async"
+        />
         <button
           type="button"
           class="cursor-pointer border-0 bg-transparent text-sm uppercase tracking-[0.15em] text-white/80"

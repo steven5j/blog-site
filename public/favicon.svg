@@ -1,6 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="14" fill="#0B1220"/>
-  <circle cx="32" cy="32" r="18" stroke="#3DB8A8" stroke-width="3"/>
-  <circle cx="32" cy="32" r="6" fill="#5EEAD4"/>
-  <path d="M32 14v6M32 44v6M14 32h6M44 32h6" stroke="#3DB8A8" stroke-width="2" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Steven玄">
+  <!-- Brand mark: white St on brand red — system font stack for favicon reliability -->
+  <rect width="64" height="64" fill="#c13b3b"/>
+  <text
+    x="32"
+    y="33.5"
+    text-anchor="middle"
+    dominant-baseline="central"
+    fill="#ffffff"
+    font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+    font-size="30"
+    font-weight="700"
+  >St</text>
 </svg>
