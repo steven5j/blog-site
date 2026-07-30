@@ -33,7 +33,7 @@ export type Topic = (typeof TOPICS)[number];
 
 export const TOPIC_LABELS: Record<Topic, string> = {
   software: '軟體工程筆記',
-  business: '產業投資與商業經驗',
+  business: '商業經驗',
   life: '生活心得體驗分享',
 };
 
@@ -41,7 +41,7 @@ export const TOPIC_DESCRIPTIONS: Record<Topic, string> = {
   software:
     '我從 2019 年正式踏入程式語言與軟體科技產業的發展，並列為本人長期發展領域之一。此記錄我的筆記和發展技術與成果作品。',
   business:
-    '於各產業經銷、代理、顧問與投資實務經驗，以及房屋不動產操作相關紀錄。',
+    '各產業經銷、代理、顧問與現場經營的經驗筆記；亦含投資理財、職涯成長與房地產操作。',
   life: '從高中起參與聚會與社團，認識朋友、學習成長，分享筆記與生活體驗。',
 };
 

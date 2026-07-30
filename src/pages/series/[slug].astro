@@ -1,8 +1,8 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Reveal from '@/components/Reveal.astro';
-import { postPermalink, TOPIC_LABELS } from '@/utils/permalinks';
+import PostList from '@/components/PostList.astro';
+import { TOPIC_LABELS } from '@/utils/permalinks';
 
 export async function getStaticPaths() {
   const seriesList = await getCollection('series');
@@ -23,12 +23,6 @@ const { Content } = await render(entry);
 const posts = (await getCollection('blog'))
   .filter((post) => !post.data.draft && post.data.series === seriesId)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const dateFmt = new Intl.DateTimeFormat('zh-TW', {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-});
 
 const covers: Record<string, string> = {
   architecture: '/images/wp/architecture.jpg',
@@ -70,34 +64,8 @@ const banner = covers[seriesId] || '/images/wp/study-notes.jpg';
       <Content />
     </div>
 
-    <ul class="mt-14 divide-y divide-line">
-      {
-        posts.length === 0 ? (
-          <li class="py-8 text-mist-muted">此系列尚無文章。</li>
-        ) : (
-          posts.map((post, i) => (
-            <li>
-              <Reveal delay={i * 50}>
-                <a
-                  href={postPermalink(post.data.pubDate, post.id)}
-                  class="group block py-7 no-underline"
-                >
-                  <time
-                    class="text-sm text-mist-muted"
-                    datetime={post.data.pubDate.toISOString()}
-                  >
-                    {dateFmt.format(post.data.pubDate)}
-                  </time>
-                  <h2 class="font-display mt-2 text-2xl font-semibold text-ink transition group-hover:text-brand">
-                    {post.data.title}
-                  </h2>
-                  <p class="mt-2 text-mist-muted">{post.data.description}</p>
-                </a>
-              </Reveal>
-            </li>
-          ))
-        )
-      }
-    </ul>
+    <div class="mt-14">
+      <PostList posts={posts} empty="此系列尚無文章。" />
+    </div>
   </section>
 </BaseLayout>

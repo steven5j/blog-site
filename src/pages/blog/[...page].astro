@@ -1,0 +1,93 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Reveal from '@/components/Reveal.astro';
+import PostList from '@/components/PostList.astro';
+import Pagination from '@/components/Pagination.astro';
+import {
+  TOPIC_LABELS,
+  type Topic,
+} from '@/utils/permalinks';
+
+export async function getStaticPaths({ paginate }) {
+  const posts = (await getCollection('blog'))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  return paginate(posts, { pageSize: 36 });
+}
+
+const { page } = Astro.props;
+const totalPosts = page.total;
+const isFirstPage = page.currentPage === 1;
+
+const title =
+  isFirstPage ? '文章' : `文章 · 第 ${page.currentPage} 頁`;
+const description = isFirstPage
+  ? 'Steven玄 的繁中部落格文章列表。'
+  : `Steven玄 的文章列表，第 ${page.currentPage} / ${page.lastPage} 頁。`;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page-banner">
+    <div class="mx-auto w-full max-w-site px-5 py-14 sm:px-6 lg:px-8">
+      <p class="text-xs font-semibold tracking-[0.25em] text-white/60 uppercase">
+        文章
+      </p>
+      <h1 class="font-display mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+        全部文章
+      </h1>
+      <p class="mt-3 text-white/75">
+        共 {totalPosts} 篇
+        {
+          page.lastPage > 1 && (
+            <>
+              {' '}
+              · 第 {page.currentPage} / {page.lastPage} 頁
+            </>
+          )
+        }
+        。近期精選、其餘依年份瀏覽；也可從主題進到各領域 Hub。
+      </p>
+    </div>
+  </div>
+
+  <section class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+    <Reveal>
+      <p class="mb-3 text-xs font-semibold tracking-[0.2em] text-mist-muted uppercase">
+        依主題篩選
+      </p>
+      <ul class="flex flex-wrap gap-2 text-sm">
+        {
+          (Object.keys(TOPIC_LABELS) as Topic[]).map((topic) => (
+            <li>
+              <a
+                href={`/topics/${topic}`}
+                class="border border-line bg-paper-elevated px-3 py-1.5 text-mist-muted no-underline transition hover:border-brand hover:text-brand"
+              >
+                {TOPIC_LABELS[topic]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </Reveal>
+
+    <div class="mt-12">
+      <PostList
+        posts={page.data}
+        showTopic
+        titleTag="h2"
+        featuredCount={isFirstPage ? 10 : 0}
+        groupByYear
+      />
+    </div>
+
+    <Pagination
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      url={page.url}
+      basePath="/blog"
+    />
+  </section>
+</BaseLayout>

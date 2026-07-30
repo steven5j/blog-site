@@ -39,25 +39,17 @@ const ungroupedBusinessPosts = posts.filter(
 );
 
 const businessHero = {
-  eyebrow: '產 業 · 投 資 · 資 產',
-  title: '產業投資與商業經驗',
-  body: '產業實務、投資理財與房地產操作紀錄。請先選一條主線，再往下看分組文章。',
+  eyebrow: '商 業 · 產 業 · 資 產',
+  title: '商業經驗',
+  body: '各產業經銷、代理、顧問與現場經營的經驗筆記；亦含投資理財、職涯與房地產。下方依分類瀏覽，或點錨點直接跳到對應區塊。',
   image: '/images/wp/business-hero.jpg',
 } as const;
 
-const businessHubLinks = [
-  {
-    title: '產業與商業',
-    description: '產業現場、金融科技與職涯成長筆記。',
-    href: '#industry',
-    cta: '查看文章 →',
-  },
-  {
-    title: '房地產',
-    description: '收租屋操作、區域評估與看房流程。',
-    href: '/series/real-estate',
-    cta: '進入房產系列 →',
-  },
+const businessNav = [
+  { href: '#industry', label: '產業實務' },
+  { href: '#fintech', label: '投資／金融科技' },
+  { href: '#career', label: '職涯與成長' },
+  { href: '#real-estate', label: '房地產' },
 ] as const;
 
 const businessGroups = [
@@ -67,6 +59,7 @@ const businessGroups = [
     description: '保險產品、餐飲經營、政府標案等現場經驗。',
     posts: industryPosts,
     seriesHref: '/series/industry',
+    previewLimit: 5,
   },
   {
     id: 'fintech',
@@ -74,6 +67,7 @@ const businessGroups = [
     description: 'FinTech、債權理財與區塊鏈等投資觀察。',
     posts: fintechPosts,
     seriesHref: '/series/fintech',
+    previewLimit: 5,
   },
   {
     id: 'career',
@@ -81,6 +75,15 @@ const businessGroups = [
     description: '面試、專案管理與個人品牌相關心得。',
     posts: careerPosts,
     seriesHref: '/series/career',
+    previewLimit: 5,
+  },
+  {
+    id: 'real-estate',
+    title: '房地產',
+    description: '收租屋操作、區域評估與看房流程。',
+    posts: realEstatePosts,
+    seriesHref: '/series/real-estate',
+    previewLimit: 5,
   },
 ] as const;
 
@@ -289,45 +292,20 @@ const softwareSeriesCovers: Record<string, string> = {
           <div class="mx-auto max-w-site px-5 py-12 sm:px-6 sm:py-14 lg:px-8">
             <Reveal>
               <p class="text-xs font-semibold tracking-[0.3em] text-brand uppercase">
-                導覽
+                目錄
               </p>
               <h2 class="font-display mt-3 text-2xl font-bold text-ink sm:text-3xl">
-                兩條主線
+                依分類瀏覽
               </h2>
+              <p class="mt-2 text-mist-muted">
+                四個分類同級並列；點選即可跳到對應文章區塊。
+              </p>
             </Reveal>
-            <ul class="mt-8 grid gap-5 sm:grid-cols-2">
-              {businessHubLinks.map((link, i) => (
-                <li>
-                  <Reveal delay={i * 50}>
-                    <a
-                      href={link.href}
-                      class="group flex h-full flex-col border border-line bg-paper p-6 no-underline transition hover:border-brand/40 hover:shadow-sm"
-                    >
-                      <h3 class="font-display text-xl font-semibold text-ink transition group-hover:text-brand">
-                        {link.title}
-                      </h3>
-                      <p class="mt-2 flex-1 text-sm text-mist-muted">
-                        {link.description}
-                      </p>
-                      <span class="mt-4 text-xs font-semibold tracking-wider text-brand uppercase">
-                        {link.cta}
-                      </span>
-                    </a>
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
-
             <nav
-              class="mt-10 flex flex-wrap gap-2 border-t border-line pt-8"
+              class="mt-8 flex flex-wrap gap-2"
               aria-label="商業文章分類"
             >
-              {[
-                { href: '#industry', label: '產業實務' },
-                { href: '#fintech', label: '投資／金融科技' },
-                { href: '#career', label: '職涯與成長' },
-                { href: '#real-estate', label: '房地產' },
-              ].map((item) => (
+              {businessNav.map((item) => (
                 <a
                   href={item.href}
                   class="border border-line bg-paper px-3 py-1.5 text-sm text-mist-muted no-underline transition hover:border-brand hover:text-brand"
@@ -335,6 +313,14 @@ const softwareSeriesCovers: Record<string, string> = {
                   {item.label}
                 </a>
               ))}
+              {ungroupedBusinessPosts.length > 0 && (
+                <a
+                  href="#business-other"
+                  class="border border-line bg-paper px-3 py-1.5 text-sm text-mist-muted no-underline transition hover:border-brand hover:text-brand"
+                >
+                  其他
+                </a>
+              )}
             </nav>
           </div>
         </section>
@@ -372,10 +358,10 @@ const softwareSeriesCovers: Record<string, string> = {
                   <PostList
                     posts={group.posts}
                     empty="此分類尚無文章。"
-                    limit={5}
+                    limit={group.previewLimit}
                   />
                 </div>
-                {group.posts.length > 5 && (
+                {group.posts.length > group.previewLimit && (
                   <Reveal class="mt-6">
                     <a
                       href={group.seriesHref}
@@ -406,55 +392,6 @@ const softwareSeriesCovers: Record<string, string> = {
                   />
                 </div>
               </div>
-            )}
-          </div>
-        </section>
-
-        <section
-          id="real-estate"
-          class="scroll-mt-20 border-t border-line bg-paper-elevated"
-        >
-          <div class="mx-auto max-w-site px-5 py-14 sm:px-6 sm:py-16 lg:px-8">
-            <Reveal>
-              <div class="flex flex-wrap items-end justify-between gap-4">
-                <div>
-                  <p class="text-xs font-semibold tracking-[0.3em] text-brand uppercase">
-                    房地產精選
-                  </p>
-                  <h2 class="font-display mt-2 text-2xl font-bold text-ink sm:text-3xl">
-                    房產相關文章
-                    <span class="ml-2 text-base font-normal text-mist-muted">
-                      ({realEstatePosts.length})
-                    </span>
-                  </h2>
-                  <p class="mt-2 text-mist-muted">
-                    最新收租屋與看房紀錄；完整連載請至系列頁。
-                  </p>
-                </div>
-                <a
-                  href="/series/real-estate"
-                  class="text-sm font-semibold text-brand no-underline hover:text-brand-hover"
-                >
-                  進入房產系列 →
-                </a>
-              </div>
-            </Reveal>
-            <div class="mt-8">
-              <PostList
-                posts={realEstatePosts}
-                empty="此系列尚無文章。"
-                limit={3}
-              />
-            </div>
-            {realEstatePosts.length > 3 && (
-              <Reveal class="mt-8 text-center">
-                <a
-                  href="/series/real-estate"
-                  class="inline-block border border-ink px-8 py-3 text-xs font-semibold tracking-[0.2em] text-ink no-underline uppercase transition hover:bg-ink hover:text-white"
-                >
-                  全部房產文章
-                </a>
-              </Reveal>
             )}
           </div>
         </section>

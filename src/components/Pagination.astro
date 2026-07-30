@@ -1,0 +1,95 @@
+---
+interface Props {
+  currentPage: number;
+  lastPage: number;
+  url: { prev?: string; next?: string };
+  /** Base path without trailing slash, e.g. `/blog` */
+  basePath: string;
+}
+
+const { currentPage, lastPage, url, basePath } = Astro.props;
+
+function pageHref(page: number) {
+  return page <= 1 ? basePath : `${basePath}/${page}`;
+}
+
+/** Sliding window of page numbers around the current page. */
+const windowSize = 2;
+const pages: number[] = [];
+for (let p = 1; p <= lastPage; p++) {
+  if (
+    p === 1 ||
+    p === lastPage ||
+    (p >= currentPage - windowSize && p <= currentPage + windowSize)
+  ) {
+    pages.push(p);
+  }
+}
+
+const items: Array<number | 'ellipsis'> = [];
+let prev = 0;
+for (const p of pages) {
+  if (prev && p - prev > 1) items.push('ellipsis');
+  items.push(p);
+  prev = p;
+}
+---
+
+{
+  lastPage > 1 && (
+    <nav
+      class="mt-14 flex flex-wrap items-center justify-between gap-4"
+      aria-label="文章分頁"
+    >
+      {url.prev ? (
+        <a
+          href={url.prev}
+          class="text-sm text-mist-muted no-underline transition hover:text-brand"
+        >
+          ← 較新
+        </a>
+      ) : (
+        <span class="text-sm text-mist-muted/40">← 較新</span>
+      )}
+
+      <ol class="flex flex-wrap items-center gap-1">
+        {items.map((item) =>
+          item === 'ellipsis' ? (
+            <li class="px-1 text-sm text-mist-muted" aria-hidden="true">
+              …
+            </li>
+          ) : (
+            <li>
+              {item === currentPage ? (
+                <span
+                  class="inline-flex min-w-9 items-center justify-center border border-brand px-2.5 py-1.5 text-sm font-medium text-brand"
+                  aria-current="page"
+                >
+                  {item}
+                </span>
+              ) : (
+                <a
+                  href={pageHref(item)}
+                  class="inline-flex min-w-9 items-center justify-center border border-transparent px-2.5 py-1.5 text-sm text-mist-muted no-underline transition hover:border-line hover:text-brand"
+                >
+                  {item}
+                </a>
+              )}
+            </li>
+          ),
+        )}
+      </ol>
+
+      {url.next ? (
+        <a
+          href={url.next}
+          class="text-sm text-mist-muted no-underline transition hover:text-brand"
+        >
+          較舊 →
+        </a>
+      ) : (
+        <span class="text-sm text-mist-muted/40">較舊 →</span>
+      )}
+    </nav>
+  )
+}

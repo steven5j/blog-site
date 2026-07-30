@@ -1,6 +1,6 @@
 ---
 import Reveal from '@/components/Reveal.astro';
-import { postPermalink } from '@/utils/permalinks';
+import { postPermalink, TOPIC_LABELS } from '@/utils/permalinks';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -8,44 +8,230 @@ interface Props {
   empty?: string;
   /** Show only the first N posts (after the provided sort order). */
   limit?: number;
+  /**
+   * Recent posts shown with title + description.
+   * Default: 10 in archive mode, otherwise all posts as full rows.
+   */
+  featuredCount?: number;
+  /**
+   * Group non-featured posts by year (collapsed details).
+   * Default: on when there are enough posts and no `limit`.
+   */
+  groupByYear?: boolean;
+  /** Show topic label next to the date (e.g. /blog). */
+  showTopic?: boolean;
+  /** Heading level for featured post titles. Default h3 (nested under section h2). */
+  titleTag?: 'h2' | 'h3';
 }
 
-const { posts, empty = '尚無文章。', limit } = Astro.props;
+const {
+  posts,
+  empty = '尚無文章。',
+  limit,
+  featuredCount: featuredCountProp,
+  groupByYear: groupByYearProp,
+  showTopic = false,
+  titleTag: TitleTag = 'h3',
+} = Astro.props;
+
 const visible = typeof limit === 'number' ? posts.slice(0, limit) : posts;
+
+const archiveMode =
+  typeof limit !== 'number' &&
+  featuredCountProp !== 0 &&
+  visible.length > 12;
+
+const featuredCount =
+  featuredCountProp !== undefined
+    ? featuredCountProp
+    : archiveMode
+      ? 10
+      : visible.length;
+
+const groupByYear =
+  groupByYearProp !== undefined ? groupByYearProp : archiveMode;
+
+const featured = visible.slice(0, Math.min(featuredCount, visible.length));
+const rest = visible.slice(featured.length);
+
+type YearGroup = { year: number; posts: CollectionEntry<'blog'>[] };
+
+const yearGroups: YearGroup[] = [];
+if (groupByYear && rest.length > 0) {
+  const map = new Map<number, CollectionEntry<'blog'>[]>();
+  for (const post of rest) {
+    const year = post.data.pubDate.getUTCFullYear();
+    const list = map.get(year);
+    if (list) list.push(post);
+    else map.set(year, [post]);
+  }
+  for (const year of [...map.keys()].sort((a, b) => b - a)) {
+    yearGroups.push({ year, posts: map.get(year)! });
+  }
+}
+
+const compactPosts = groupByYear ? [] : rest;
+
+const newestYear = yearGroups[0]?.year;
+const thisYear = new Date().getFullYear();
+const defaultOpenYear = yearGroups.some((g) => g.year === thisYear)
+  ? thisYear
+  : newestYear;
 
 const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   year: 'numeric',
   month: 'short',
   day: 'numeric',
+  timeZone: 'UTC',
 });
+
+const shortDateFmt = new Intl.DateTimeFormat('zh-TW', {
+  month: 'numeric',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+
+const maxFeaturedReveal = 6;
 ---
 
-<ul class="divide-y divide-line">
-  {
-    visible.length === 0 ? (
-      <li class="py-8 text-mist-muted">{empty}</li>
-    ) : (
-      visible.map((post, i) => (
-        <li>
-          <Reveal delay={i * 40}>
-            <a
-              href={postPermalink(post.data.pubDate, post.id)}
-              class="group block py-7 no-underline"
-            >
-              <time
-                class="text-sm text-mist-muted"
-                datetime={post.data.pubDate.toISOString()}
+{
+  visible.length === 0 ? (
+    <p class="py-8 text-mist-muted">{empty}</p>
+  ) : (
+    <div class="space-y-10">
+      {featured.length > 0 && (
+        <div>
+          {archiveMode && rest.length > 0 && (
+            <p class="mb-4 text-xs font-semibold tracking-[0.2em] text-mist-muted uppercase">
+              近期
+            </p>
+          )}
+          <ul class="divide-y divide-line">
+            {featured.map((post, i) => (
+              <li>
+                <Reveal delay={i < maxFeaturedReveal ? i * 40 : 0}>
+                  <a
+                    href={postPermalink(post.data.pubDate, post.id)}
+                    class="group block py-7 no-underline"
+                  >
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-mist-muted">
+                      <time datetime={post.data.pubDate.toISOString()}>
+                        {dateFmt.format(post.data.pubDate)}
+                      </time>
+                      {showTopic && (
+                        <>
+                          <span aria-hidden="true">·</span>
+                          <span>{TOPIC_LABELS[post.data.topic]}</span>
+                        </>
+                      )}
+                    </div>
+                    <TitleTag class="font-display mt-2 text-2xl font-semibold text-ink transition group-hover:text-brand">
+                      {post.data.title}
+                    </TitleTag>
+                    <p class="mt-2 text-mist-muted">{post.data.description}</p>
+                  </a>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {yearGroups.length > 0 && (
+        <div>
+          <p class="mb-4 text-xs font-semibold tracking-[0.2em] text-mist-muted uppercase">
+            依年份
+          </p>
+          <div class="divide-y divide-line border-y border-line">
+            {yearGroups.map((group) => (
+              <details
+                class="year-group"
+                open={group.year === defaultOpenYear}
+                id={`y-${group.year}`}
               >
-                {dateFmt.format(post.data.pubDate)}
-              </time>
-              <h3 class="font-display mt-2 text-2xl font-semibold text-ink transition group-hover:text-brand">
-                {post.data.title}
-              </h3>
-              <p class="mt-2 text-mist-muted">{post.data.description}</p>
-            </a>
-          </Reveal>
-        </li>
-      ))
-    )
+                <summary class="flex cursor-pointer list-none items-baseline justify-between gap-4 py-4 transition hover:text-brand">
+                  <span class="font-display text-xl font-semibold text-ink">
+                    {group.year}
+                  </span>
+                  <span class="text-sm text-mist-muted">{group.posts.length} 篇</span>
+                </summary>
+                <ul class="border-t border-line pb-2">
+                  {group.posts.map((post) => (
+                    <li>
+                      <a
+                        href={postPermalink(post.data.pubDate, post.id)}
+                        class="group flex items-baseline gap-3 py-2.5 no-underline sm:gap-4"
+                      >
+                        <time
+                          class="w-12 shrink-0 text-sm tabular-nums text-mist-muted sm:w-14"
+                          datetime={post.data.pubDate.toISOString()}
+                        >
+                          {shortDateFmt.format(post.data.pubDate)}
+                        </time>
+                        <span class="min-w-0 flex-1 text-ink transition group-hover:text-brand">
+                          {post.data.title}
+                        </span>
+                        {showTopic && (
+                          <span class="hidden shrink-0 text-xs text-mist-muted sm:inline">
+                            {TOPIC_LABELS[post.data.topic]}
+                          </span>
+                        )}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {compactPosts.length > 0 && (
+        <ul class="divide-y divide-line border-y border-line">
+          {compactPosts.map((post) => (
+            <li>
+              <a
+                href={postPermalink(post.data.pubDate, post.id)}
+                class="group flex items-baseline gap-3 py-2.5 no-underline sm:gap-4"
+              >
+                <time
+                  class="w-28 shrink-0 text-sm tabular-nums text-mist-muted"
+                  datetime={post.data.pubDate.toISOString()}
+                >
+                  {dateFmt.format(post.data.pubDate)}
+                </time>
+                <span class="min-w-0 flex-1 text-ink transition group-hover:text-brand">
+                  {post.data.title}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+<style>
+  .year-group summary::-webkit-details-marker {
+    display: none;
   }
-</ul>
+
+  .year-group summary::after {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-left: 0.75rem;
+    flex-shrink: 0;
+    align-self: center;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    opacity: 0.45;
+    transform: rotate(45deg);
+    transition: transform 0.15s ease;
+  }
+
+  .year-group[open] summary::after {
+    transform: rotate(225deg);
+  }
+</style>

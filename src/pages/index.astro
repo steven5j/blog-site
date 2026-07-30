@@ -43,24 +43,22 @@ const pillars = [
     href: '/topics/software',
     description: '軟體工程筆記、系列合集與技術發展紀錄。',
     image: '/images/wp/architecture.jpg',
+    tags: ['系列', '作品', '筆記'],
   },
   {
-    label: '理財／商業',
+    label: '商業經驗',
     href: '/topics/business',
-    description: '產業經驗、投資理財與生意實務筆記。',
+    description:
+      '各產業經銷、代理、顧問與現場經營紀錄，並涵蓋投資理財與房地產操作。',
     image: '/images/wp/business-hero.jpg',
-  },
-  {
-    label: '房產',
-    href: '/series/real-estate',
-    description: '不動產操作、收租與區域評估紀錄。',
-    image: '/images/wp/real-estate-hero.jpg',
+    tags: ['商業經驗', '產業實務', '投資', '房地產'],
   },
   {
     label: '生活',
     href: '/topics/life',
     description: '聚會、社團、學習與生活體驗分享。',
     image: '/images/wp/life-hero.jpg',
+    tags: ['聚會', '學習', '體驗'],
   },
 ] as const;
 
@@ -93,7 +91,7 @@ const featuredSeries = featuredSeriesIds
       <p
         class="mt-8 text-sm font-medium tracking-[0.35em] text-white/90 uppercase sm:mt-10 sm:text-base"
       >
-        理財 / 程式 / 行銷 / 房產
+        程式 · 商業經驗 · 生活
       </p>
       <div class="mt-10 flex flex-wrap items-center justify-center gap-3 sm:mt-12">
         <a
@@ -112,7 +110,7 @@ const featuredSeries = featuredSeriesIds
     </div>
   </section>
 
-  <!-- Four content paths -->
+  <!-- Content paths -->
   <section id="paths" class="scroll-mt-20 bg-paper-elevated">
     <div class="mx-auto max-w-site px-5 py-20 sm:px-6 lg:px-8">
       <Reveal>
@@ -123,11 +121,11 @@ const featuredSeries = featuredSeriesIds
           從這裡開始
         </h2>
         <p class="mt-4 max-w-2xl text-mist-muted">
-          四條主線對應站上主題：選一條進入，再用系列或文章列表往下讀。
+          三條主線對應站上主題：選一條進入 Hub，再用分類錨點或系列往下讀。
         </p>
       </Reveal>
 
-      <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {
           pillars.map((pillar, i) => (
             <li>
@@ -148,6 +146,9 @@ const featuredSeries = featuredSeriesIds
                     </h3>
                     <p class="mt-2 flex-1 text-sm text-mist-muted">
                       {pillar.description}
+                    </p>
+                    <p class="mt-3 text-xs tracking-wide text-mist-muted">
+                      {pillar.tags.join(' · ')}
                     </p>
                     <span class="mt-4 text-xs font-semibold tracking-wider text-brand uppercase">
                       進入 →
