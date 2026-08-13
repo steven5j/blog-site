@@ -1,4 +1,6 @@
 ---
+import AskAiPanel from './AskAiPanel.astro';
+
 interface Props {
   transparent?: boolean;
 }
@@ -69,64 +71,77 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
       />
     </a>
 
-    <!-- Desktop nav -->
-    <nav class="hidden md:block" aria-label="主要導覽">
-      <ul class="flex items-center gap-1 lg:gap-2">
-        {
-          primaryLinks.map((link) => (
-            <li class="group relative">
-              <a
-                href={link.href}
-                class:list={[
-                  'inline-flex items-center gap-2 px-3 py-2 text-lg no-underline transition',
-                  isActive(link.href, link.match)
-                    ? 'text-brand'
-                    : 'text-white/90 hover:text-brand',
-                ]}
-                aria-current={isActive(link.href, link.match) ? 'page' : undefined}
-                data-astro-prefetch
-              >
-                {link.label}
-              </a>
-              {'children' in link && link.children && (
-                <ul
-                  class="invisible absolute right-0 top-full z-50 min-w-[14rem] translate-y-1 border border-white/10 bg-ink py-2 opacity-0 shadow-lg transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Desktop nav -->
+      <nav class="hidden md:block" aria-label="主要導覽">
+        <ul class="flex items-center gap-1 lg:gap-2">
+          {
+            primaryLinks.map((link) => (
+              <li class="group relative">
+                <a
+                  href={link.href}
+                  class:list={[
+                    'inline-flex items-center gap-2 px-3 py-2 text-lg no-underline transition',
+                    isActive(link.href, link.match)
+                      ? 'text-brand'
+                      : 'text-white/90 hover:text-brand',
+                  ]}
+                  aria-current={isActive(link.href, link.match) ? 'page' : undefined}
+                  data-astro-prefetch
                 >
-                  {link.children.map((child) => (
-                    <li>
-                      <a
-                        href={child.href}
-                        class="block whitespace-nowrap px-4 py-2.5 text-base text-white/80 no-underline transition hover:bg-white/5 hover:text-brand"
-                        data-astro-prefetch
-                      >
-                        {child.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+                  {link.label}
+                </a>
+                {'children' in link && link.children && (
+                  <ul
+                    class="invisible absolute right-0 top-full z-50 min-w-[14rem] translate-y-1 border border-white/10 bg-ink py-2 opacity-0 shadow-lg transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+                  >
+                    {link.children.map((child) => (
+                      <li>
+                        <a
+                          href={child.href}
+                          class="block whitespace-nowrap px-4 py-2.5 text-base text-white/80 no-underline transition hover:bg-white/5 hover:text-brand"
+                          data-astro-prefetch
+                        >
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
 
-    <!-- Mobile only: hamburger -->
-    <button
-      type="button"
-      class="menu-toggle inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-1 text-sm uppercase tracking-[0.15em] text-white/90 md:hidden"
-      aria-expanded="false"
-      aria-controls="site-menu"
-      aria-label="開啟選單"
-      data-menu-toggle
-    >
-      <span class="flex flex-col gap-1" aria-hidden="true">
-        <span class="block h-0.5 w-5 bg-current"></span>
-        <span class="block h-0.5 w-5 bg-current"></span>
-        <span class="block h-0.5 w-5 bg-current"></span>
-      </span>
-      <span>選單</span>
-    </button>
+      <button
+        type="button"
+        class="inline-flex cursor-pointer items-center border border-white/25 bg-transparent px-2.5 py-1.5 text-xs font-semibold tracking-[0.14em] text-white/90 uppercase transition hover:border-brand hover:text-brand"
+        aria-expanded="false"
+        aria-controls="ask-ai-panel"
+        aria-haspopup="dialog"
+        data-ask-open
+      >
+        Ask AI
+      </button>
+
+      <!-- Mobile only: hamburger -->
+      <button
+        type="button"
+        class="menu-toggle inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-1 text-sm uppercase tracking-[0.15em] text-white/90 md:hidden"
+        aria-expanded="false"
+        aria-controls="site-menu"
+        aria-label="開啟選單"
+        data-menu-toggle
+      >
+        <span class="flex flex-col gap-1" aria-hidden="true">
+          <span class="block h-0.5 w-5 bg-current"></span>
+          <span class="block h-0.5 w-5 bg-current"></span>
+          <span class="block h-0.5 w-5 bg-current"></span>
+        </span>
+        <span>選單</span>
+      </button>
+    </div>
   </div>
 
   <!-- Mobile overlay -->
@@ -190,9 +205,22 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
             </li>
           ))
         }
+        <li class="mt-6 border-t border-white/15 pt-4">
+          <button
+            type="button"
+            class="block w-full cursor-pointer border-0 bg-transparent py-3 text-left font-display text-2xl font-medium text-brand transition hover:text-white"
+            aria-expanded="false"
+            aria-controls="ask-ai-panel"
+            data-ask-open
+          >
+            Ask AI
+          </button>
+        </li>
       </ul>
     </div>
   </nav>
+
+  <AskAiPanel />
 </header>
 
 <script>

@@ -1,0 +1,510 @@
+---
+/**
+ * Site-wide Ask AI drawer. Calls POST /api/ask (Cloudflare AI Search).
+ * Mount once from Header; opens via [data-ask-open].
+ */
+const suggestions = [
+  '這個網站的作者是誰？專長是什麼？',
+  '有哪些作品或證照可以看？',
+  '送報件系統升級專案做了什麼？',
+];
+---
+
+<div
+  id="ask-ai-panel"
+  class="ask-ai-panel fixed inset-0 z-[60] hidden"
+  data-ask-panel
+  hidden
+  aria-hidden="true"
+>
+  <button
+    type="button"
+    class="ask-ai-backdrop absolute inset-0 border-0 bg-ink/60 backdrop-blur-[2px] transition-opacity"
+    data-ask-close
+    aria-label="關閉 Ask AI"
+  ></button>
+
+  <aside
+    class="ask-ai-drawer absolute inset-y-0 right-0 flex w-full max-w-md flex-col border-l border-white/10 bg-ink text-white shadow-2xl"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ask-ai-title"
+    tabindex="-1"
+    data-ask-drawer
+  >
+    <header class="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
+      <div>
+        <p class="text-[0.65rem] font-semibold tracking-[0.28em] text-brand uppercase">
+          Steven玄
+        </p>
+        <h2 id="ask-ai-title" class="font-display mt-1 text-xl font-semibold tracking-tight">
+          Ask AI
+        </h2>
+        <p class="mt-1 text-sm text-white/55">依站內文章與作品回答，找不到會直說。</p>
+      </div>
+      <button
+        type="button"
+        class="cursor-pointer border-0 bg-transparent px-1 py-1 text-sm tracking-[0.12em] text-white/70 uppercase transition hover:text-white"
+        data-ask-close
+      >
+        關閉
+      </button>
+    </header>
+
+    <div
+      class="ask-ai-messages flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-5"
+      data-ask-messages
+      aria-live="polite"
+    >
+      <div class="ask-ai-empty space-y-4" data-ask-empty>
+        <p class="text-sm leading-relaxed text-white/70">
+          試試問站上的專案、文章主題，或關於這個網站的問題。
+        </p>
+        <ul class="flex flex-col gap-2">
+          {
+            suggestions.map((text) => (
+              <li>
+                <button
+                  type="button"
+                  class="w-full cursor-pointer border border-white/15 bg-transparent px-3 py-2.5 text-left text-sm text-white/85 transition hover:border-brand/60 hover:text-brand"
+                  data-ask-suggestion
+                  data-query={text}
+                >
+                  {text}
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <form
+      class="border-t border-white/10 px-4 py-4"
+      data-ask-form
+    >
+      <label class="sr-only" for="ask-ai-input">向站內 AI 提問</label>
+      <div class="flex items-end gap-2">
+        <textarea
+          id="ask-ai-input"
+          name="query"
+          rows="2"
+          maxlength="1000"
+          required
+          placeholder="問站上的內容…"
+          class="ask-ai-input max-h-32 min-h-[2.75rem] flex-1 resize-y border border-white/15 bg-ink-elevated px-3 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-brand focus:outline-none"
+          data-ask-input
+        ></textarea>
+        <button
+          type="submit"
+          class="inline-flex h-[2.75rem] shrink-0 cursor-pointer items-center justify-center border-0 bg-brand px-4 text-xs font-semibold tracking-[0.16em] text-white uppercase transition hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
+          data-ask-submit
+        >
+          送出
+        </button>
+      </div>
+      <p class="mt-2 text-[0.7rem] text-white/40" data-ask-status></p>
+    </form>
+  </aside>
+</div>
+
+<style>
+  .ask-ai-panel[hidden] {
+    display: none;
+  }
+
+  .ask-ai-drawer {
+    transform: translateX(100%);
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+
+  .ask-ai-panel.is-open .ask-ai-drawer {
+    transform: translateX(0);
+  }
+
+  .ask-ai-backdrop {
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-out-expo);
+  }
+
+  .ask-ai-panel.is-open .ask-ai-backdrop {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ask-ai-drawer,
+    .ask-ai-backdrop {
+      transition: none;
+    }
+  }
+
+  .ask-ai-bubble {
+    max-width: 100%;
+    border-radius: 0;
+    padding: 0.75rem 0.9rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .ask-ai-bubble-user {
+    align-self: flex-end;
+    background: rgb(255 255 255 / 0.08);
+    color: rgb(255 255 255 / 0.95);
+  }
+
+  .ask-ai-bubble-assistant {
+    align-self: stretch;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background: rgb(0 0 0 / 0.2);
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  .ask-ai-sources {
+    margin-top: 0.65rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+  }
+
+  .ask-ai-sources p {
+    margin: 0 0 0.35rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-brand);
+    font-weight: 600;
+  }
+
+  .ask-ai-sources a {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: rgb(255 255 255 / 0.7);
+    text-decoration: none;
+  }
+
+  .ask-ai-sources a:hover {
+    color: var(--color-brand);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  type AskSource = {
+    id?: string;
+    score?: number;
+    text?: string;
+    key?: string | null;
+    metadata?: Record<string, unknown> | null;
+  };
+
+  type AskJsonResponse = {
+    answer?: string;
+    sources?: AskSource[];
+    error?: string;
+  };
+
+  function escapeHtml(text: string) {
+    return text
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;');
+  }
+
+  function sourceHref(source: AskSource): string | null {
+    const meta = source.metadata;
+    if (meta && typeof meta.url === 'string' && meta.url.startsWith('/')) {
+      return meta.url;
+    }
+    const key = source.key;
+    if (!key) return null;
+    if (key.startsWith('http://') || key.startsWith('https://') || key.startsWith('/')) {
+      return key;
+    }
+    return null;
+  }
+
+  function sourceLabel(source: AskSource): string {
+    const meta = source.metadata;
+    if (meta && typeof meta.title === 'string' && meta.title.trim()) return meta.title;
+    if (source.key) return source.key;
+    return '相關片段';
+  }
+
+  function renderSources(sources: AskSource[]): string {
+    if (!sources.length) return '';
+    const links = sources
+      .slice(0, 5)
+      .map((source) => {
+        const href = sourceHref(source);
+        const label = escapeHtml(sourceLabel(source));
+        if (href) {
+          return `<a href="${escapeHtml(href)}" data-astro-prefetch>${label}</a>`;
+        }
+        return `<span class="block mt-1 text-sm text-white/55">${label}</span>`;
+      })
+      .join('');
+    return `<div class="ask-ai-sources"><p>來源</p>${links}</div>`;
+  }
+
+  async function readAskStream(
+    response: Response,
+    onDelta: (text: string) => void,
+    onChunks: (chunks: AskSource[]) => void,
+  ) {
+    const reader = response.body?.getReader();
+    if (!reader) throw new Error('無法讀取串流回應');
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let eventName = 'message';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() ?? '';
+
+      for (const rawLine of lines) {
+        const line = rawLine.replace(/\r$/, '');
+        if (!line) {
+          eventName = 'message';
+          continue;
+        }
+        if (line.startsWith('event:')) {
+          eventName = line.slice(6).trim();
+          continue;
+        }
+        if (!line.startsWith('data:')) continue;
+
+        const data = line.slice(5).trim();
+        if (data === '[DONE]') {
+          eventName = 'message';
+          continue;
+        }
+
+        try {
+          const parsed = JSON.parse(data) as AskSource[] | {
+            choices?: Array<{ delta?: { content?: string } }>;
+          };
+          if (eventName === 'chunks' && Array.isArray(parsed)) {
+            onChunks(parsed as AskSource[]);
+          } else if (
+            parsed &&
+            !Array.isArray(parsed) &&
+            parsed.choices?.[0]?.delta?.content
+          ) {
+            onDelta(parsed.choices[0].delta.content);
+          }
+        } catch {
+          // ignore malformed SSE chunks
+        }
+      }
+    }
+  }
+
+  function bindAskAi() {
+    const panel = document.querySelector<HTMLElement>('[data-ask-panel]');
+    const drawer = document.querySelector<HTMLElement>('[data-ask-drawer]');
+    const form = document.querySelector<HTMLFormElement>('[data-ask-form]');
+    const input = document.querySelector<HTMLTextAreaElement>('[data-ask-input]');
+    const submit = document.querySelector<HTMLButtonElement>('[data-ask-submit]');
+    const messages = document.querySelector<HTMLElement>('[data-ask-messages]');
+    const empty = document.querySelector<HTMLElement>('[data-ask-empty]');
+    const status = document.querySelector<HTMLElement>('[data-ask-status]');
+    if (!panel || !drawer || !form || !input || !submit || !messages || !status) return;
+
+    let busy = false;
+    let lastFocus: HTMLElement | null = null;
+
+    const setStatus = (text: string) => {
+      status.textContent = text;
+    };
+
+    const open = () => {
+      lastFocus = document.activeElement as HTMLElement | null;
+      panel.hidden = false;
+      panel.classList.remove('hidden');
+      panel.setAttribute('aria-hidden', 'false');
+      requestAnimationFrame(() => panel.classList.add('is-open'));
+      document.body.style.overflow = 'hidden';
+      document.querySelectorAll<HTMLButtonElement>('[data-ask-open]').forEach((btn) => {
+        btn.setAttribute('aria-expanded', 'true');
+      });
+      input.focus();
+    };
+
+    const close = () => {
+      panel.classList.remove('is-open');
+      document.querySelectorAll<HTMLButtonElement>('[data-ask-open]').forEach((btn) => {
+        btn.setAttribute('aria-expanded', 'false');
+      });
+      const finish = () => {
+        panel.hidden = true;
+        panel.classList.add('hidden');
+        panel.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        lastFocus?.focus?.();
+      };
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) finish();
+      else window.setTimeout(finish, 400);
+    };
+
+    const hideEmpty = () => {
+      empty?.classList.add('hidden');
+    };
+
+    const appendBubble = (role: 'user' | 'assistant', html: string) => {
+      hideEmpty();
+      const el = document.createElement('div');
+      el.className = `ask-ai-bubble ask-ai-bubble-${role}`;
+      el.innerHTML = html;
+      messages.appendChild(el);
+      messages.scrollTop = messages.scrollHeight;
+      return el;
+    };
+
+    const ask = async (query: string) => {
+      const q = query.trim();
+      if (!q || busy) return;
+      busy = true;
+      submit.disabled = true;
+      setStatus('搜尋站內內容中…');
+
+      appendBubble('user', escapeHtml(q));
+      const assistantEl = appendBubble('assistant', '…');
+      let answer = '';
+      let sources: AskSource[] = [];
+
+      try {
+        const res = await fetch('/api/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q, stream: true }),
+        });
+
+        const contentType = res.headers.get('content-type') ?? '';
+
+        if (!res.ok) {
+          let errMsg = `請求失敗（${res.status}）`;
+          try {
+            const errBody = (await res.json()) as AskJsonResponse;
+            if (errBody.error) errMsg = errBody.error;
+          } catch {
+            // keep status text
+          }
+          throw new Error(errMsg);
+        }
+
+        if (contentType.includes('text/event-stream')) {
+          await readAskStream(
+            res,
+            (delta) => {
+              answer += delta;
+              assistantEl.textContent = answer;
+              messages.scrollTop = messages.scrollHeight;
+              setStatus('產生回覆中…');
+            },
+            (chunks) => {
+              sources = chunks.map((chunk) => {
+                const raw = chunk as AskSource & {
+                  item?: { key?: string; metadata?: Record<string, unknown> };
+                };
+                return {
+                  id: raw.id,
+                  score: raw.score,
+                  text: raw.text,
+                  key: raw.key ?? raw.item?.key ?? null,
+                  metadata: raw.metadata ?? raw.item?.metadata ?? null,
+                };
+              });
+            },
+          );
+        } else {
+          const data = (await res.json()) as AskJsonResponse;
+          if (data.error) throw new Error(data.error);
+          answer = data.answer ?? '';
+          sources = data.sources ?? [];
+          assistantEl.textContent = answer || '（沒有回覆）';
+        }
+
+        if (!answer.trim()) {
+          assistantEl.textContent = '站內暫時找不到足夠相關的內容。';
+        } else {
+          assistantEl.innerHTML = `${escapeHtml(answer)}${renderSources(sources)}`;
+        }
+        setStatus('');
+      } catch (err) {
+        const message = err instanceof Error ? err.message : '發生未知錯誤';
+        assistantEl.textContent = `抱歉，目前無法回答：${message}`;
+        setStatus('');
+      } finally {
+        busy = false;
+        submit.disabled = false;
+        messages.scrollTop = messages.scrollHeight;
+      }
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-ask-open]').forEach((btn) => {
+      btn.onclick = () => {
+        const menuPanel = document.querySelector<HTMLElement>('[data-menu-panel]');
+        if (menuPanel && !menuPanel.hidden) {
+          menuPanel.querySelector<HTMLButtonElement>('[data-menu-close]')?.click();
+        }
+        open();
+      };
+    });
+
+    // Delegated handlers so astro:page-load rebinds safely without stacking listeners
+    panel.onclick = (e) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (target.closest('[data-ask-close]')) {
+        close();
+        return;
+      }
+      const suggestion = target.closest<HTMLButtonElement>('[data-ask-suggestion]');
+      if (suggestion) {
+        const q = suggestion.dataset.query ?? suggestion.textContent ?? '';
+        input.value = q;
+        void ask(q);
+      }
+    };
+
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      const q = input.value;
+      input.value = '';
+      void ask(q);
+    };
+
+    input.onkeydown = (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+    };
+
+    panel.onkeydown = (e) => {
+      if (e.key === 'Escape') close();
+    };
+  }
+
+  bindAskAi();
+  document.addEventListener('astro:page-load', bindAskAi);
+</script>
