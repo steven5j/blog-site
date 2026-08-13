@@ -2,9 +2,8 @@ name = "blog-site"
 compatibility_date = "2026-07-22"
 pages_build_output_dir = "dist"
 
-# AI Search instance: stevenjhu-ai-search (R2 source: stevenjhu-r2)
-# remote = true lets `wrangler pages dev` proxy to the deployed instance
-[[ai_search]]
-binding = "AI_SEARCH"
-instance_name = "stevenjhu-ai-search"
+# Pages Functions support Workers AI (`env.AI`). Ask AI uses
+# env.AI.autorag("stevenjhu-ai-search") against the AI Search instance.
+[ai]
+binding = "AI"
 remote = true

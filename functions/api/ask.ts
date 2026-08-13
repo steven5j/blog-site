@@ -1,15 +1,19 @@
 /**
- * POST /api/ask — site Q&A via Cloudflare AI Search (stevenjhu-ai-search).
+ * POST /api/ask — site Q&A via Cloudflare AI Search.
+ *
+ * Pages Functions use the Workers AI binding (`env.AI`), then
+ * `env.AI.autorag("stevenjhu-ai-search")` (legacy AutoRAG API).
  *
  * Body: { query: string, stream?: boolean }
- * - stream=false (default): JSON { answer, sources, model, usage }
- * - stream=true: text/event-stream (chunks event + OpenAI-style deltas)
+ * - stream=false (default): JSON { answer, sources }
+ * - stream=true: text/event-stream
  */
 
 interface Env {
-  AI_SEARCH: AiSearchInstance;
+  AI: Ai;
 }
 
+const AI_SEARCH_INSTANCE = 'stevenjhu-ai-search';
 const MAX_QUERY_LENGTH = 1000;
 const SYSTEM_PROMPT = [
   '你是 stevenjhu.com（Steven玄）個人網站的繁體中文助理。',
@@ -27,22 +31,30 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-function mapSources(chunks: AiSearchChunk[] | undefined) {
-  if (!chunks?.length) return [];
-  return chunks.map((chunk) => ({
-    id: chunk.id,
-    score: chunk.score,
-    text: chunk.text,
-    key: chunk.item?.key ?? null,
-    metadata: chunk.item?.metadata ?? null,
+function mapSources(data: AutoRagSource[] | undefined) {
+  if (!data?.length) return [];
+  return data.map((item) => ({
+    id: item.file_id ?? item.content?.[0]?.id ?? null,
+    score: item.score ?? null,
+    text: item.content?.[0]?.text ?? '',
+    key: item.filename ?? null,
+    metadata: item.attributes ?? null,
   }));
 }
 
+function isReadableStream(value: unknown): value is ReadableStream {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof (value as ReadableStream).getReader === 'function'
+  );
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
-  const { AI_SEARCH } = context.env;
-  if (!AI_SEARCH) {
+  const { AI } = context.env;
+  if (!AI?.autorag) {
     return json(
-      { error: 'AI_SEARCH binding is not configured. Check wrangler.toml [[ai_search]].' },
+      { error: 'AI binding is not configured. Check wrangler.toml [ai] and redeploy.' },
       500,
     );
   }
@@ -63,34 +75,30 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   const stream = body.stream === true;
-  const messages: AiSearchMessage[] = [
-    { role: 'system', content: SYSTEM_PROMPT },
-    { role: 'user', content: query },
-  ];
-
-  const chatParams = {
-    messages,
+  const rag = AI.autorag(AI_SEARCH_INSTANCE);
+  const params = {
+    query,
+    system_prompt: SYSTEM_PROMPT,
     model: '@cf/meta/llama-3.3-70b-instruct-fp8-fast',
-    stream,
-    ai_search_options: {
-      retrieval: {
-        max_num_results: 5,
-        match_threshold: 0.3,
-      },
-      query_rewrite: { enabled: true },
-      reranking: {
-        enabled: true,
-        model: '@cf/baai/bge-reranker-base',
-      },
+    rewrite_query: true,
+    max_num_results: 5,
+    ranking_options: { score_threshold: 0.3 },
+    reranking: {
+      enabled: true,
+      model: '@cf/baai/bge-reranker-base',
     },
   };
 
   try {
     if (stream) {
-      const sse = (await AI_SEARCH.chatCompletions({
-        ...chatParams,
-        stream: true,
-      })) as ReadableStream;
+      const sse = await rag.aiSearch({ ...params, stream: true });
+      if (!isReadableStream(sse)) {
+        const result = sse as AutoRagAiSearchResult;
+        return json({
+          answer: result.response ?? '',
+          sources: mapSources(result.data),
+        });
+      }
 
       return new Response(sse, {
         headers: {
@@ -100,16 +108,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    const result = (await AI_SEARCH.chatCompletions({
-      ...chatParams,
-      stream: false,
-    })) as AiSearchChatCompletion;
-
+    const result = await rag.aiSearch({ ...params, stream: false });
     return json({
-      answer: result.choices?.[0]?.message?.content ?? '',
-      sources: mapSources(result.chunks),
-      model: result.model,
-      usage: result.usage ?? null,
+      answer: result.response ?? '',
+      sources: mapSources(result.data),
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'AI Search request failed.';

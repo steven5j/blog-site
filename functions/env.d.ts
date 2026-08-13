@@ -8,53 +8,46 @@ declare type PagesFunction<E = unknown> = (context: {
   data: Record<string, unknown>;
 }) => Response | Promise<Response>;
 
-/** Minimal AI Search instance binding (see Cloudflare AI Search Workers binding). */
-interface AiSearchMessage {
-  role: 'system' | 'developer' | 'user' | 'assistant' | 'tool';
-  content: string;
+/** Legacy AutoRAG / AI Search via Workers AI (`env.AI.autorag()`). */
+interface AutoRagAiSearchParams {
+  query: string;
+  model?: string;
+  system_prompt?: string;
+  rewrite_query?: boolean;
+  max_num_results?: number;
+  ranking_options?: { score_threshold?: number };
+  reranking?: { enabled?: boolean; model?: string };
+  stream?: boolean;
 }
 
-interface AiSearchChunk {
-  id: string;
-  type: string;
-  score: number;
-  text: string;
-  item?: {
-    key?: string;
-    timestamp?: number;
-    metadata?: Record<string, unknown>;
-  };
+interface AutoRagSource {
+  file_id?: string;
+  filename?: string;
+  score?: number;
+  attributes?: Record<string, unknown>;
+  content?: Array<{ id?: string; type?: string; text?: string }>;
 }
 
-interface AiSearchChatCompletion {
-  id: string;
-  object: string;
-  created: number;
-  model: string;
-  choices: Array<{
-    index?: number;
-    message: { role: string; content: string };
-    finish_reason?: string;
-  }>;
-  usage?: {
-    prompt_tokens?: number;
-    completion_tokens?: number;
-    total_tokens?: number;
-  };
-  chunks?: AiSearchChunk[];
+interface AutoRagAiSearchResult {
+  object?: string;
+  search_query?: string;
+  response?: string;
+  data?: AutoRagSource[];
+  has_more?: boolean;
 }
 
-interface AiSearchInstance {
-  search(params: {
-    messages?: AiSearchMessage[];
-    query?: string;
-    ai_search_options?: Record<string, unknown>;
-  }): Promise<{ chunks: AiSearchChunk[] }>;
+interface AutoRagInstance {
+  aiSearch(
+    params: AutoRagAiSearchParams & { stream?: false },
+  ): Promise<AutoRagAiSearchResult>;
+  aiSearch(
+    params: AutoRagAiSearchParams & { stream: true },
+  ): Promise<ReadableStream>;
+  aiSearch(
+    params: AutoRagAiSearchParams,
+  ): Promise<AutoRagAiSearchResult | ReadableStream>;
+}
 
-  chatCompletions(params: {
-    messages: AiSearchMessage[];
-    model?: string;
-    stream?: boolean;
-    ai_search_options?: Record<string, unknown>;
-  }): Promise<AiSearchChatCompletion | ReadableStream>;
+interface Ai {
+  autorag(instanceName: string): AutoRagInstance;
 }
