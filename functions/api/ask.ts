@@ -50,6 +50,23 @@ function isReadableStream(value: unknown): value is ReadableStream {
   );
 }
 
+function isResponseLike(value: unknown): value is Response {
+  return (
+    value instanceof Response ||
+    (typeof value === 'object' &&
+      value !== null &&
+      typeof (value as Response).body !== 'undefined' &&
+      typeof (value as Response).headers?.get === 'function')
+  );
+}
+
+function toAskJson(result: AutoRagAiSearchResult) {
+  return json({
+    answer: result.response ?? result.choices?.[0]?.message?.content ?? '',
+    sources: mapSources(result.data),
+  });
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { AI } = context.env;
   if (!AI?.autorag) {
@@ -92,27 +109,30 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     if (stream) {
       const sse = await rag.aiSearch({ ...params, stream: true });
-      if (!isReadableStream(sse)) {
-        const result = sse as AutoRagAiSearchResult;
-        return json({
-          answer: result.response ?? '',
-          sources: mapSources(result.data),
+      if (isResponseLike(sse)) {
+        const headers = new Headers(sse.headers);
+        if (!headers.get('content-type')?.includes('event-stream')) {
+          headers.set('Content-Type', 'text/event-stream; charset=utf-8');
+        }
+        headers.set('Cache-Control', 'no-cache');
+        return new Response(sse.body, { status: sse.status, headers });
+      }
+      if (isReadableStream(sse)) {
+        return new Response(sse, {
+          headers: {
+            'Content-Type': 'text/event-stream; charset=utf-8',
+            'Cache-Control': 'no-cache',
+          },
         });
       }
-
-      return new Response(sse, {
-        headers: {
-          'Content-Type': 'text/event-stream; charset=utf-8',
-          'Cache-Control': 'no-cache',
-        },
-      });
+      return toAskJson(sse as AutoRagAiSearchResult);
     }
 
     const result = await rag.aiSearch({ ...params, stream: false });
-    return json({
-      answer: result.response ?? '',
-      sources: mapSources(result.data),
-    });
+    if (isResponseLike(result)) {
+      return result;
+    }
+    return toAskJson(result);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'AI Search request failed.';
     console.error('[api/ask]', message);

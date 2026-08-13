@@ -34,6 +34,11 @@ interface AutoRagAiSearchResult {
   response?: string;
   data?: AutoRagSource[];
   has_more?: boolean;
+  choices?: Array<{
+    index?: number;
+    message?: { role?: string; content?: string };
+    finish_reason?: string;
+  }>;
 }
 
 interface AutoRagInstance {
