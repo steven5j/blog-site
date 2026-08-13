@@ -25,5 +25,8 @@ Thumbs.db
 .wrangler/
 .dev.vars
 
+# generated AI Search corpus (uploaded to R2)
+.rag/
+
 # generated for Pages Functions (from protected-content/)
 functions/_data/

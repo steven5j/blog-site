@@ -81,8 +81,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     system_prompt: SYSTEM_PROMPT,
     model: '@cf/meta/llama-3.3-70b-instruct-fp8-fast',
     rewrite_query: true,
-    max_num_results: 5,
-    ranking_options: { score_threshold: 0.3 },
+    max_num_results: 8,
+    ranking_options: { score_threshold: 0 },
     reranking: {
       enabled: true,
       model: '@cf/baai/bge-reranker-base',
