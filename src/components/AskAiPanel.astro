@@ -12,27 +12,23 @@ const suggestions = [
 
 <div
   id="ask-ai-panel"
-  class="ask-ai-panel fixed inset-0 z-[60] hidden"
+  class="ask-ai-panel pointer-events-none fixed inset-0 z-[60] hidden"
   data-ask-panel
   hidden
   aria-hidden="true"
 >
-  <button
-    type="button"
-    class="ask-ai-backdrop absolute inset-0 border-0 bg-ink/60 backdrop-blur-[2px] transition-opacity"
-    data-ask-close
-    aria-label="關閉 Ask AI"
-  ></button>
-
   <aside
-    class="ask-ai-drawer absolute inset-y-0 right-0 flex w-full max-w-md flex-col border-l border-white/10 bg-ink text-white shadow-2xl"
+    class="ask-ai-drawer pointer-events-auto absolute inset-y-0 right-0 flex w-full max-w-md flex-col border-l border-white/10 bg-ink text-white shadow-2xl"
     role="dialog"
     aria-modal="true"
     aria-labelledby="ask-ai-title"
     tabindex="-1"
     data-ask-drawer
   >
-    <header class="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
+    <header
+      class="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4"
+      data-ask-header
+    >
       <div class="flex items-center gap-3">
         <span class="ask-ai-avatar" aria-hidden="true">玄</span>
         <div>
@@ -125,6 +121,7 @@ const suggestions = [
   }
 
   #ask-ai-panel .ask-ai-drawer {
+    overflow: hidden;
     transform: translateX(100%);
     transition: transform 0.45s var(--ease-out-expo);
   }
@@ -133,23 +130,18 @@ const suggestions = [
     transform: translateX(0);
   }
 
-  #ask-ai-panel .ask-ai-backdrop {
-    opacity: 0;
-    transition: opacity 0.35s var(--ease-out-expo);
-  }
-
-  #ask-ai-panel.is-open .ask-ai-backdrop {
-    opacity: 1;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     #ask-ai-panel .ask-ai-drawer,
-    #ask-ai-panel .ask-ai-backdrop,
     #ask-ai-panel .ask-ai-row,
     #ask-ai-panel .ask-ai-typing span {
       animation: none;
       transition: none;
     }
+  }
+
+  #ask-ai-panel .ask-ai-messages {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   #ask-ai-panel .ask-ai-avatar {
@@ -641,6 +633,7 @@ const suggestions = [
 
     let busy = false;
     let lastFocus: HTMLElement | null = null;
+    const mqMobile = window.matchMedia('(max-width: 767px)');
 
     const setStatus = (text: string) => {
       status.textContent = text;
@@ -651,13 +644,38 @@ const suggestions = [
       input.style.height = `${Math.min(input.scrollHeight, 112)}px`;
     };
 
+    const menuIsOpen = () => {
+      const menuPanel = document.querySelector<HTMLElement>('[data-menu-panel]');
+      return Boolean(menuPanel && !menuPanel.hidden);
+    };
+
+    const lockPageIfMobile = () => {
+      if (mqMobile.matches) document.body.style.overflow = 'hidden';
+      else if (!menuIsOpen()) document.body.style.overflow = '';
+    };
+
+    const unlockPageIfSafe = () => {
+      if (!menuIsOpen()) document.body.style.overflow = '';
+    };
+
+    const isAskOpen = () => !panel.hidden && panel.classList.contains('is-open');
+
+    const onPointerDownOutside = (e: PointerEvent) => {
+      if (!isAskOpen()) return;
+      const target = e.target;
+      if (!(target instanceof Node)) return;
+      if (drawer.contains(target)) return;
+      if (target instanceof Element && target.closest('[data-ask-open]')) return;
+      close();
+    };
+
     const open = () => {
       lastFocus = document.activeElement as HTMLElement | null;
       panel.hidden = false;
       panel.classList.remove('hidden');
       panel.setAttribute('aria-hidden', 'false');
       requestAnimationFrame(() => panel.classList.add('is-open'));
-      document.body.style.overflow = 'hidden';
+      lockPageIfMobile();
       document.querySelectorAll<HTMLButtonElement>('[data-ask-open]').forEach((btn) => {
         btn.setAttribute('aria-expanded', 'true');
       });
@@ -673,13 +691,32 @@ const suggestions = [
         panel.hidden = true;
         panel.classList.add('hidden');
         panel.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
+        unlockPageIfSafe();
         lastFocus?.focus?.();
       };
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduced) finish();
       else window.setTimeout(finish, 400);
     };
+
+    mqMobile.onchange = () => {
+      if (!isAskOpen()) return;
+      lockPageIfMobile();
+    };
+
+    messages.onwheel = (e) => {
+      e.stopPropagation();
+    };
+
+    const outsideKey = '__askAiOutsideAbort' as const;
+    const prevAbort = (document as Document & { [outsideKey]?: AbortController })[outsideKey];
+    prevAbort?.abort();
+    const outsideAbort = new AbortController();
+    (document as Document & { [outsideKey]?: AbortController })[outsideKey] = outsideAbort;
+    document.addEventListener('pointerdown', onPointerDownOutside, {
+      capture: true,
+      signal: outsideAbort.signal,
+    });
 
     const hideEmpty = () => {
       empty?.classList.add('hidden');
