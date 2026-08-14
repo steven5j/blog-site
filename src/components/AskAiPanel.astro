@@ -33,14 +33,17 @@ const suggestions = [
     data-ask-drawer
   >
     <header class="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
-      <div>
-        <p class="text-[0.65rem] font-semibold tracking-[0.28em] text-brand uppercase">
-          Steven玄
-        </p>
-        <h2 id="ask-ai-title" class="font-display mt-1 text-xl font-semibold tracking-tight">
-          Ask AI
-        </h2>
-        <p class="mt-1 text-sm text-white/55">依站內文章與作品回答，找不到會直說。</p>
+      <div class="flex items-center gap-3">
+        <span class="ask-ai-avatar" aria-hidden="true">玄</span>
+        <div>
+          <p class="text-[0.65rem] font-semibold tracking-[0.28em] text-brand uppercase">
+            Steven玄
+          </p>
+          <h2 id="ask-ai-title" class="font-display mt-0.5 text-xl font-semibold tracking-tight">
+            Ask AI
+          </h2>
+          <p class="mt-0.5 text-sm text-white/55">依站內文章與作品回答</p>
+        </div>
       </div>
       <button
         type="button"
@@ -52,21 +55,21 @@ const suggestions = [
     </header>
 
     <div
-      class="ask-ai-messages flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-5"
+      class="ask-ai-messages flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 py-5"
       data-ask-messages
       aria-live="polite"
     >
       <div class="ask-ai-empty space-y-4" data-ask-empty>
-        <p class="text-sm leading-relaxed text-white/70">
-          試試問站上的專案、文章主題，或關於這個網站的問題。
+        <p class="text-sm leading-relaxed text-white/65">
+          直接問站上的專案、文章，或關於這個網站的問題。
         </p>
-        <ul class="flex flex-col gap-2">
+        <ul class="flex flex-col items-start gap-2">
           {
             suggestions.map((text) => (
               <li>
                 <button
                   type="button"
-                  class="w-full cursor-pointer border border-white/15 bg-transparent px-3 py-2.5 text-left text-sm text-white/85 transition hover:border-brand/60 hover:text-brand"
+                  class="ask-ai-chip cursor-pointer border-0 text-left"
                   data-ask-suggestion
                   data-query={text}
                 >
@@ -79,116 +82,313 @@ const suggestions = [
       </div>
     </div>
 
-    <form
-      class="border-t border-white/10 px-4 py-4"
-      data-ask-form
-    >
+    <form class="border-t border-white/10 px-4 py-3" data-ask-form>
       <label class="sr-only" for="ask-ai-input">向站內 AI 提問</label>
-      <div class="flex items-end gap-2">
+      <div class="ask-ai-composer">
         <textarea
           id="ask-ai-input"
           name="query"
-          rows="2"
+          rows="1"
           maxlength="1000"
           required
-          placeholder="問站上的內容…"
-          class="ask-ai-input max-h-32 min-h-[2.75rem] flex-1 resize-y border border-white/15 bg-ink-elevated px-3 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-brand focus:outline-none"
+          placeholder="傳一句話給 Ask AI…"
+          class="ask-ai-input"
           data-ask-input
         ></textarea>
         <button
           type="submit"
-          class="inline-flex h-[2.75rem] shrink-0 cursor-pointer items-center justify-center border-0 bg-brand px-4 text-xs font-semibold tracking-[0.16em] text-white uppercase transition hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
+          class="ask-ai-send"
           data-ask-submit
+          aria-label="送出"
         >
-          送出
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+            <path
+              d="M5 12h12M13 6l6 6-6 6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
         </button>
       </div>
-      <p class="mt-2 text-[0.7rem] text-white/40" data-ask-status></p>
+      <p class="mt-2 min-h-[1rem] text-[0.7rem] text-white/40" data-ask-status></p>
     </form>
   </aside>
 </div>
 
-<style>
-  .ask-ai-panel[hidden] {
+<style is:global>
+  /* Dynamic JS bubbles are not tagged with Astro scoped attrs, so styles
+     must be global. Keep them under #ask-ai-panel to avoid leaking. */
+  #ask-ai-panel[hidden] {
     display: none;
   }
 
-  .ask-ai-drawer {
+  #ask-ai-panel .ask-ai-drawer {
     transform: translateX(100%);
     transition: transform 0.45s var(--ease-out-expo);
   }
 
-  .ask-ai-panel.is-open .ask-ai-drawer {
+  #ask-ai-panel.is-open .ask-ai-drawer {
     transform: translateX(0);
   }
 
-  .ask-ai-backdrop {
+  #ask-ai-panel .ask-ai-backdrop {
     opacity: 0;
     transition: opacity 0.35s var(--ease-out-expo);
   }
 
-  .ask-ai-panel.is-open .ask-ai-backdrop {
+  #ask-ai-panel.is-open .ask-ai-backdrop {
     opacity: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ask-ai-drawer,
-    .ask-ai-backdrop {
+    #ask-ai-panel .ask-ai-drawer,
+    #ask-ai-panel .ask-ai-backdrop,
+    #ask-ai-panel .ask-ai-row,
+    #ask-ai-panel .ask-ai-typing span {
+      animation: none;
       transition: none;
     }
   }
 
-  .ask-ai-bubble {
+  #ask-ai-panel .ask-ai-avatar {
+    display: grid;
+    place-items: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--color-brand);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  #ask-ai-panel .ask-ai-chip {
     max-width: 100%;
-    border-radius: 0;
-    padding: 0.75rem 0.9rem;
+    border-radius: 1rem 1rem 1rem 0.25rem;
+    background: rgb(255 255 255 / 0.08);
+    padding: 0.65rem 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.88);
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  #ask-ai-panel .ask-ai-chip:hover {
+    background: rgb(193 59 59 / 0.22);
+    color: #fff;
+  }
+
+  #ask-ai-panel .ask-ai-row {
+    display: flex;
+    gap: 0.55rem;
+    max-width: 92%;
+    animation: ask-in 0.28s var(--ease-out-expo);
+  }
+
+  #ask-ai-panel .ask-ai-row-user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  #ask-ai-panel .ask-ai-row-assistant,
+  #ask-ai-panel .ask-ai-row-error {
+    align-self: flex-start;
+  }
+
+  #ask-ai-panel .ask-ai-row-error .ask-ai-avatar {
+    background: #5a2a2a;
+  }
+
+  #ask-ai-panel .ask-ai-col {
+    min-width: 0;
+  }
+
+  #ask-ai-panel .ask-ai-meta {
+    margin: 0 0 0.25rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.4);
+  }
+
+  #ask-ai-panel .ask-ai-row-user .ask-ai-meta {
+    text-align: right;
+  }
+
+  #ask-ai-panel .ask-ai-bubble {
+    max-width: 100%;
+    padding: 0.7rem 0.95rem;
     font-size: 0.9rem;
-    line-height: 1.55;
-    white-space: pre-wrap;
+    line-height: 1.6;
     word-break: break-word;
   }
 
-  .ask-ai-bubble-user {
-    align-self: flex-end;
+  #ask-ai-panel .ask-ai-bubble p {
+    margin: 0;
+  }
+
+  #ask-ai-panel .ask-ai-bubble p + p,
+  #ask-ai-panel .ask-ai-bubble ul + p,
+  #ask-ai-panel .ask-ai-bubble ol + p,
+  #ask-ai-panel .ask-ai-bubble p + ul,
+  #ask-ai-panel .ask-ai-bubble p + ol {
+    margin-top: 0.45rem;
+  }
+
+  #ask-ai-panel .ask-ai-bubble ul,
+  #ask-ai-panel .ask-ai-bubble ol {
+    margin: 0.35rem 0 0;
+    padding-left: 1.15rem;
+  }
+
+  #ask-ai-panel .ask-ai-bubble li + li {
+    margin-top: 0.2rem;
+  }
+
+  #ask-ai-panel .ask-ai-bubble code {
+    font-size: 0.82em;
+    border-radius: 0.2rem;
+    background: rgb(0 0 0 / 0.25);
+    padding: 0.05em 0.3em;
+  }
+
+  #ask-ai-panel .ask-ai-bubble-user {
+    background: var(--color-brand);
+    color: #fff;
+    border-radius: 1rem 1rem 0.2rem 1rem;
+    white-space: pre-wrap;
+  }
+
+  #ask-ai-panel .ask-ai-bubble-assistant {
     background: rgb(255 255 255 / 0.08);
-    color: rgb(255 255 255 / 0.95);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    color: rgb(255 255 255 / 0.92);
+    border-radius: 1rem 1rem 1rem 0.2rem;
   }
 
-  .ask-ai-bubble-assistant {
-    align-self: stretch;
-    border: 1px solid rgb(255 255 255 / 0.12);
-    background: rgb(0 0 0 / 0.2);
-    color: rgb(255 255 255 / 0.9);
+  #ask-ai-panel .ask-ai-bubble-error {
+    background: rgb(193 59 59 / 0.12);
+    border: 1px solid rgb(193 59 59 / 0.35);
+    color: rgb(255 210 210);
+    border-radius: 1rem 1rem 1rem 0.2rem;
   }
 
-  .ask-ai-sources {
-    margin-top: 0.65rem;
-    padding-top: 0.65rem;
-    border-top: 1px solid rgb(255 255 255 / 0.1);
+  #ask-ai-panel .ask-ai-sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.45rem;
   }
 
-  .ask-ai-sources p {
-    margin: 0 0 0.35rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-brand);
-    font-weight: 600;
-  }
-
-  .ask-ai-sources a {
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 0.8rem;
-    color: rgb(255 255 255 / 0.7);
+  #ask-ai-panel .ask-ai-sources a,
+  #ask-ai-panel .ask-ai-sources span {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.14);
+    background: rgb(255 255 255 / 0.05);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.72rem;
+    color: rgb(255 255 255 / 0.72);
     text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .ask-ai-sources a:hover {
-    color: var(--color-brand);
+  #ask-ai-panel .ask-ai-sources a:hover {
+    border-color: var(--color-brand);
+    color: #fff;
   }
 
-  .sr-only {
+  #ask-ai-panel .ask-ai-typing {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    min-height: 1.15rem;
+  }
+
+  #ask-ai-panel .ask-ai-typing span {
+    display: inline-block;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.45);
+    animation: ask-dot 1s infinite ease-in-out;
+  }
+
+  #ask-ai-panel .ask-ai-typing span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  #ask-ai-panel .ask-ai-typing span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  #ask-ai-panel .ask-ai-composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: 1.35rem;
+    background: var(--color-ink-elevated);
+    padding: 0.35rem 0.35rem 0.35rem 0.9rem;
+  }
+
+  #ask-ai-panel .ask-ai-input {
+    max-height: 7rem;
+    min-height: 2.4rem;
+    flex: 1;
+    resize: none;
+    border: 0;
+    background: transparent;
+    padding: 0.55rem 0;
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: #fff;
+  }
+
+  #ask-ai-panel .ask-ai-input::placeholder {
+    color: rgb(255 255 255 / 0.35);
+  }
+
+  #ask-ai-panel .ask-ai-input:focus {
+    outline: none;
+  }
+
+  #ask-ai-panel .ask-ai-send {
+    display: inline-flex;
+    height: 2.4rem;
+    width: 2.4rem;
+    flex-shrink: 0;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-brand);
+    color: #fff;
+    transition: background 0.2s ease;
+  }
+
+  #ask-ai-panel .ask-ai-send:hover {
+    background: var(--color-brand-hover);
+  }
+
+  #ask-ai-panel .ask-ai-send:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  #ask-ai-panel .sr-only {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -198,6 +398,30 @@ const suggestions = [
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  @keyframes ask-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes ask-dot {
+    0%,
+    80%,
+    100% {
+      opacity: 0.25;
+      transform: translateY(0);
+    }
+    40% {
+      opacity: 1;
+      transform: translateY(-3px);
+    }
   }
 </style>
 
@@ -224,6 +448,67 @@ const suggestions = [
       .replaceAll('"', '&quot;');
   }
 
+  function inlineFormat(text: string) {
+    return escapeHtml(text)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+  }
+
+  function formatMessageHtml(text: string) {
+    const lines = text.replace(/\r/g, '').split('\n');
+    const out: string[] = [];
+    let list: 'ul' | 'ol' | null = null;
+
+    const closeList = () => {
+      if (list) {
+        out.push(`</${list}>`);
+        list = null;
+      }
+    };
+
+    for (const line of lines) {
+      const ul = line.match(/^\s*[\*\-•]\s+(.+)$/);
+      const ol = line.match(/^\s*\d+[.)]\s+(.+)$/);
+      if (ul) {
+        if (list !== 'ul') {
+          closeList();
+          out.push('<ul>');
+          list = 'ul';
+        }
+        out.push(`<li>${inlineFormat(ul[1])}</li>`);
+        continue;
+      }
+      if (ol) {
+        if (list !== 'ol') {
+          closeList();
+          out.push('<ol>');
+          list = 'ol';
+        }
+        out.push(`<li>${inlineFormat(ol[1])}</li>`);
+        continue;
+      }
+      closeList();
+      if (!line.trim()) continue;
+      out.push(`<p>${inlineFormat(line)}</p>`);
+    }
+    closeList();
+    return out.join('') || `<p>${inlineFormat(text)}</p>`;
+  }
+
+  function peelSourcesFromAnswer(text: string): { body: string; paths: string[] } {
+    const paths: string[] = [];
+    const body = text
+      .replace(/(?:^|\n)來源[:：]\s*(.+)\s*$/gm, (_, raw: string) => {
+        for (const part of raw.split(/[、,，\s]+/)) {
+          const trimmed = part.trim().replace(/[。．.]+$/, '');
+          if (trimmed.startsWith('/')) paths.push(trimmed);
+        }
+        return '';
+      })
+      .trim();
+    return { body, paths };
+  }
+
   function sourceHref(source: AskSource): string | null {
     const meta = source.metadata;
     if (meta && typeof meta.url === 'string' && meta.url.startsWith('/')) {
@@ -240,25 +525,49 @@ const suggestions = [
   function sourceLabel(source: AskSource): string {
     const meta = source.metadata;
     if (meta && typeof meta.title === 'string' && meta.title.trim()) return meta.title;
-    if (source.key) return source.key;
+    if (source.key) return source.key.replace(/^https?:\/\/stevenjhu\.com/, '');
     return '相關片段';
   }
 
-  function renderSources(sources: AskSource[]): string {
-    if (!sources.length) return '';
-    const links = sources
-      .slice(0, 5)
-      .map((source) => {
-        const href = sourceHref(source);
-        const label = escapeHtml(sourceLabel(source));
-        if (href) {
-          return `<a href="${escapeHtml(href)}" data-astro-prefetch>${label}</a>`;
-        }
-        return `<span class="block mt-1 text-sm text-white/55">${label}</span>`;
-      })
-      .join('');
-    return `<div class="ask-ai-sources"><p>來源</p>${links}</div>`;
+  function renderSources(sources: AskSource[], extraPaths: string[] = []): string {
+    const chips: string[] = [];
+    const seen = new Set<string>();
+
+    for (const source of sources.slice(0, 5)) {
+      const href = sourceHref(source);
+      const label = sourceLabel(source);
+      const key = href ?? label;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      if (href) {
+        chips.push(
+          `<a href="${escapeHtml(href)}" data-astro-prefetch>${escapeHtml(label)}</a>`,
+        );
+      } else {
+        chips.push(`<span>${escapeHtml(label)}</span>`);
+      }
+    }
+
+    for (const path of extraPaths) {
+      if (seen.has(path)) continue;
+      seen.add(path);
+      chips.push(`<a href="${escapeHtml(path)}" data-astro-prefetch>${escapeHtml(path)}</a>`);
+    }
+
+    if (!chips.length) return '';
+    return `<div class="ask-ai-sources">${chips.join('')}</div>`;
   }
+
+  function friendlyError(raw: string): string {
+    if (raw.includes('404')) return '暫時連不上 Ask AI，請稍後再試。';
+    if (raw.includes('429')) return '提問太頻繁，請稍候再問。';
+    if (raw.includes('502') || raw.includes('503')) return 'AI 服務忙碌中，請稍後再試。';
+    if (raw.includes('binding is not configured')) return 'Ask AI 尚未設定完成。';
+    return '目前無法回答，請稍後再試。';
+  }
+
+  const typingHtml =
+    '<div class="ask-ai-typing" aria-label="正在輸入"><span></span><span></span><span></span></div>';
 
   async function readAskStream(
     response: Response,
@@ -337,6 +646,11 @@ const suggestions = [
       status.textContent = text;
     };
 
+    const resizeInput = () => {
+      input.style.height = 'auto';
+      input.style.height = `${Math.min(input.scrollHeight, 112)}px`;
+    };
+
     const open = () => {
       lastFocus = document.activeElement as HTMLElement | null;
       panel.hidden = false;
@@ -371,14 +685,50 @@ const suggestions = [
       empty?.classList.add('hidden');
     };
 
-    const appendBubble = (role: 'user' | 'assistant', html: string) => {
+    const appendMessage = (role: 'user' | 'assistant' | 'error', html: string) => {
       hideEmpty();
-      const el = document.createElement('div');
-      el.className = `ask-ai-bubble ask-ai-bubble-${role}`;
-      el.innerHTML = html;
-      messages.appendChild(el);
+      const row = document.createElement('div');
+      row.className = `ask-ai-row ask-ai-row-${role === 'error' ? 'error' : role}`;
+
+      const col = document.createElement('div');
+      col.className = 'ask-ai-col';
+
+      const meta = document.createElement('p');
+      meta.className = 'ask-ai-meta';
+      meta.textContent = role === 'user' ? '你' : role === 'error' ? '系統' : 'Steven玄 AI';
+
+      const bubble = document.createElement('div');
+      bubble.className = `ask-ai-bubble ask-ai-bubble-${role}`;
+      bubble.innerHTML = html;
+
+      if (role !== 'user') {
+        const avatar = document.createElement('span');
+        avatar.className = 'ask-ai-avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.textContent = role === 'error' ? '!' : '玄';
+        row.appendChild(avatar);
+      }
+
+      col.appendChild(meta);
+      col.appendChild(bubble);
+      row.appendChild(col);
+      messages.appendChild(row);
       messages.scrollTop = messages.scrollHeight;
-      return el;
+      return { row, bubble, col };
+    };
+
+    const paintAnswer = (
+      col: HTMLElement,
+      bubble: HTMLElement,
+      raw: string,
+      sources: AskSource[],
+    ) => {
+      const { body, paths } = peelSourcesFromAnswer(raw.trim() || '站內暫時找不到足夠相關的內容。');
+      bubble.className = 'ask-ai-bubble ask-ai-bubble-assistant';
+      bubble.innerHTML = formatMessageHtml(body);
+      col.querySelector('.ask-ai-sources')?.remove();
+      const chips = renderSources(sources, paths);
+      if (chips) col.insertAdjacentHTML('beforeend', chips);
     };
 
     const ask = async (query: string) => {
@@ -388,8 +738,8 @@ const suggestions = [
       submit.disabled = true;
       setStatus('搜尋站內內容中…');
 
-      appendBubble('user', escapeHtml(q));
-      const assistantEl = appendBubble('assistant', '…');
+      appendMessage('user', escapeHtml(q));
+      const { row, bubble, col } = appendMessage('assistant', typingHtml);
       let answer = '';
       let sources: AskSource[] = [];
 
@@ -418,7 +768,8 @@ const suggestions = [
             res,
             (delta) => {
               answer += delta;
-              assistantEl.textContent = answer;
+              bubble.style.whiteSpace = 'pre-wrap';
+              bubble.textContent = answer;
               messages.scrollTop = messages.scrollHeight;
               setStatus('產生回覆中…');
             },
@@ -442,18 +793,19 @@ const suggestions = [
           if (data.error) throw new Error(data.error);
           answer = data.answer ?? '';
           sources = data.sources ?? [];
-          assistantEl.textContent = answer || '（沒有回覆）';
         }
 
-        if (!answer.trim()) {
-          assistantEl.textContent = '站內暫時找不到足夠相關的內容。';
-        } else {
-          assistantEl.innerHTML = `${escapeHtml(answer)}${renderSources(sources)}`;
-        }
+        paintAnswer(col, bubble, answer, sources);
         setStatus('');
       } catch (err) {
-        const message = err instanceof Error ? err.message : '發生未知錯誤';
-        assistantEl.textContent = `抱歉，目前無法回答：${message}`;
+        const raw = err instanceof Error ? err.message : '發生未知錯誤';
+        row.className = 'ask-ai-row ask-ai-row-error';
+        const avatar = row.querySelector('.ask-ai-avatar');
+        if (avatar) avatar.textContent = '!';
+        const meta = row.querySelector('.ask-ai-meta');
+        if (meta) meta.textContent = '系統';
+        bubble.className = 'ask-ai-bubble ask-ai-bubble-error';
+        bubble.textContent = friendlyError(raw);
         setStatus('');
       } finally {
         busy = false;
@@ -472,7 +824,6 @@ const suggestions = [
       };
     });
 
-    // Delegated handlers so astro:page-load rebinds safely without stacking listeners
     panel.onclick = (e) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
@@ -483,7 +834,8 @@ const suggestions = [
       const suggestion = target.closest<HTMLButtonElement>('[data-ask-suggestion]');
       if (suggestion) {
         const q = suggestion.dataset.query ?? suggestion.textContent ?? '';
-        input.value = q;
+        input.value = '';
+        resizeInput();
         void ask(q);
       }
     };
@@ -492,8 +844,11 @@ const suggestions = [
       e.preventDefault();
       const q = input.value;
       input.value = '';
+      resizeInput();
       void ask(q);
     };
+
+    input.oninput = resizeInput;
 
     input.onkeydown = (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
