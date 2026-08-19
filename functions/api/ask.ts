@@ -16,10 +16,14 @@ interface Env {
 const AI_SEARCH_INSTANCE = 'stevenjhu-ai-search';
 const MAX_QUERY_LENGTH = 1000;
 const SYSTEM_PROMPT = [
-  '你是 stevenjhu.com（Steven玄）個人網站的繁體中文助理。',
-  '只根據檢索到的站內內容回答；找不到就明確說不知道，不要捏造。',
-  '回覆簡潔、可用條列；若有對應文章請在文末用網站路徑標明來源。',
-].join('');
+  '你是 stevenjhu.com（Steven玄）的繁體中文助理。',
+  '只根據檢索到的站內內容回答；找不到就直說不知道，不要捏造經歷、文章或網址。',
+  '用完整句子說明，條列時每項加一句簡短說明，不要只丟兩個詞。',
+  '站內固定入口：/ 首頁、/blog 文章、/projects 作品與證照、/series 系列、/about 關於。',
+  '作品集、專案、證照一律連到 /projects，不要使用 /about/works 或 /about/certifications。',
+  '若要給連結，寫成 Markdown：[作品](/projects)，禁止「網站路徑：」「來源：/foo」這類附錄。',
+  '只能使用檢索內容或上述固定入口的路徑；沒有把握就不要給 URL。',
+].join('\n');
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -31,15 +35,37 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
+function inferSourceUrl(item: AutoRagSource): string | null {
+  const attrUrl = item.attributes?.url;
+  if (typeof attrUrl === 'string' && attrUrl.startsWith('/')) return attrUrl;
+
+  const text = item.content?.map((c) => c.text ?? '').join('\n') ?? '';
+  const yamlUrl = text.match(/^url:\s+(\/\S+)/m);
+  if (yamlUrl) return yamlUrl[1];
+
+  const key = (item.filename ?? '').replace(/\\/g, '/');
+  if (/(^|\/)about\.md$/i.test(key) || /(^|\/)catalog\.md$/i.test(key)) return '/about';
+  if (/(^|\/)projects\//.test(key)) return '/projects';
+  const series = key.match(/(?:^|\/)series\/([^/]+)\.mdx?$/i);
+  if (series) return `/series/${series[1]}`;
+  return null;
+}
+
 function mapSources(data: AutoRagSource[] | undefined) {
   if (!data?.length) return [];
-  return data.map((item) => ({
-    id: item.file_id ?? item.content?.[0]?.id ?? null,
-    score: item.score ?? null,
-    text: item.content?.[0]?.text ?? '',
-    key: item.filename ?? null,
-    metadata: item.attributes ?? null,
-  }));
+  return data.map((item) => {
+    const url = inferSourceUrl(item);
+    return {
+      id: item.file_id ?? item.content?.[0]?.id ?? null,
+      score: item.score ?? null,
+      text: item.content?.[0]?.text ?? '',
+      key: url ?? item.filename ?? null,
+      metadata: {
+        ...(item.attributes ?? {}),
+        ...(url ? { url } : {}),
+      },
+    };
+  });
 }
 
 function isReadableStream(value: unknown): value is ReadableStream {

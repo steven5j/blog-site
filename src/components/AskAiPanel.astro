@@ -41,13 +41,23 @@ const suggestions = [
           <p class="mt-0.5 text-sm text-white/55">依站內文章與作品回答</p>
         </div>
       </div>
-      <button
-        type="button"
-        class="cursor-pointer border-0 bg-transparent px-1 py-1 text-sm tracking-[0.12em] text-white/70 uppercase transition hover:text-white"
-        data-ask-close
-      >
-        關閉
-      </button>
+      <div class="flex shrink-0 items-center gap-3">
+        <button
+          type="button"
+          class="cursor-pointer border-0 bg-transparent px-1 py-1 text-sm tracking-[0.12em] text-white/70 uppercase transition hover:text-white disabled:cursor-not-allowed disabled:text-white/30"
+          data-ask-new
+          disabled
+        >
+          開新對話
+        </button>
+        <button
+          type="button"
+          class="cursor-pointer border-0 bg-transparent px-1 py-1 text-sm tracking-[0.12em] text-white/70 uppercase transition hover:text-white"
+          data-ask-close
+        >
+          關閉
+        </button>
+      </div>
     </header>
 
     <div
@@ -440,10 +450,94 @@ const suggestions = [
       .replaceAll('"', '&quot;');
   }
 
+  const PATH_LABELS: Record<string, string> = {
+    '/': '首頁',
+    '/about': '關於',
+    '/blog': '文章',
+    '/projects': '作品與證照',
+    '/series': '系列',
+  };
+
+  function normalizePath(raw: string): string {
+    let path = raw.trim().replace(/^https?:\/\/(www\.)?stevenjhu\.com/i, '');
+    const hash = path.indexOf('#');
+    if (hash !== -1) path = path.slice(0, hash);
+    const query = path.indexOf('?');
+    if (query !== -1) path = path.slice(0, query);
+    if (!path.startsWith('/')) return '';
+    if (path.length > 1) path = path.replace(/\/+$/, '');
+    return path || '/';
+  }
+
+  function isAllowedPath(path: string): boolean {
+    const p = normalizePath(path);
+    if (!p) return false;
+    if (p === '/' || p === '/about' || p === '/blog' || p === '/projects' || p === '/series') {
+      return true;
+    }
+    return (
+      p.startsWith('/blog/') ||
+      p.startsWith('/series/') ||
+      p.startsWith('/topics/') ||
+      p.startsWith('/projects') ||
+      /^\/\d{4}\/\d{2}\/\d{2}\//.test(p)
+    );
+  }
+
+  function pathLabel(path: string): string {
+    const p = normalizePath(path);
+    return PATH_LABELS[p] ?? p;
+  }
+
+  function collectPaths(raw: string): string[] {
+    const found: string[] = [];
+    const md = raw.matchAll(/\[([^\]]+)\]\((\/[^)\s]+)\)/g);
+    for (const m of md) {
+      if (isAllowedPath(m[2])) found.push(normalizePath(m[2]));
+    }
+    const bare = raw.matchAll(/(^|[\s，,（(])(\/(?:about|blog|projects|series|topics)(?:\/[^\s，,。．)）]*)?|\/\d{4}\/\d{2}\/\d{2}\/[^\s，,。．)）]*)/g);
+    for (const m of bare) {
+      if (isAllowedPath(m[2])) found.push(normalizePath(m[2]));
+    }
+    if (/作品|證照|portfolio|certific/i.test(raw)) found.push('/projects');
+    return [...new Set(found)];
+  }
+
   function inlineFormat(text: string) {
-    return escapeHtml(text)
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>');
+    const placeholders: string[] = [];
+    let work = text.replace(/\[([^\]]+)\]\((\/[^)\s]+)\)/g, (_, label: string, href: string) => {
+      if (!isAllowedPath(href)) return label;
+      const i = placeholders.length;
+      placeholders.push(
+        `<a href="${escapeHtml(normalizePath(href))}" data-astro-prefetch>${escapeHtml(label)}</a>`,
+      );
+      return `\u0000${i}\u0000`;
+    });
+
+    work = escapeHtml(work).replace(
+      /(^|[\s，,（(])(\/(?:about|blog|projects|series|topics)(?:\/[^&\s，,。．)）]*)?|\/\d{4}\/\d{2}\/\d{2}\/[^&\s，,。．)）]*)/g,
+      (full, prefix: string, href: string) => {
+        if (!isAllowedPath(href)) return full;
+        const p = normalizePath(href);
+        return `${prefix}<a href="${escapeHtml(p)}" data-astro-prefetch>${escapeHtml(pathLabel(p))}</a>`;
+      },
+    );
+
+    return work.replace(/\u0000(\d+)\u0000/g, (_, n: string) => placeholders[Number(n)] ?? '').replace(
+      /\*\*(.+?)\*\*/g,
+      '<strong>$1</strong>',
+    ).replace(/`([^`]+)`/g, '<code>$1</code>');
+  }
+
+  function flattenShortList(text: string): string {
+    const lines = text.replace(/\r/g, '').split('\n').map((l) => l.trim()).filter(Boolean);
+    const items = lines
+      .map((line) => line.match(/^[\*\-•]\s+(.+)$/)?.[1]?.trim())
+      .filter((item): item is string => Boolean(item));
+    if (items.length >= 2 && items.length === lines.length && items.every((item) => item.length <= 16)) {
+      return `${items.join('、')}。`;
+    }
+    return text;
   }
 
   function formatMessageHtml(text: string) {
@@ -488,37 +582,42 @@ const suggestions = [
   }
 
   function peelSourcesFromAnswer(text: string): { body: string; paths: string[] } {
-    const paths: string[] = [];
+    const appendix: string[] = [];
     const body = text
-      .replace(/(?:^|\n)來源[:：]\s*(.+)\s*$/gm, (_, raw: string) => {
-        for (const part of raw.split(/[、,，\s]+/)) {
-          const trimmed = part.trim().replace(/[。．.]+$/, '');
-          if (trimmed.startsWith('/')) paths.push(trimmed);
-        }
-        return '';
-      })
+      .replace(
+        /(?:^|\n)(?:來源|網站路徑|路徑|相關連結)[:：]\s*(.+)\s*$/gm,
+        (_, raw: string) => {
+          appendix.push(raw);
+          return '';
+        },
+      )
       .trim();
-    return { body, paths };
+    const flattened = flattenShortList(body);
+    const paths = collectPaths(`${flattened}\n${appendix.join(' ')}`).filter(isAllowedPath);
+    return { body: flattened, paths };
   }
 
   function sourceHref(source: AskSource): string | null {
     const meta = source.metadata;
-    if (meta && typeof meta.url === 'string' && meta.url.startsWith('/')) {
-      return meta.url;
+    if (meta && typeof meta.url === 'string' && isAllowedPath(meta.url)) {
+      return normalizePath(meta.url);
     }
     const key = source.key;
     if (!key) return null;
     if (key.startsWith('http://') || key.startsWith('https://') || key.startsWith('/')) {
-      return key;
+      return isAllowedPath(key) ? normalizePath(key) : null;
     }
     return null;
   }
 
   function sourceLabel(source: AskSource): string {
+    const href = sourceHref(source);
+    if (href && PATH_LABELS[href]) return PATH_LABELS[href];
     const meta = source.metadata;
     if (meta && typeof meta.title === 'string' && meta.title.trim()) return meta.title;
+    if (href) return href;
     if (source.key) return source.key.replace(/^https?:\/\/stevenjhu\.com/, '');
-    return '相關片段';
+    return '相關頁面';
   }
 
   function renderSources(sources: AskSource[], extraPaths: string[] = []): string {
@@ -535,15 +634,17 @@ const suggestions = [
         chips.push(
           `<a href="${escapeHtml(href)}" data-astro-prefetch>${escapeHtml(label)}</a>`,
         );
-      } else {
-        chips.push(`<span>${escapeHtml(label)}</span>`);
       }
     }
 
     for (const path of extraPaths) {
-      if (seen.has(path)) continue;
-      seen.add(path);
-      chips.push(`<a href="${escapeHtml(path)}" data-astro-prefetch>${escapeHtml(path)}</a>`);
+      if (!isAllowedPath(path)) continue;
+      const href = normalizePath(path);
+      if (seen.has(href)) continue;
+      seen.add(href);
+      chips.push(
+        `<a href="${escapeHtml(href)}" data-astro-prefetch>${escapeHtml(pathLabel(href))}</a>`,
+      );
     }
 
     if (!chips.length) return '';
@@ -629,9 +730,11 @@ const suggestions = [
     const messages = document.querySelector<HTMLElement>('[data-ask-messages]');
     const empty = document.querySelector<HTMLElement>('[data-ask-empty]');
     const status = document.querySelector<HTMLElement>('[data-ask-status]');
+    const newChat = document.querySelector<HTMLButtonElement>('[data-ask-new]');
     if (!panel || !drawer || !form || !input || !submit || !messages || !status) return;
 
     let busy = false;
+    let abortController: AbortController | null = null;
     let lastFocus: HTMLElement | null = null;
     const mqMobile = window.matchMedia('(max-width: 767px)');
 
@@ -722,6 +825,27 @@ const suggestions = [
       empty?.classList.add('hidden');
     };
 
+    const hasConversation = () => messages.querySelectorAll('.ask-ai-row').length > 0;
+
+    const syncNewChatButton = () => {
+      if (!newChat) return;
+      newChat.disabled = !hasConversation() && !busy;
+    };
+
+    const resetConversation = () => {
+      abortController?.abort();
+      abortController = null;
+      busy = false;
+      submit.disabled = false;
+      messages.querySelectorAll('.ask-ai-row').forEach((row) => row.remove());
+      empty?.classList.remove('hidden');
+      setStatus('');
+      input.value = '';
+      resizeInput();
+      input.focus();
+      syncNewChatButton();
+    };
+
     const appendMessage = (role: 'user' | 'assistant' | 'error', html: string) => {
       hideEmpty();
       const row = document.createElement('div');
@@ -751,6 +875,7 @@ const suggestions = [
       row.appendChild(col);
       messages.appendChild(row);
       messages.scrollTop = messages.scrollHeight;
+      syncNewChatButton();
       return { row, bubble, col };
     };
 
@@ -773,7 +898,12 @@ const suggestions = [
       if (!q || busy) return;
       busy = true;
       submit.disabled = true;
+      syncNewChatButton();
       setStatus('搜尋站內內容中…');
+
+      abortController?.abort();
+      const request = new AbortController();
+      abortController = request;
 
       appendMessage('user', escapeHtml(q));
       const { row, bubble, col } = appendMessage('assistant', typingHtml);
@@ -785,6 +915,7 @@ const suggestions = [
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: q, stream: false }),
+          signal: request.signal,
         });
 
         const contentType = res.headers.get('content-type') ?? '';
@@ -835,6 +966,7 @@ const suggestions = [
         paintAnswer(col, bubble, answer, sources);
         setStatus('');
       } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return;
         const raw = err instanceof Error ? err.message : '發生未知錯誤';
         row.className = 'ask-ai-row ask-ai-row-error';
         const avatar = row.querySelector('.ask-ai-avatar');
@@ -845,8 +977,12 @@ const suggestions = [
         bubble.textContent = friendlyError(raw);
         setStatus('');
       } finally {
-        busy = false;
-        submit.disabled = false;
+        if (abortController === request) {
+          abortController = null;
+          busy = false;
+          submit.disabled = false;
+          syncNewChatButton();
+        }
         messages.scrollTop = messages.scrollHeight;
       }
     };
@@ -866,6 +1002,10 @@ const suggestions = [
       if (!target) return;
       if (target.closest('[data-ask-close]')) {
         close();
+        return;
+      }
+      if (target.closest('[data-ask-new]')) {
+        resetConversation();
         return;
       }
       const suggestion = target.closest<HTMLButtonElement>('[data-ask-suggestion]');

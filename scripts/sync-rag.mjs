@@ -169,11 +169,11 @@ type: about
 
 ## 主要路徑
 
-- / 首頁
-- /blog 文章
-- /projects 作品與證照
+- / 首頁（https://stevenjhu.com/）
+- /blog 文章列表
+- /projects 作品集與證照（沒有 /about/works 或 /about/certifications）
 - /series 系列
-- /about 關於
+- /about 關於作者
 `,
   );
 }
@@ -191,11 +191,12 @@ function walkFiles(dir, acc = []) {
 function putObject(relPosix) {
   const local = path.join(outDir, relPosix);
   const dest = `${BUCKET}/${relPosix.replaceAll('\\', '/')}`;
+  const wranglerJs = path.join(root, 'node_modules', 'wrangler', 'bin', 'wrangler.js');
   return new Promise((resolve, reject) => {
     const child = spawn(
-      'npx',
+      process.execPath,
       [
-        'wrangler',
+        wranglerJs,
         'r2',
         'object',
         'put',
@@ -205,9 +206,9 @@ function putObject(relPosix) {
         '--remote',
         '-y',
         '--content-type',
-        'text/markdown; charset=utf-8',
+        'text/markdown',
       ],
-      { cwd: root, shell: true, windowsHide: true },
+      { cwd: root, windowsHide: true },
     );
     let stderr = '';
     child.stderr.on('data', (d) => {
