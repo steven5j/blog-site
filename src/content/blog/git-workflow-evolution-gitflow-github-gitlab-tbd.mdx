@@ -1,0 +1,374 @@
+---
+title: Git 工作流程演進比較：從 GitFlow、GitHub Flow、GitLab Flow 到 Trunk-Based Development
+description: 比較 GitFlow、GitHub Flow、GitLab Flow 與 Trunk-Based Development，說明主幹開發為何成為現代交付的目標態；文末附筆者團隊的現場取捨。
+pubDate: 2026-08-26
+topic: software
+series: mis
+tags:
+  - Git
+  - GitLab
+  - DevOps
+  - 分支策略
+---
+
+import GitWorkflowAnim from '../../components/islands/GitWorkflowAnim';
+
+Git 本身幾乎允許任何分支用法，自由度高，團隊合作卻容易亂。工作流程（workflow）就是一套共識：誰從哪裡開分支、何時合併、何時部署。適合的流程取決於產品類型與部署方式——行動 App 要同時支援多個已發布版本，Web 服務卻常常只有線上一個版本、一天部署多次。
+
+本文整理四種常見模型：GitFlow、GitHub Flow、GitLab Flow、Trunk-Based Development（主幹開發），說明持續交付時代為什麼會把 TBD 當成目標態。文末另附一節，說明筆者團隊實際採用的骨架。主體脈絡參考 [Wells Tsai 的整理](https://wellstsai.com/single-page-conclusion/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%BC%94%E9%80%B2-%E5%BE%9EGitflow%E5%88%B0%E4%B8%BB%E5%B9%B9%E9%96%8B%E7%99%BC%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AF%A6%E8%B8%90.html)，GitLab Flow 則對照 GitLab 官方文件與現行 [branching strategies](https://docs.gitlab.com/user/project/repository/branches/strategies/)。
+
+## 先記住這幾點
+
+- **GitFlow** 適合要同時維護多版本的傳統軟體（桌面、行動 App、企業內部署），但不適合持續部署的 Web 應用；對現代高頻交付往往過重。
+- **GitHub Flow** 只留一條永遠可部署的 `main`，適合快速迭代的 SaaS 與中小型團隊；仍可能被長期 PR、過活的 feature 分支拖住。
+- **GitLab Flow** 以 GitHub Flow 為底，補上環境分支、發布分支、Issue 與 Merge Request；適合「不能每次合併都立刻上線」，但仍想維持單一真相來源的團隊。它是務實的過渡，不是交付頻率的終點。
+- **Trunk-Based Development（TBD）** 是現代高效能 DevOps 的常見目標態：極短分支或直送主幹、持續整合、用 Feature Flags 把「部署」和「對使用者發布」拆開。前提是自動化測試夠硬。
+- 多數團隊用混合策略靠近 TBD，而不是一夜換成 TBD。流程是工具，目的是更快、更安全地把價值交到使用者手上。
+
+## 為何需要 Git 工作流程？
+
+Git 設計彈性極大，幾乎可以用任何方式管理分支。對單人開發這是優點；對團隊卻常變成：不知道哪條分支最新、不知道該部署哪條、hotfix 只合進一半。
+
+工作流程把這些慣例寫下來，讓審查可預期、部署壓力較低。關鍵不是「哪個流程最潮」，而是產品怎麼發布。開發行動 App（使用者下載安裝、需同時支援 2.3 與 3.0）與開發 Web 應用（每日多次部署、線上只有一個版本），分支策略本來就該不同。
+
+## GitFlow：結構化的版本管理
+
+GitFlow 由 Vincent Driessen 於 2010 年提出，曾是業界標準。核心理念是維護多條長期分支，各司其職：
+
+- `main`：生產環境就緒的程式碼
+- `develop`：開發中的整合程式碼
+- `feature/*`：每個新功能的專屬分支
+- `release/*`：準備發布的版本分支
+- `hotfix/*`：緊急修復生產問題
+
+**典型場景：** 使用者同時跑 2.3、2.4、3.0。產品經理想修 2.3 的重大漏洞，但團隊已在開發 3.0。GitFlow 的作法是從 `main` 上 2.3 的標籤開 hotfix，修完後合併回 `main` **與** `develop`，讓修正同時進入當前版本與未來版本。
+
+**適合：**
+
+- 版本化發布的軟體（桌面、行動 App、企業內部署）
+- 需同時維護 2.x 與 3.x
+- 大型團隊需要明確結構
+- 受監管產業需要變更追蹤與稽核
+
+**缺點：** 建立 release、合併 hotfix、長期 feature 分支的管理開銷大；若每日部署，長期分支容易合併衝突。Driessen 後來也在原文補充：若採用持續交付，應改用更簡單的流程。GitFlow 為「版本發布、慢速部署」的時代設計；對現代 Web 應用往往過重。
+
+<GitWorkflowAnim client:visible variant="gitflow" />
+
+## GitHub Flow：極簡、永遠可部署
+
+GitHub Flow 的核心只有一條規則：`main` 永遠可部署（Always Deployable）。
+
+1. 從 `main` 建立分支
+2. 進行變更
+3. 開啟 Pull Request
+4. 審查通過後合併回 `main`
+5. 立即部署
+
+**典型場景：** 週二早上發現使用者無法上傳大頭貼。開 `fix-profile-upload` → 修復 → PR 審查 → 合併 `main` → 中午前已上線。
+
+**適合：** 持續部署的 Web 應用（SaaS、API）、中小型快速迭代團隊、已有自動化測試與 CI/CD、線上只維護一個版本。
+
+**挑戰：** 無法處理多版本；合併壞程式碼會卡住整條管線；多團隊容易互相干擾。它假設團隊紀律與測試夠好——PR 若被當成可選建議，這個流程會立刻出問題。
+
+<GitWorkflowAnim client:visible variant="github" />
+
+## GitLab Flow：補上環境、發布與 Issue
+
+GitHub Flow 假設「合併就能上線」。很多團隊做不到：App Store 審查決定上架時間、維運只在上班時段部署、還要同時維護舊版客戶。GitLab 因此提出 **GitLab Flow**：以 feature 分支 + `main` 為底，再依需求加上 production / 環境 / 發布分支，並把變更綁回 Issue 與 Merge Request。
+
+官方已不再把「GitLab Flow」當成單一品牌頁來推；現行文件改談 [branching strategies](https://docs.gitlab.com/user/project/repository/branches/strategies/)（Web 服務、長期發布分支、每個環境一條分支）。概念幾乎同一套，只是名稱收斂了。實務上多數人仍用 GitLab Flow 來稱呼下面三種變體。
+
+### 與 GitFlow、GitHub Flow 的位置
+
+- 比 GitFlow **簡單**：沒有長期 `develop`，預設分支就是 `main`，工具與新人較不容易搞錯預設來源。
+- 比 GitHub Flow **完整**：回答「還沒辦法每次合併都上線時，生產環境長什麼樣子？」「hotfix 要先合進哪裡？」「多版本怎麼 backport？」
+- 比 TBD **門檻低**：不要求一天內合進主幹，也不強制 Feature Flags；仍保留 MR 審查。
+
+GitLab 指出 GitFlow 的兩個痛點：開發者不該把 `develop` 當預設（多數工具預設是 `main`／`master`）；hotfix 與 release 的雙向合併容易漏合。GitLab Flow 的解法是 **upstream first**：修正先進入 `main`，再 cherry-pick 或往下游環境／發布分支合，而不是兩邊各合一次、靠記憶對齊。
+
+### 變體一：Production 分支
+
+當你無法在每次合併後立刻部署——例如 iOS 要等 App Store、或部署窗口只有平日 10:00–16:00——可以另開 `production`，讓它反映「目前線上跑的程式」。
+
+- 功能仍從 `main` 開發，經 MR 合進 `main`
+- 要上線時，把 `main` 合進 `production` 再部署
+- 部署時間大致等於那次 merge commit；若要更精準，部署腳本再打 tag
+
+這比 GitFlow 少了 release 來回合併的儀式，又比 GitHub Flow 多了一條「線上真實狀態」的分支。
+
+### 變體二：環境分支（staging / pre-production / production）
+
+若環境不只一個，常見作法是：
+
+- `main` 自動部署到 staging
+- MR：`main` → `pre-production`
+- MR：`pre-production` → `production`
+
+**提交只往下游流。** 每個環境都測過同一批 commit，才進下一關。
+
+hotfix 不要直接改 `production`。正確順序是：在 feature 分支修 → MR 合進 `main` → 通過自動測試後，再把同一條 feature 分支（或 cherry-pick）合進下游環境。這就是 upstream first：避免「線上修好了、`main` 卻沒有，下一版又復發」。
+
+這對應現行文件裡的 **branch per environment**，常見於多服務、需合規或 UAT 的組織。
+
+### 變體三：發布分支（對外發行的軟體）
+
+只有需要「把套件交到外界手上」時才需要，例如 `2-3-stable`、`2-4-stable`：
+
+- 盡可能晚才從 `main` 切出穩定分支，縮短必須同時修多條分支的時間
+- 宣布凍結後，只合嚴重 bug
+- 修正先合進 `main`，再 cherry-pick 到發布分支（upstream first；Google、Red Hat 也用類似政策）
+- 每次把修補放進發布分支，依 SemVer 升 patch 並打 tag
+
+這時通常不再另開 `production`。它對應現行文件的 **long-lived release branches**，也是 GitLab Flow 能處理「多版本維護」、而 GitHub Flow 做不到的地方。
+
+### Issue、Merge Request 與保護分支
+
+GitLab Flow 把流程接到 Issue Tracker：
+
+1. 有意義的變更先開 Issue，標題寫期望狀態（「管理員要能刪除使用者且不報錯」比「管理員不能刪使用者」清楚）
+2. 從最新 `main` 開分支開工
+3. 想討論時開 **Draft MR**，尚未指派表示歡迎回饋、尚未能合
+4. 就緒後指派給最熟這塊程式的人審查；保護分支通常只有 Maintainer 能合進 `main`
+5. 合併後刪除 feature 分支，進行中清單才乾淨；Issue 重開時可重用同名分支
+
+MR 在合進預設分支前必須通過 CI。GitLab 也建議 feature 分支盡量短（多數小於一天）；開太久就該把 Issue 切小，或用 feature toggle 讓未完成功能仍能每天合回 `main`。
+
+### 適用與限制
+
+**適合：**
+
+- 用 GitLab（或同等 MR + Issue + 保護分支）的團隊
+- Web 服務想持續交付，但還有部署窗口或 staging / UAT
+- 行動 App、套件需對外交版本，又不想養一條長期 `develop`
+- hotfix 必須可稽核：先上游、再下游
+
+**限制：**
+
+- 環境分支一多，下游仍可能落後、出現「這版測過、那版沒測」
+- 發布分支養太久，會慢慢長回 GitFlow 的複雜度
+- 沒有自動化測試時，保護分支擋不住品質問題
+- 它不是 TBD：分支存活可以超過一天，整合頻率通常低於主幹開發。對已能高頻部署的團隊，環境分支會成為回饋的天花板，而不是終點。
+
+<GitWorkflowAnim client:visible variant="gitlab" />
+
+## Trunk-Based Development：現代交付的目標態
+
+TBD 讓開發者在稱為 trunk／`main` 的單一主幹上合作，刻意抵抗長期開發分支。相較於用更多分支換「安全感」，現代做法是用**更短的整合週期**與**機器驗證**換回饋速度。
+
+- **小型團隊：** 可直接提交到 `main`
+- **規模化團隊：** 用極短期分支（生命週期小於一天，且是單一工作站的產物：單人、結對或 Mob）
+
+核心是持續整合：每人每 24 小時至少向主幹提交一次，程式碼隨時可部署。TBD 不是新潮流——1990 年代中期已是已知選項；Google、Meta 等在超大規模 monorepo 上驗證過。DORA 研究也反覆看到同一方向：高部署頻率、較短的變更前置時間、較快恢復，通常伴隨著主幹式整合，而不是長命的 `develop`／release 雙主幹。
+
+**進行中的功能怎麼不上線？** Feature Flags。程式持續部署到生產，對使用者關閉；完成後再打開。大規模重構則用 **Branch by Abstraction**：先加抽象層蓋住舊系統，在主幹上逐步提交新實作，用 flag 切換，穩定後拿掉舊實作與抽象層。這是 TBD 被視為「現代」的關鍵：把「程式進不進主幹」和「功能給不給使用者」拆開，才有辦法又整合得勤、又不上半成品。
+
+發布有兩種：
+
+1. **即時切 release：** 從主幹切出、只修 bug（hardening）、發布後刪除
+2. **直接從主幹發布（Fix Forward）：** 不開 release，出問題就在主幹修下一版，而不是回退補丁
+
+**適合：** 紀律與合作夠好的團隊、自動化測試涵蓋關鍵路徑、追求高部署頻率的 SaaS（只維護單一生產版本）。
+
+**挑戰：** 測試不夠就直接上主幹極度危險；需要小步提交、Feature Flags、提交前本地建置的文化。TBD 起初像拆輔助輪，但它會強迫團隊把測試自動化補齊——這正是它和「看起來比較安全的 GitFlow」最大的差別：複雜度從分支圖移到工程紀律。
+
+TBD 建立在穩固的開發基礎設施上（VCS、工作站、建置、IaC），上面才是 CI、CD，再上面才是精益實驗。TBD 定義人怎麼合作；CI 定義機器怎麼驗證每次變更。GitHub Flow、GitLab Flow 都可以視為往這條路上收斂的中間站；若測試與 Flag 已經到位，再養長期環境分支，回饋只會變慢。
+
+<GitWorkflowAnim client:visible variant="tbd" />
+
+## 四種工作流程比較
+
+<div class="spec-table-wrap" tabindex="0">
+<table class="spec-table">
+  <thead>
+    <tr>
+      <th scope="col">特性</th>
+      <th scope="col">GitFlow</th>
+      <th scope="col">GitHub Flow</th>
+      <th scope="col">GitLab Flow</th>
+      <th scope="col">Trunk-Based Development</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">分支策略</th>
+      <td>多條長期分支：<code>main</code>、<code>develop</code>、feature、release、hotfix</td>
+      <td>單一 <code>main</code> + 短期 feature</td>
+      <td><code>main</code> + feature；可加 production、環境或發布分支</td>
+      <td>直接提交主幹，或極短期分支（&lt; 1 天）</td>
+    </tr>
+    <tr>
+      <th scope="row">預設「真相來源」</th>
+      <td><code>develop</code> 做整合，<code>main</code> 只放已發布</td>
+      <td><code>main</code> 永遠可部署</td>
+      <td><code>main</code> 為上游；環境／發布是下游快照</td>
+      <td>trunk／<code>main</code></td>
+    </tr>
+    <tr>
+      <th scope="row">適用產品</th>
+      <td>版本化軟體（桌面、行動 App）</td>
+      <td>持續部署的 Web（SaaS、API）</td>
+      <td>有部署窗口、多環境或需對外交版本的產品</td>
+      <td>高頻部署的 SaaS</td>
+    </tr>
+    <tr>
+      <th scope="row">部署頻率</th>
+      <td>低（版本週期）</td>
+      <td>中高（每日數次）</td>
+      <td>中（依環境晉升，不必每次合併都上線）</td>
+      <td>極高（每日多次）</td>
+    </tr>
+    <tr>
+      <th scope="row">多版本支援</th>
+      <td>優秀</td>
+      <td>不支援</td>
+      <td>支援（發布分支 + upstream first）</td>
+      <td>原則上不支援（或即時切短暫 release）</td>
+    </tr>
+    <tr>
+      <th scope="row">環境模型</th>
+      <td>未一等公民，靠 develop／release 模擬</td>
+      <td>無，合併即生產</td>
+      <td>一等公民：staging → pre-prod → prod</td>
+      <td>靠 CD 與 Feature Flags，少用長期環境分支</td>
+    </tr>
+    <tr>
+      <th scope="row">測試要求</th>
+      <td>中等（發布前測）</td>
+      <td>高（CI/CD）</td>
+      <td>高（MR 必須過 CI；環境再人工／自動驗證）</td>
+      <td>極高（全面自動化）</td>
+    </tr>
+    <tr>
+      <th scope="row">合併衝突</th>
+      <td>頻繁（長期分支分化）</td>
+      <td>偶爾</td>
+      <td>中等（下游可能落後，但上游保持單一）</td>
+      <td>極少（持續整合）</td>
+    </tr>
+    <tr>
+      <th scope="row">審查單位</th>
+      <td>不一定</td>
+      <td>Pull Request</td>
+      <td>Merge Request，綁 Issue、保護分支</td>
+      <td>可有極短 MR，或直接提交 + 事後審查</td>
+    </tr>
+    <tr>
+      <th scope="row">hotfix</th>
+      <td>從 <code>main</code> 開 hotfix，需合回 <code>main</code> <strong>與</strong> <code>develop</code></td>
+      <td>開分支合回 <code>main</code> 並立即部署</td>
+      <td>先合 <code>main</code>，再 cherry-pick／合到環境或發布分支</td>
+      <td>在主幹 Fix Forward</td>
+    </tr>
+    <tr>
+      <th scope="row">關鍵技術</th>
+      <td>分支管理、版本標籤</td>
+      <td>PR、CI/CD</td>
+      <td>MR、Issue、保護分支、upstream first</td>
+      <td>Feature Flags、Branch by Abstraction、CI</td>
+    </tr>
+    <tr>
+      <th scope="row">複雜度</th>
+      <td>高</td>
+      <td>低</td>
+      <td>中</td>
+      <td>流程低、工程紀律高</td>
+    </tr>
+    <tr>
+      <th scope="row">現況</th>
+      <td>特定場景仍合理，Web 持續交付多半過重</td>
+      <td>廣泛使用</td>
+      <td>GitLab 生態常見；官方改以 branching strategies 描述</td>
+      <td>現代高頻交付的目標態；高效能團隊常見選擇</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+## 工作流程為何這樣演進？
+
+這條演進線，本質上是從「用長期分支隔離風險」走到「用持續整合與自動化消化風險」。
+
+**2010 前後：** 軟體以版本發布，部署手動、頻率低。GitFlow 對那個節奏合理。
+
+**SaaS 與持續交付：** Amazon、Netflix 等開始每日多次部署，交付的是功能而不是「2.0 版」。長期分支跟不上，GitHub Flow 把流程砍到 `main` + PR。
+
+**GitLab Flow：** 補上 GitHub Flow 沒回答的部署窗口、多環境、對外交版，並把 Issue／MR 變成一等流程。對用 GitLab 做 DevOps 平台、還不能每次合併都上線的團隊特別自然。它讓環境成為一等公民，但長期環境分支仍可能變成新的整合主幹。
+
+**TBD：** PR 仍可能阻塞、分支仍可能活太久。極短期分支或直送主幹、Feature Flags 解耦部署與發布，才接近真正的持續整合。底層工具也成熟了：測試框架、GitHub Actions／GitLab CI、LaunchDarkly／Unleash 這類 Flag 服務。現代之所以能把 TBD 當目標態，不是因為分支圖比較潮，而是機器終於跟得上「每天合進主幹很多次」。
+
+## 實務上的混合策略
+
+很少團隊 100% 照某一本教科書做。常見的混合幾乎都在**降低長期分支、提高往主幹整合的頻率**：
+
+- **TBD + 短暫 release：** 持續合進 `main`，發布時才切分支 hardening。接近 GitLab Flow 的「晚切 stable」，但主幹仍是日常整合點。
+- **核心 TBD、外部走 MR：** 內部互信且測試夠，外部貢獻必須審查。
+- **GitHub Flow + Feature Flags：** 保留 PR，用開關把「合進 main」和「對使用者開功能」拆開，向 TBD 靠近。
+- **GitLab Flow 環境分支 + 逐漸縮短 feature：** 先解決「不能每次都上線」，再把 Issue 切小，避免環境分支變成新的長期 `develop`。這是過渡，不是終點。
+- **TBD + Fix Forward：** 主幹永遠可部署，不開 hotfix 分支；出問題就往前修。
+
+沒有一體適用。依團隊結構、產品成熟度、合規與合作模式調整。方向通常一致：分支變短、測試變硬、發布用 Flag 控制，而不是再加一條長期線。
+
+## 實踐建議
+
+1. **自動化當基礎：** 測試、CI/CD、lint、格式化、安全掃描。沒有這些，TBD 會變成直接把缺陷送上主幹；有這些，才有資格縮短分支。
+2. **把流程寫下來：** 分支命名、提交訊息、誰能合進保護分支、hotfix 往哪裡合。不要假設大家都知道。
+3. **保護主幹：** 無論 GitHub Flow、GitLab Flow 還是 TBD，沒過 CI 就不能合進 `main`。GitLab 用保護分支 + Maintainer 權限即可落地。
+4. **用 DORA 指標回看：** 部署頻率、變更前置時間、服務恢復時間、變更失敗率。流程有沒有效，看這些比看分支圖清楚。往 TBD 收斂時，前兩項通常會先改善。
+5. **持續迭代：** 產品從「一年發兩次套件」變成「一天部署數次」時，流程就該跟著變。不要因為「一直都這樣」而留下 GitFlow 的雙主幹；環境分支若已開始長成第二條 `develop`，就把 Issue 切小、把 Flag 補上，而不是再加分支。
+
+---
+
+## 筆者團隊實踐模式：環境分支為骨架
+
+前文是比較文，目標態指向 TBD。這一節改以筆者口吻，說明我參與的微服務產品線實際怎麼走。
+
+### 我們走哪一條
+
+骨架是 **GitLab Flow 的環境分支**，不是單一教科書的完整翻版：
+
+```
+feature/*（或 bugfix/*、hotfix/*）
+    → MR → staging（測試／UAT）
+    → MR → master（正式）
+```
+
+<GitWorkflowAnim client:visible variant="practice" />
+
+- **不是 GitFlow：** 沒有長期 `develop`。功能從 `master` 切出，避免雙主幹漏合。
+- **不是 GitHub Flow：** 合進 `master` 才上 Production；中間有獨立、長期的 `staging`，不是合併主幹就對使用者開功能。
+- **也還不是 TBD：** 多數變更的第一個整合點是 `staging`；feature 允許數日、長期可到數週（必須搭配 Feature Flags）。TBD 是要靠近的紀律，不是現行名稱。
+
+`staging` 對應測試環境，`master` 對應正式環境。保護分支、只准 MR。
+
+### 和教科書差在合併方向
+
+GitLab Flow 常見寫法是 **upstream first**：修正先合進 `main`，再 cherry-pick 或往下游環境。我們日常是 **環境優先**——先讓測試環境吃到變更，真人驗收後再上正式。
+
+hotfix 仍從 `master` 切出。能先經 `staging` 就先經；來不及才先合 `master`，再把同一修正補回 `staging`，避免正式修好、測試下次部署又復發。選這條路，是因為風險控制在「UAT 之後才上正式」，不在「`master` 永遠是已測過的唯一真相」。
+
+### TBD 當紀律，不當現行名稱
+
+從 TBD 借來的是：短分支、Feature Flags（部署到環境 ≠ 對使用者開功能）、主幹用 MR 保護。不是拿 TBD 當理由刪掉 `staging`。測試覆蓋與 Flag 還沒撐起「每次合 `master` 就能給使用者」之前，把現行流程叫做 TBD，只會誤導新人去直推主幹。
+
+下一步仍朝比較文裡的目標態收：Issue 切小、長期功能靠 Flag 持續合進環境、定期把 `master` 合回 `staging`，避免測試線長成第二條 `develop`。骨架暫時不必拆，先把整合頻率提起來。
+
+### 同一產品家族、另一套契約
+
+共用函式庫沒有獨立的 staging／production 機器可部署，硬套環境分支不會變出兩種套件品質。那類 repo 走維護線加 tag 發版，環境由下游服務 pin 版本。flow 綁的是產物形態，不是全公司只准一張分支圖。
+
+## 結論
+
+比較上，持續交付要把回饋變快，**目標態仍是 Trunk-Based Development**——更短的分支、更硬的測試、用 Flag 解耦部署與發布。GitHub Flow、GitLab Flow 都是往那條路上的站；GitFlow 對多版本套件仍有位置，對高頻 Web 交付則多半過重。
+
+落到我自己的團隊：我們**還沒站在那個目標態上**。現行骨架是 GitLab Flow 環境分支，合併還是環境優先，TBD 只當短分支與 Flag 的約束。這不是否定 TBD，而是承認測試與發布開關還沒資格撐起「合進主幹即對使用者上線」。把流程寫成已經在做 TBD，比留著 `staging` 更危險。
+
+工作流程是工具，不是目的。目的是讓團隊更快、更安全地交付價值——比較文指出方向，現場決定這一步能跨多大。
+
+## 參考
+
+- [Git 工作流程演進：GitFlow、GitHub Flow 與 Trunk-Based Development（Wells Tsai）](https://wellstsai.com/single-page-conclusion/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%BC%94%E9%80%B2-%E5%BE%9EGitflow%E5%88%B0%E4%B8%BB%E5%B9%B9%E9%96%8B%E7%99%BC%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AF%A6%E8%B8%90.html)
+- [GitLab Flow（歷史文件）](https://gitlab.com/gitlab-org/gitlab/-/blob/master/doc/topics/gitlab_flow.md)
+- [GitLab Docs：Branching strategies](https://docs.gitlab.com/user/project/repository/branches/strategies/)
+- [A successful Git branching model（Vincent Driessen）](https://nvie.com/posts/a-successful-git-branching-model/)
+- [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow)
+- [Trunk Based Development](https://trunkbaseddevelopment.com/)

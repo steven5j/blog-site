@@ -615,3 +615,269 @@
   position: relative;
   z-index: 1;
 }
+
+/* Git workflow SVG animations (blog MDX islands) */
+.prose-blog .gwa {
+  margin: 1.75rem 0 2.25rem;
+  padding: 1.25rem 1rem 1.35rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper-elevated);
+}
+
+.prose-blog .gwa-heading {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.prose-blog .gwa-frame {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gwa-svg {
+  display: block;
+  width: 100%;
+  min-width: 36rem;
+  height: auto;
+  overflow: visible;
+}
+
+.gwa-line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gwa-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: gwa-draw-path 1.8s ease-out forwards;
+}
+
+.gwa-commit {
+  r: 6;
+  fill: currentColor;
+  opacity: 0;
+  animation: gwa-commit 0.5s ease-out forwards;
+}
+
+.gwa-pulse {
+  animation:
+    gwa-commit 0.5s ease-out forwards,
+    gwa-pulse 2s ease-in-out 0.5s infinite;
+}
+
+.gwa-merge {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: gwa-draw-merge 0.7s ease-out forwards;
+}
+
+.gwa-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.gwa-time {
+  fill: var(--color-mist-muted);
+  font-size: 11px;
+}
+
+.gwa-note {
+  font-size: 11px;
+  opacity: 0;
+  animation: gwa-fade 0.45s ease-out forwards;
+}
+
+.gwa-icon {
+  font-size: 13px;
+  opacity: 0;
+  animation: gwa-pop 0.55s ease-out forwards;
+}
+
+.gwa-badge {
+  fill: #f4f4f4;
+  stroke: var(--color-line);
+  opacity: 0;
+  animation: gwa-fade 0.45s ease-out forwards;
+}
+
+.gwa-badge-text {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--color-ink);
+  opacity: 0;
+  animation: gwa-fade 0.45s ease-out forwards;
+}
+
+.gwa-flag {
+  fill: #fff7ed;
+  stroke: #fdba74;
+  opacity: 0;
+  animation: gwa-fade 0.5s ease-out forwards;
+}
+
+@keyframes gwa-commit {
+  0% {
+    opacity: 0;
+    r: 0;
+  }
+  55% {
+    r: 8;
+  }
+  100% {
+    opacity: 1;
+    r: 6;
+  }
+}
+
+@keyframes gwa-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    r: 6;
+  }
+  50% {
+    opacity: 0.55;
+    r: 8;
+  }
+}
+
+@keyframes gwa-draw-merge {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes gwa-draw-path {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes gwa-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gwa-pop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.gwa-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.gwa-btn {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-mist);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.gwa-btn:hover {
+  border-color: var(--color-brand);
+  color: var(--color-ink);
+}
+
+.prose-blog .gwa-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem 1.1rem;
+  margin: 1rem 0 0;
+  padding: 0.75rem 0.5rem 0;
+  list-style: none;
+  border-top: 1px solid var(--color-line);
+}
+
+.prose-blog .gwa-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-mist-muted);
+}
+
+.gwa-swatch {
+  width: 0.85rem;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.prose-blog .gwa-steps {
+  margin: 0.85rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.92rem;
+  color: var(--color-mist);
+}
+
+.prose-blog .gwa-steps li {
+  margin: 0.25rem 0;
+}
+
+.gwa--paused .gwa-frame * {
+  animation-play-state: paused !important;
+}
+
+.gwa--static .gwa-commit,
+.gwa--static .gwa-pulse,
+.gwa--static .gwa-merge,
+.gwa--static .gwa-draw,
+.gwa--static .gwa-icon,
+.gwa--static .gwa-note,
+.gwa--static .gwa-badge,
+.gwa--static .gwa-badge-text,
+.gwa--static .gwa-flag {
+  animation: none !important;
+  opacity: 1;
+  stroke-dashoffset: 0;
+}
+
+.gwa--static .gwa-commit,
+.gwa--static .gwa-pulse {
+  r: 6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gwa-commit,
+  .gwa-pulse,
+  .gwa-merge,
+  .gwa-draw,
+  .gwa-icon,
+  .gwa-note,
+  .gwa-badge,
+  .gwa-badge-text,
+  .gwa-flag {
+    animation: none !important;
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .gwa-svg {
+    min-width: 28rem;
+  }
+}
