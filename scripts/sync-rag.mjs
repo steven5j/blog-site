@@ -3,6 +3,7 @@
  *
  *   node scripts/sync-rag.mjs            # write .rag/
  *   node scripts/sync-rag.mjs --upload   # write + wrangler r2 object put --remote
+ *                                        # --upload 需先 npx wrangler login
  *
  * Skips drafts and protected-only posts. Does not read protected-content/.
  */
@@ -148,17 +149,26 @@ type: about
 
 網站：${SITE}
 作者：Steven玄（Steven J. Hu）
+性別：男性（西元 93 年次魔羯男；對外以「他」稱呼）
 語言：繁體中文
+關於頁：${SITE}/about
 
 這是 Steven玄 的整合性個人網站，整理技術履歷、生意經驗與房地產筆記。
+2009 年左右撰寫 Blogspot 生活經歷；2019 年初轉職工程師後，把經驗、履歷與技術筆記集中在此站。
 
-## 專長與經歷
+## 專長（請依此回答，不要改成資料科學或人工智慧研究員）
 
-- 國立高雄科大 海洋環境工程系 畢業
-- 軟體公司「前、後、資料庫軟體工程師」
-- 資產公司「千萬業務員」
-- 傳銷公司百萬收入領導兼講師
-- 2019 年初轉職工程師，長期發展軟體工程
+- 專案管理與顧問、行銷策劃、商務開發、程式語言、投資規劃
+- 軟體工程：前端、後端、資料庫（主要 MSSQL、C# .NET、HTML／CSS／JavaScript）
+- 不是資料科學家，不是機器學習／AI 研究員；本站 Ask AI 只是網站功能，不代表作者職稱為 AI 專家
+
+## 經歷摘要
+
+- 國立高雄海洋科技大學（現高雄科技大學）海洋環境工程系畢業
+- 軟體公司「前、後、資料庫軟體工程師」（2019 年 11 月至今，科技資訊公司工程師）
+- 資產公司「千萬業務員」；地產顧問、資產管理顧問主管
+- 傳銷公司百萬收入領導兼講師（曾三星鑽領導）
+- 投資與合夥：外匯、股權、債權、私募、數字貨幣、美股台股、不動產；黃金貿易、房產隔套、交易所代理
 
 ## 網站主題
 
@@ -167,6 +177,12 @@ type: about
 - 生意經驗：賺錢、被動收入、投資理財、行銷策略
 - 房地產：房屋租賃、收租屋規劃
 
+## 聯絡
+
+- GitHub：https://github.com/steven5j
+- Facebook：https://www.facebook.com/shang.ju.5/
+- CakeResume：https://www.cakeresume.com/stevenjhu5j
+
 ## 主要路徑
 
 - / 首頁（https://stevenjhu.com/）
@@ -174,6 +190,36 @@ type: about
 - /projects 作品集與證照（沒有 /about/works 或 /about/certifications）
 - /series 系列
 - /about 關於作者
+`,
+  );
+
+  writeDoc(
+    'faq.md',
+    `---
+title: 網站常見問題 FAQ
+url: /about
+type: faq
+---
+
+# stevenjhu.com 常見問題
+
+問：這個網站的作者是誰？
+答：作者是 Steven玄（Steven J. Hu）。個人網站為 https://stevenjhu.com，關於頁在 /about。
+
+問：作者是男的還是女的？男性還是女性？難的還是女的？
+答：男性。關於頁寫「西元 93 年次的魔羯男」。稱呼用「他」。
+
+問：作者專長是什麼？做什麼工作？
+答：現職是軟體工程師（前、後、資料庫），主要 MSSQL、C# .NET、前端。自述專長還包括專案管理與顧問、行銷策劃、商務開發、投資規劃。另有業務、傳銷講師與房地產收租經驗。不是資料科學家，也不是人工智慧或機器學習研究員。
+
+問：作者在哪裡看作品或證照？
+答：一律看 /projects。沒有 /about/works 或 /about/certifications。證照例如 AWS SAA、Azure AZ-900、Azure AZ-104。
+
+問：怎麼聯絡作者？
+答：GitHub https://github.com/steven5j、Facebook https://www.facebook.com/shang.ju.5/、CakeResume https://www.cakeresume.com/stevenjhu5j，或先看 /about。
+
+問：密碼保護的文章能不能講內容？
+答：不能。只說明該篇有鎖、請到原頁解鎖；不要複述機密內文。
 `,
   );
 }
@@ -259,7 +305,7 @@ type: catalog
 
 # stevenjhu.com 公開內容目錄
 
-作者：Steven玄（Steven J. Hu）
+作者：Steven玄（Steven J. Hu），男性。詳見 /about 與站內 FAQ。
 
 ${catalog.join('\n')}
 `,
@@ -267,7 +313,7 @@ ${catalog.join('\n')}
 
 const total = walkFiles(outDir).length;
 console.log(
-  `Wrote ${total} files to .rag/ (blog ${blogCount}, projects ${projectCount}, series ${seriesCount}, plus about/catalog)`,
+  `Wrote ${total} files to .rag/ (blog ${blogCount}, projects ${projectCount}, series ${seriesCount}, plus about/faq/catalog)`,
 );
 
 if (shouldUpload) {

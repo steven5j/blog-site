@@ -38,7 +38,16 @@ npm run preview
 | Build output directory | `dist` |
 | Node version | `22` |
 
-亦可使用 Wrangler：
+使用 Wrangler 做遠端操作前，需先以 Cloudflare 帳號登入（瀏覽器 OAuth，完成後會顯示 `Successfully logged in.`）：
+
+```bash
+npx wrangler login
+npx wrangler whoami    # 可選：確認目前登入身分
+```
+
+未登入時，`pages deploy`、`sync:rag:upload`（R2 `--remote`）、以及 `preview:cf`（`wrangler.toml` 的 AI binding 為 `remote = true`）都會失敗。本機 `npm run dev` 不需登入。
+
+部署：
 
 ```bash
 npx wrangler pages deploy dist
@@ -69,6 +78,7 @@ protectedOnly: true                     # 獨立機密頁：僅顯示密碼門
 ```bash
 cp .dev.vars.example .dev.vars   # 編輯密碼
 npm run dev                      # Astro dev，已內建 /api/unlock（讀 .dev.vars）
+npx wrangler login               # preview:cf 會打遠端 Workers AI，需先登入
 npm run preview:cf               # 完整模擬 Cloudflare Pages（需先 npm install）
 ```
 
@@ -96,3 +106,15 @@ npm run redirects
 ```
 
 分類對照見 `scripts/wp-category-map.json`。若本機 TLS 驗證失敗，腳本已使用 `node --use-system-ca`。
+
+## AI Search（RAG）
+
+公開內容可匯出到 `.rag/`，再上傳至 R2 bucket `stevenjhu-r2` 供 AI Search 索引。上傳為遠端操作，**必須先 `npx wrangler login`**。
+
+```bash
+npx wrangler login          # 尚未登入時
+npm run sync:rag            # 只寫入 .rag/
+npm run sync:rag:upload     # 寫入並 wrangler r2 object put --remote
+```
+
+略過草稿與密碼保護文章，不會讀取 `protected-content/`。上傳完成後，到 Cloudflare Dashboard → AI Search → `stevenjhu-ai-search` 等待索引結束。
