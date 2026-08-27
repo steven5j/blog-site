@@ -11,6 +11,7 @@ interface Props {
   tags?: string[];
   topic?: Topic;
   series?: string;
+  heroImage?: string;
   jsonLd?: Record<string, unknown>[];
   protectedSlug?: string;
   protectedOnly?: boolean;
@@ -27,6 +28,7 @@ const {
   tags = [],
   topic,
   series,
+  heroImage,
   jsonLd,
   protectedSlug,
   protectedOnly = false,
@@ -47,6 +49,7 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
 <BaseLayout
   title={title}
   description={description}
+  ogImage={heroImage}
   type="article"
   jsonLd={jsonLd}
 >
@@ -106,6 +109,19 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
               </li>
             ))}
           </ul>
+        )
+      }
+      {
+        heroImage && !protectedOnly && (
+          <figure class="mt-8 overflow-hidden border border-line bg-paper-elevated">
+            <img
+              src={heroImage}
+              alt={title}
+              width="1920"
+              height="1080"
+              class="block h-auto w-full"
+            />
+          </figure>
         )
       }
     </header>

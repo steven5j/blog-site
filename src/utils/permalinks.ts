@@ -28,6 +28,15 @@ export function postPermalink(pubDate: Date, id: string): string {
   return `/${year}/${month}/${day}/${id}`;
 }
 
+/** Normalize content `heroImage` to a site-root path (`/uploads/...`). */
+export function siteAssetPath(src?: string): string | undefined {
+  if (!src) return undefined;
+  const trimmed = src.trim();
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  const withoutPublic = trimmed.replace(/^\/?public\//, '');
+  return withoutPublic.startsWith('/') ? withoutPublic : `/${withoutPublic}`;
+}
+
 export const TOPICS = ['software', 'business', 'life'] as const;
 export type Topic = (typeof TOPICS)[number];
 

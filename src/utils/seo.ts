@@ -44,6 +44,7 @@ export function blogPostingJsonLd(input: {
   pubDate: Date;
   updatedDate?: Date;
   tags?: string[];
+  image?: string;
 }): JsonLd {
   return {
     '@context': 'https://schema.org',
@@ -60,6 +61,7 @@ export function blogPostingJsonLd(input: {
       url: SITE.url,
     },
     keywords: input.tags?.join(', '),
+    ...(input.image ? { image: input.image } : {}),
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': input.url,

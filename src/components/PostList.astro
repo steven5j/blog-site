@@ -1,6 +1,6 @@
 ---
 import Reveal from '@/components/Reveal.astro';
-import { postPermalink, TOPIC_LABELS } from '@/utils/permalinks';
+import { postPermalink, siteAssetPath, TOPIC_LABELS } from '@/utils/permalinks';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -107,32 +107,49 @@ const maxFeaturedReveal = 6;
             </p>
           )}
           <ul class="divide-y divide-line">
-            {featured.map((post, i) => (
+            {featured.map((post, i) => {
+              const hero = siteAssetPath(post.data.heroImage);
+              return (
               <li>
                 <Reveal delay={i < maxFeaturedReveal ? i * 40 : 0}>
                   <a
                     href={postPermalink(post.data.pubDate, post.id)}
-                    class="group block py-7 no-underline"
+                    class:list={[
+                      'group block py-7 no-underline',
+                      hero && 'sm:flex sm:items-start sm:gap-6',
+                    ]}
                   >
-                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-mist-muted">
-                      <time datetime={post.data.pubDate.toISOString()}>
-                        {dateFmt.format(post.data.pubDate)}
-                      </time>
-                      {showTopic && (
-                        <>
-                          <span aria-hidden="true">·</span>
-                          <span>{TOPIC_LABELS[post.data.topic]}</span>
-                        </>
-                      )}
+                    {hero && (
+                      <div class="mb-4 aspect-video w-full shrink-0 overflow-hidden border border-line bg-paper sm:mb-0 sm:aspect-auto sm:h-[7.5rem] sm:w-44">
+                        <img
+                          src={hero}
+                          alt=""
+                          class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                        />
+                      </div>
+                    )}
+                    <div class="min-w-0 flex-1">
+                      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-mist-muted">
+                        <time datetime={post.data.pubDate.toISOString()}>
+                          {dateFmt.format(post.data.pubDate)}
+                        </time>
+                        {showTopic && (
+                          <>
+                            <span aria-hidden="true">·</span>
+                            <span>{TOPIC_LABELS[post.data.topic]}</span>
+                          </>
+                        )}
+                      </div>
+                      <TitleTag class="font-display mt-2 text-2xl font-semibold text-ink transition group-hover:text-brand">
+                        {post.data.title}
+                      </TitleTag>
+                      <p class="mt-2 text-mist-muted">{post.data.description}</p>
                     </div>
-                    <TitleTag class="font-display mt-2 text-2xl font-semibold text-ink transition group-hover:text-brand">
-                      {post.data.title}
-                    </TitleTag>
-                    <p class="mt-2 text-mist-muted">{post.data.description}</p>
                   </a>
                 </Reveal>
               </li>
-            ))}
+              );
+            })}
           </ul>
         </div>
       )}

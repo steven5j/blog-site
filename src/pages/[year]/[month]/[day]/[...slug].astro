@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
 import { blogPostingJsonLd, SITE } from '@/utils/seo';
-import { datePathParts, postPermalink } from '@/utils/permalinks';
+import { datePathParts, postPermalink, siteAssetPath } from '@/utils/permalinks';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -45,6 +45,10 @@ if (
 
 const { Content } = await render(post);
 const permalink = postPermalink(post.data.pubDate, post.id);
+const heroImage = siteAssetPath(post.data.heroImage);
+const heroImageAbs = heroImage
+  ? new URL(heroImage, SITE.url).toString()
+  : undefined;
 
 const jsonLd = [
   blogPostingJsonLd({
@@ -54,6 +58,7 @@ const jsonLd = [
     pubDate: post.data.pubDate,
     updatedDate: post.data.updatedDate,
     tags: post.data.tags,
+    image: heroImageAbs,
   }),
 ];
 ---
@@ -66,6 +71,7 @@ const jsonLd = [
   tags={post.data.tags}
   topic={post.data.topic}
   series={post.data.series}
+  heroImage={heroImage}
   jsonLd={jsonLd}
   protectedSlug={post.data.protectedSlug}
   protectedOnly={post.data.protectedOnly}
