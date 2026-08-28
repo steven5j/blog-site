@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/3839.gif
 wpId: 3839
+slug: js-js30-06-type-ahead-3839
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/08/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9706-type-ahead-%e9%97%9c%e9%8d%b5%e5%ad%97%e5%bb%ba%e8%ad%b0%e6%8f%90%e7%a4%ba%e8%a8%8a%e6%81%af/"
 ---
 

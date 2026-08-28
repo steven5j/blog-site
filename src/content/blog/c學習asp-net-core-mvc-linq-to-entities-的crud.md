@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4739.jpg
 wpId: 4739
+slug: c-asp-net-core-mvc-linq-to-entities-crud-4739
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/10/11/c%e5%ad%b8%e7%bf%92asp-net-core-mvc-linq-to-entities-%e7%9a%84crud/"
 ---
 

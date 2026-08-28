@@ -5,6 +5,7 @@ pubDate: 2021-08-02
 topic: software
 series: csharp
 wpId: 6362
+slug: c-net-net-resharper-6362
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/08/02/c-net-net%e7%95%8c%e7%a5%9e%e7%b4%9a%e7%9a%84%e5%b7%a5%e5%85%b7-resharper%e4%bb%8b%e7%b4%b9/"
 ---
 

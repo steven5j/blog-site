@@ -4,6 +4,7 @@ description: "簡介 : Log4j 是一套開放源碼的工具,方便編程人員�
 pubDate: 2019-10-12
 topic: software
 wpId: 3322
+slug: java-java-log4j-logger-3322
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/12/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e8%81%b7%e5%a0%b4-java%e7%9a%84%e8%a8%98%e9%8c%84%e6%aa%94%e8%a8%98%e9%8c%84%e5%b7%a5%e5%85%b7log4j-logger/"
 ---
 

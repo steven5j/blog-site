@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/5227.gif
 wpId: 5227
+slug: js-js30-30-whack-a-mole-5227
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/12/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9730-whack-a-mole/"
 ---
 

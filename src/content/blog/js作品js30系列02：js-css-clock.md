@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/3703.gif
 wpId: 3703
+slug: js-js30-02-js-css-clock-3703
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/12/01/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9702%ef%bc%9ajs-css-clock/"
 ---
 

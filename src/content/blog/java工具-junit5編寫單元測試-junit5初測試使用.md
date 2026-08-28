@@ -4,6 +4,7 @@ description: "JUnit是Java中使用最廣泛的測試框架，之前Java8發布�
 pubDate: 2019-10-10
 topic: software
 wpId: 3311
+slug: java-junit5-junit5-3311
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/10/java%e5%b7%a5%e5%85%b7-junit5%e7%b7%a8%e5%af%ab%e5%96%ae%e5%85%83%e6%b8%ac%e8%a9%a6-junit5%e5%88%9d%e6%b8%ac%e8%a9%a6%e4%bd%bf%e7%94%a8/"
 ---
 

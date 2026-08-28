@@ -4,6 +4,7 @@ description: "主程式 承接interface 用implement實作 interface宣告的-�
 pubDate: 2019-10-12
 topic: software
 wpId: 3328
+slug: java-log4j-logger-junit4-bigdecimal-interface-3328
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/12/java%e5%b0%8f%e5%b0%88%e6%a1%88-%e5%8a%a0%e6%b8%9b%e4%b9%98%e9%99%a4log4j-logger%e3%80%81junit4%e3%80%81bigdecimal%e3%80%81interface/"
 ---
 

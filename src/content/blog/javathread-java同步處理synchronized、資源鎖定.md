@@ -4,6 +4,7 @@ description: "Synchronized 簡單介紹 Synchronized 使用時，需指定一個
 pubDate: 2019-10-15
 topic: software
 wpId: 3374
+slug: javathread-java-synchronized-3374
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/15/javathread-java%e5%90%8c%e6%ad%a5%e8%99%95%e7%90%86synchronized%e3%80%81%e8%b3%87%e6%ba%90%e9%8e%96%e5%ae%9a/"
 ---
 

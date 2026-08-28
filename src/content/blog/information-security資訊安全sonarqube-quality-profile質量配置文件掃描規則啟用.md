@@ -5,6 +5,7 @@ pubDate: 2021-07-11
 topic: software
 series: mis
 wpId: 6293
+slug: information-security-sonarqube-quality-profile-6293
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/07/11/information-security%e8%b3%87%e8%a8%8a%e5%ae%89%e5%85%a8sonarqube-quality-profile%e8%b3%aa%e9%87%8f%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e6%8e%83%e6%8f%8f%e8%a6%8f%e5%89%87%e5%95%9f%e7%94%a8/"
 ---
 

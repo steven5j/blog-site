@@ -5,6 +5,7 @@ pubDate: 2024-06-01
 topic: software
 heroImage: /public/uploads/wp/7245.png
 wpId: 7245
+slug: solid-7245
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2024/06/01/solid-%e5%8e%9f%e5%89%87/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/7033.png
 wpId: 7033
+slug: othertools-c4-model-7033
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/04/28/othertools%e5%b7%a5%e7%a8%8b%e5%b8%ab%e7%95%ab%e5%9c%96-c4-model-%e8%bb%9f%e9%ab%94%e7%b3%bb%e7%b5%b1%e5%bb%ba%e6%a8%a1%e7%9a%84%e5%9c%96%e5%bd%a2%e8%a1%a8%e7%a4%ba%e6%8a%80%e5%b7%a7/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: android
 heroImage: /public/uploads/wp/4710.jpg
 wpId: 4710
+slug: android-android-4710
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/10/09/android%e5%ad%b8%e7%bf%92-android%e8%b5%b7%e5%88%9d%e5%b0%88%e6%a1%88%e9%85%8d%e7%bd%ae%e8%aa%8d%e8%ad%98/"
 ---
 

@@ -9,6 +9,7 @@ tags:
   - 證照
 heroImage: /public/uploads/wp/7390.jpg
 wpId: 7390
+slug: azureaz-900-7390
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/07/16/azureaz-900-%e8%ad%89%e7%85%a7-%e8%87%aa%e4%bf%ae%e8%80%83%e8%a9%a6%e5%bf%83%e5%be%97/"
 ---
 

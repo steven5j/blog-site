@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4702.jpg
 wpId: 4702
+slug: c-asp-net-core-mvc-razor-4702
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/10/10/c%e5%ad%b8%e7%bf%92asp-net-core-mvc-razor-%e6%95%b4%e7%90%86/"
 ---
 

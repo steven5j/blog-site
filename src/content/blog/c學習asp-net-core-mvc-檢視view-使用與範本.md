@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4596.jpg
 wpId: 4596
+slug: c-asp-net-core-mvc-view-4596
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/08/30/c%e5%ad%b8%e7%bf%92asp-net-core-mvc-%e6%aa%a2%e8%a6%96view-%e4%bd%bf%e7%94%a8%e8%88%87%e7%af%84%e6%9c%ac/"
 ---
 

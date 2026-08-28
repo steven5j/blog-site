@@ -12,6 +12,7 @@
     "preview:cf": "npm run build && npx wrangler pages dev dist",
     "astro": "astro",
     "redirects": "node scripts/generate-redirects.mjs",
+    "assign:slugs": "node scripts/assign-blog-slugs.mjs",
     "migrate:wp": "node --use-system-ca scripts/migrate-wp.mjs",
     "migrate:wp:dry": "node --use-system-ca scripts/migrate-wp.mjs --dry-run --limit=5",
     "sync:rag": "node scripts/sync-rag.mjs",

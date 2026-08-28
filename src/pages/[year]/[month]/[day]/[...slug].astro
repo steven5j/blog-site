@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
 import { blogPostingJsonLd, SITE } from '@/utils/seo';
-import { datePathParts, postPermalink, siteAssetPath } from '@/utils/permalinks';
+import { datePathParts, postHref, postUrlSlug, siteAssetPath } from '@/utils/permalinks';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
     if (entry.data.protectedOnly && entry.data.protectedSlug) {
       standaloneByProtectedSlug.set(
         entry.data.protectedSlug,
-        postPermalink(entry.data.pubDate, entry.id),
+        postHref(entry),
       );
     }
   }
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
       : undefined;
 
     return {
-      params: { year, month, day, slug: post.id },
+      params: { year, month, day, slug: postUrlSlug(post) },
       props: { post, protectedStandaloneUrl },
     };
   });
@@ -38,13 +38,13 @@ if (
   year !== parts.year ||
   month !== parts.month ||
   day !== parts.day ||
-  slug !== post.id
+  slug !== postUrlSlug(post)
 ) {
   return Astro.redirect('/blog');
 }
 
 const { Content } = await render(post);
-const permalink = postPermalink(post.data.pubDate, post.id);
+const permalink = postHref(post);
 const heroImage = siteAssetPath(post.data.heroImage);
 const heroImageAbs = heroImage
   ? new URL(heroImage, SITE.url).toString()

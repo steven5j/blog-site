@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/5222.gif
 wpId: 5222
+slug: js-js30-28-video-speed-controller-5222
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/10/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9728-video-speed-controller/"
 ---
 

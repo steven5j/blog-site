@@ -9,6 +9,7 @@ tags:
   - 組件三大屬性
 heroImage: /public/uploads/wp/6858.jpg
 wpId: 6858
+slug: react-1-state-setstate-6858
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/11/23/react%e7%b5%84%e4%bb%b6%e4%b8%89%e5%a4%a7%e5%b1%ac%e6%80%a71-state%e3%80%81setstate/"
 ---
 

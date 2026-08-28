@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/7320.jpg
 wpId: 7320
+slug: dockercontainer-7320
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/03/23/dockercontainer%e5%9f%ba%e7%a4%8e%e6%8c%87%e4%bb%a4/"
 ---
 

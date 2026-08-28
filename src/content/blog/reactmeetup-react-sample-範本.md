@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/6925.png
 wpId: 6925
+slug: reactmeetup-react-sample-6925
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/12/19/reactmeetup-react-sample-%e7%af%84%e6%9c%ac/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: frontend
 heroImage: /public/uploads/wp/5962.jpg
 wpId: 5962
+slug: frontendcroppie-5962
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/05/10/frontendcroppie%e5%9c%96%e7%89%87%e4%b8%8a%e5%82%b3-%e8%a3%81%e5%88%87%e5%b7%a5%e5%85%b7/"
 ---
 

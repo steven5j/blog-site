@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/3600.jpg
 wpId: 3600
+slug: gagoogle-analytics-3600
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/11/06/gagoogle-analytics%e8%bf%bd%e8%b9%a4%e7%a2%bc%e5%ae%89%e8%a3%9d%e6%96%b9%e6%b3%95/"
 ---
 

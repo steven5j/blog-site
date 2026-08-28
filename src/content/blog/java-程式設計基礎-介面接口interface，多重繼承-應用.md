@@ -4,6 +4,7 @@ description: "介面為一種標準、規範，只要符合規則就可以和介
 pubDate: 2019-10-10
 topic: software
 wpId: 3297
+slug: java-interface-3297
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/10/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e4%bb%8b%e9%9d%a2%e6%8e%a5%e5%8f%a3interface%ef%bc%8c%e5%a4%9a%e9%87%8d%e7%b9%bc%e6%89%bf-%e6%87%89%e7%94%a8/"
 ---
 

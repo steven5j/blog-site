@@ -4,6 +4,7 @@ description: "1、當一個類沒有繼承任何一個類時，系統預設繼�
 pubDate: 2019-10-09
 topic: software
 wpId: 3291
+slug: java-extends-this-super-3291
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/09/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e7%b9%bc%e6%89%bf-extends%ef%bc%8cthis%e3%80%81super%e6%87%89%e7%94%a8/"
 ---
 

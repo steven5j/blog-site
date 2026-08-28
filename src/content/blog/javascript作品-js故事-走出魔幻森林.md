@@ -5,6 +5,7 @@ pubDate: 2019-09-27
 topic: software
 series: javascript
 wpId: 882
+slug: javascript-js-882
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/javascript%e4%bd%9c%e5%93%81-js%e6%95%85%e4%ba%8b-%e8%b5%b0%e5%87%ba%e9%ad%94%e5%b9%bb%e6%a3%ae%e6%9e%97/"
 ---
 

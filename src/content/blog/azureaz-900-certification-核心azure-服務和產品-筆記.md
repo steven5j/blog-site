@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/7377.jpg
 wpId: 7377
+slug: azureaz-900-certification-azure-7377
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/06/27/azureaz-900-certification-%e6%a0%b8%e5%bf%83azure-%e6%9c%8d%e5%8b%99%e5%92%8c%e7%94%a2%e5%93%81-%e7%ad%86%e8%a8%98/"
 ---
 

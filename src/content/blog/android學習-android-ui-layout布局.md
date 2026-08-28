@@ -6,6 +6,7 @@ topic: software
 series: android
 heroImage: /public/uploads/wp/4728.jpg
 wpId: 4728
+slug: android-android-ui-layout-4728
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/10/09/android%e5%ad%b8%e7%bf%92-android-ui-layout%e5%b8%83%e5%b1%80/"
 ---
 

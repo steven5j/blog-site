@@ -6,6 +6,7 @@ topic: software
 series: portfolio
 heroImage: /uploads/wp/email-api-hero.jpg
 wpId: 7602
+slug: api-7602
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2023/05/03/%e5%b0%88%e6%a1%88%e6%88%90%e5%b0%b1%e5%85%b1%e7%94%a8%e7%99%bc%e4%bf%a1api/"
 tags:
   - C#

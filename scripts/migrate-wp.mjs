@@ -12,6 +12,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isAsciiSlug, slugifyId } from './blog-slug.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -178,6 +179,9 @@ function buildMarkdown(post, topic, series, heroImage) {
   }
   if (heroImage) fm.push(`heroImage: ${yamlEscape(heroImage)}`);
   fm.push(`wpId: ${post.id}`);
+  if (!isAsciiSlug(slug)) {
+    fm.push(`slug: ${slugifyId(slug, post.id)}`);
+  }
   fm.push(`legacyUrl: ${yamlEscape(post.link)}`);
   fm.push('---', '', body, '');
   return { slug, content: fm.join('\n') };

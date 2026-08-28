@@ -4,6 +4,7 @@ description: "Program, Process, Thread 的不同 用Java產生 Thread Java 的 T
 pubDate: 2019-10-14
 topic: software
 wpId: 3356
+slug: java-thread-runnable-3356
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/14/java-thread-runnable%e5%af%a6%e4%bd%9c/"
 ---
 

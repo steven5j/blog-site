@@ -4,6 +4,7 @@ description: "[fusion_builder_container hundred_percent=”no&#82 [&hellip;]"
 pubDate: 2019-10-03
 topic: software
 wpId: 3210
+slug: java-wrapper-3210
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/03/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-wrapper/"
 ---
 

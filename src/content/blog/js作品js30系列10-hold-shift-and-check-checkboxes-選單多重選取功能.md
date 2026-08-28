@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/3930.gif
 wpId: 3930
+slug: js-js30-10-hold-shift-and-check-checkboxes-3930
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/21/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9710-hold-shift-and-check-checkboxes-%e9%81%b8%e5%96%ae%e5%a4%9a%e9%87%8d%e9%81%b8%e5%8f%96%e5%8a%9f%e8%83%bd/"
 ---
 

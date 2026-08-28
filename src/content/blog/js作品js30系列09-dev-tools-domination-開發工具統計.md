@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/3917.gif
 wpId: 3917
+slug: js-js30-09-dev-tools-domination-3917
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/15/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9709-dev-tools-domination-%e9%96%8b%e7%99%bc%e5%b7%a5%e5%85%b7%e7%b5%b1%e8%a8%88/"
 ---
 

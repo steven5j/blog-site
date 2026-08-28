@@ -9,6 +9,7 @@ tags:
   - 爬蟲
 heroImage: /public/uploads/wp/7191.jpg
 wpId: 7191
+slug: python-web-crawler-cookie-request-headers-7191
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/02/13/python%e7%88%ac%e8%9f%b2web-crawler-%e6%93%8d%e4%bd%9c-cookie%e3%80%81request-headers/"
 ---
 

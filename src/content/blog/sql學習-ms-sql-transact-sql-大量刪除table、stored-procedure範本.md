@@ -6,6 +6,7 @@ topic: software
 series: sql
 heroImage: /public/uploads/wp/4765.jpg
 wpId: 4765
+slug: sql-ms-sql-transact-sql-table-stored-procedure-4765
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/10/18/sql%e5%ad%b8%e7%bf%92-ms-sql-transact-sql-%e5%a4%a7%e9%87%8f%e5%88%aa%e9%99%a4table%e3%80%81stored-procedure%e7%af%84%e6%9c%ac/"
 ---
 

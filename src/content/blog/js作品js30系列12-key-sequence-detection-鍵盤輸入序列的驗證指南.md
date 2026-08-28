@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/3986.gif
 wpId: 3986
+slug: js-js30-12-key-sequence-detection-3986
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/29/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9712-key-sequence-detection-%e9%8d%b5%e7%9b%a4%e8%bc%b8%e5%85%a5%e5%ba%8f%e5%88%97%e7%9a%84%e9%a9%97%e8%ad%89%e6%8c%87%e5%8d%97/"
 ---
 

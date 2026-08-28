@@ -6,6 +6,7 @@ topic: business
 series: fintech
 heroImage: /public/uploads/wp/6417.jpg
 wpId: 6417
+slug: blockchain-axie-infinity-6417
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/08/10/blockchain%e5%95%86%e6%a5%ad%e7%8e%a9%e9%81%8a%e6%88%b2%e9%82%8a%e8%b3%ba%e9%8c%a2%ef%bc%8caxie-infinity%e9%a1%9b%e8%a6%86%e9%81%8a%e6%88%b2%e6%96%b0%e6%a0%bc%e5%b1%80/"
 ---
 

@@ -5,6 +5,7 @@ pubDate: 2021-04-22
 topic: software
 heroImage: /public/uploads/wp/6091.jpg
 wpId: 6091
+slug: javascript-array-6091
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/04/22/javascript%e9%99%a3%e5%88%97-array%e6%95%b8%e7%b5%84/"
 ---
 

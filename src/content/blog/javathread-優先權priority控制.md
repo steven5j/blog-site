@@ -4,6 +4,7 @@ description: "每個執行緒都有一個優先順序，高優先順序執行緒
 pubDate: 2019-10-15
 topic: software
 wpId: 3368
+slug: javathread-priority-3368
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/15/javathread-%e5%84%aa%e5%85%88%e6%ac%8apriority%e6%8e%a7%e5%88%b6/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4613.jpg
 wpId: 4613
+slug: c-repeater-4613
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/09/01/c%e5%ad%b8%e7%bf%92repeater%e5%85%83%e4%bb%b6%ef%bc%8c%e8%87%aa%e5%8b%95%e5%af%ab%e8%bf%b4%e5%9c%88/"
 ---
 

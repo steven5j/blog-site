@@ -4,6 +4,7 @@ description: "目前我用的stevenjhu.com網站是使用WordPress的內容管�
 pubDate: 2021-02-17
 topic: life
 wpId: 4800
+slug: wordpress-cmd-4800
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/02/17/%e6%88%91%e6%98%af%e8%bb%9f%e9%ab%94%e5%b7%a5%e7%a8%8b%e5%b8%ab%ef%bc%8c%e7%82%ba%e4%bb%80%e9%ba%bc%e6%88%91%e9%81%b8%e6%93%87%e7%94%a8wordpress%e7%95%b6%e9%83%a8%e8%90%bd%e6%a0%bccmd%e5%85%a7/"
 ---
 

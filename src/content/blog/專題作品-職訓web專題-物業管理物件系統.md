@@ -5,6 +5,7 @@ pubDate: 2019-09-27
 topic: software
 series: sql
 wpId: 897
+slug: web-897
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/%e5%b0%88%e9%a1%8c%e4%bd%9c%e5%93%81-%e8%81%b7%e8%a8%93web%e5%b0%88%e9%a1%8c-%e7%89%a9%e6%a5%ad%e7%ae%a1%e7%90%86%e7%89%a9%e4%bb%b6%e7%b3%bb%e7%b5%b1/"
 ---
 

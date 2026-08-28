@@ -5,6 +5,7 @@ pubDate: 2019-09-27
 topic: software
 series: javascript
 wpId: 886
+slug: javascript-f2e_2nd-886
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/javascript%e4%bd%9c%e5%93%81-f2e_2nd-%e5%85%ad%e8%a7%92%e5%ad%b8%e9%99%a2-%e7%ac%ac%e4%b8%80%e9%97%9c%e7%95%aa%e8%8c%84%e9%90%98/"
 ---
 

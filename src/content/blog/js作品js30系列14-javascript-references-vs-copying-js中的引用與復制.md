@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/4003.gif
 wpId: 4003
+slug: js-js30-14-javascript-references-vs-copying-js-4003
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/04/03/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9714-javascript-references-vs-copying-js%e4%b8%ad%e7%9a%84%e5%bc%95%e7%94%a8%e8%88%87%e5%be%a9%e5%88%b6/"
 ---
 

@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/5165.jpg
 wpId: 5165
+slug: js-js30-26-stripe-follow-along-nav-5165
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/05/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9726-stripe-follow-along-nav/"
 ---
 

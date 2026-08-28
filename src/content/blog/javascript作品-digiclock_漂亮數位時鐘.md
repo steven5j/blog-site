@@ -5,6 +5,7 @@ pubDate: 2019-09-27
 topic: software
 series: javascript
 wpId: 891
+slug: javascript-digiclock-891
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/javascript%e4%bd%9c%e5%93%81-digiclock_%e6%bc%82%e4%ba%ae%e6%95%b8%e4%bd%8d%e6%99%82%e9%90%98/"
 ---
 

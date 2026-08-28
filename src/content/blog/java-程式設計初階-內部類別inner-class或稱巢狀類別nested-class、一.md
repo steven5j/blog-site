@@ -4,6 +4,7 @@ description: "顧名思義，就是有個Class包在另一個Class裡面 一般�
 pubDate: 2019-10-10
 topic: software
 wpId: 3304
+slug: java-inner-class-nested-class-3304
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/10/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%88%9d%e9%9a%8e-%e5%85%a7%e9%83%a8%e9%a1%9e%e5%88%a5inner-class%e6%88%96%e7%a8%b1%e5%b7%a2%e7%8b%80%e9%a1%9e%e5%88%a5nested-class%e3%80%81%e4%b8%80/"
 ---
 

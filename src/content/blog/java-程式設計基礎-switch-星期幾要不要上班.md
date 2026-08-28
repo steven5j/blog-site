@@ -4,6 +4,7 @@ description: 商品比價 java09檔案，輸入星期幾，得知要不要上班
 pubDate: 2019-09-30
 topic: software
 wpId: 914
+slug: java-switch-914
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/30/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-switch-%e6%98%9f%e6%9c%9f%e5%b9%be%e8%a6%81%e4%b8%8d%e8%a6%81%e4%b8%8a%e7%8f%ad/"
 ---
 

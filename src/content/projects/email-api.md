@@ -5,7 +5,7 @@ year: 2023
 type: project
 order: 40
 image: /uploads/wp/email-api-hero.jpg
-link: /2023/05/03/專案成就共用發信api
+link: /2023/05/03/api-7602
 role: 開發人員
 outcomes:
   - 開發人員透過 API 寄送 email 的共用中介層

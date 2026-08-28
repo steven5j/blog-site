@@ -4,6 +4,7 @@ description: "商品比價 java08檔案，主要進入點的檔案來呼叫Produ
 pubDate: 2019-09-29
 topic: software
 wpId: 910
+slug: java-910
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/29/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e5%bb%ba%e7%ab%8b%e7%89%a9%e4%bb%b6%e3%80%81%e5%bb%ba%e6%a7%8b%e5%ad%90%e3%80%81%e4%bf%ae%e9%a3%be%e5%ad%90%e3%80%81%e7%89%a9%e4%bb%b6/"
 ---
 

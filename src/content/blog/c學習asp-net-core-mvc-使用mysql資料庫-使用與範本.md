@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4660.jpg
 wpId: 4660
+slug: c-asp-net-core-mvc-mysql-4660
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/09/06/c%e5%ad%b8%e7%bf%92asp-net-core-mvc-%e4%bd%bf%e7%94%a8mysql%e8%b3%87%e6%96%99%e5%ba%ab-%e4%bd%bf%e7%94%a8%e8%88%87%e7%af%84%e6%9c%ac/"
 ---
 

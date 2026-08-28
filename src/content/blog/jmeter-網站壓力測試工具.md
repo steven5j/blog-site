@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/3637.png
 wpId: 3637
+slug: jmeter-3637
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/11/12/jmeter-%e7%b6%b2%e7%ab%99%e5%a3%93%e5%8a%9b%e6%b8%ac%e8%a9%a6%e5%b7%a5%e5%85%b7/"
 ---
 

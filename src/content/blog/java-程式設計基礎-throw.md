@@ -4,6 +4,7 @@ description: "例外處理機制 例外處理是對可能出現的異常進行�
 pubDate: 2019-10-08
 topic: software
 wpId: 3268
+slug: java-throw-3268
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/08/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-throw/"
 ---
 

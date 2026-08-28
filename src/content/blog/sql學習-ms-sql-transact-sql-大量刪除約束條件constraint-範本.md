@@ -6,6 +6,7 @@ topic: software
 series: sql
 heroImage: /public/uploads/wp/4946.jpg
 wpId: 4946
+slug: sql-ms-sql-transact-sql-constraint-4946
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/11/09/sql%e5%ad%b8%e7%bf%92-ms-sql-transact-sql-%e5%a4%a7%e9%87%8f%e5%88%aa%e9%99%a4%e7%b4%84%e6%9d%9f%e6%a2%9d%e4%bb%b6constraint-%e7%af%84%e6%9c%ac/"
 ---
 

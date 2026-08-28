@@ -6,6 +6,7 @@ topic: software
 series: sql
 heroImage: /public/uploads/wp/5803.jpg
 wpId: 5803
+slug: mssql-ms-sql-transact-sql-5803
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/01/26/mssql-ms-sql-transact-sql-%e7%94%a2%e7%94%9f%e5%a4%a7%e9%87%8f%e6%96%b0%e5%a2%9e%e3%80%81%e4%bf%ae%e6%94%b9%e3%80%81%e5%88%aa%e9%99%a4%e6%ac%84%e4%bd%8d-%e7%9a%84-%e5%9f%b7%e8%a1%8c%e8%aa%9e/"
 ---
 

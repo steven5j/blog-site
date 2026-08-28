@@ -5,6 +5,7 @@ pubDate: 2019-03-24
 topic: life
 heroImage: /public/uploads/wp/684.jpg
 wpId: 684
+slug: love-letter-684
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/03/24/%e8%87%aa%e8%a3%bd%e3%80%8alove-letter%e3%80%8b%e6%a1%8c%e9%81%8a-%e9%a3%9f%e7%a0%b4%e5%a4%a9%e9%a9%9a%e7%89%88%e6%9c%ac/"
 ---
 

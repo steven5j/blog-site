@@ -8,6 +8,7 @@ tags:
   - Access
 heroImage: /public/uploads/wp/5978.png
 wpId: 5978
+slug: portfolioaccess-sales-5978
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/03/25/portfolioaccess%e5%b0%8f%e4%bd%9c%e5%93%81-%e7%b0%a1%e6%98%93%e7%9a%84sales%e9%8a%b7%e5%94%ae%e5%a0%b1%e8%a1%a8/"
 ---
 

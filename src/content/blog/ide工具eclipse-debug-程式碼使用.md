@@ -5,6 +5,7 @@ pubDate: 2019-10-27
 topic: software
 series: mis
 wpId: 3502
+slug: ide-eclipse-debug-3502
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/27/ide%e5%b7%a5%e5%85%b7eclipse-debug-%e7%a8%8b%e5%bc%8f%e7%a2%bc%e4%bd%bf%e7%94%a8/"
 ---
 

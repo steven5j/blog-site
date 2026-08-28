@@ -1,6 +1,15 @@
+import type { CollectionEntry } from 'astro:content';
+
 /** Zero-pad to 2 digits (month/day). */
 function pad2(n: number): string {
   return String(n).padStart(2, '0');
+}
+
+/** Matches Cloudflare-safe path segments. */
+export const ASCII_SLUG_RE = /^[a-zA-Z0-9._~-]+$/;
+
+export function isAsciiSlug(value: string): boolean {
+  return ASCII_SLUG_RE.test(value);
 }
 
 /**
@@ -19,13 +28,72 @@ export function datePathParts(pubDate: Date): {
   };
 }
 
+/** Derive ASCII slug from a non-ASCII content id (mirrors scripts/blog-slug.mjs). */
+export function slugifyId(id: string, wpId?: number): string {
+  let base = id
+    .normalize('NFKD')
+    .replace(/[^\x00-\x7F]/g, '-')
+    .replace(/[^a-zA-Z0-9._~-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^[-._~]+|[-._~]+$/g, '')
+    .toLowerCase();
+
+  if (!base || base.length < 2) {
+    base = 'post';
+  }
+
+  if (base.length > 48) {
+    base = base.slice(0, 48).replace(/-+$/, '');
+  }
+
+  if (wpId) {
+    const suffix = `-${wpId}`;
+    const maxBase = 80 - suffix.length;
+    if (base.length > maxBase) {
+      base = base.slice(0, maxBase).replace(/-+$/, '');
+    }
+    return `${base}${suffix}`;
+  }
+
+  return base.slice(0, 80);
+}
+
+type BlogEntry = CollectionEntry<'blog'>;
+
+/** Public URL slug — always ASCII. Uses frontmatter `slug` when set. */
+export function postUrlSlug(post: BlogEntry): string {
+  const { slug: explicit, wpId } = post.data;
+  if (explicit) {
+    if (!isAsciiSlug(explicit)) {
+      throw new Error(
+        `Post "${post.id}" has invalid slug "${explicit}" — must match [a-zA-Z0-9._~-]+`,
+      );
+    }
+    return explicit;
+  }
+  if (isAsciiSlug(post.id)) return post.id;
+  return slugifyId(post.id, wpId);
+}
+
 /**
- * WordPress-style date permalink: `/YYYY/MM/DD/slug`
- * `id` is the content collection entry id (file slug).
+ * WordPress-style date permalink: `/YYYY/MM/DD/{urlSlug}`
+ * `urlSlug` is ASCII-safe for Cloudflare static asset serving.
  */
-export function postPermalink(pubDate: Date, id: string): string {
+export function postHref(post: BlogEntry): string {
+  const { year, month, day } = datePathParts(post.data.pubDate);
+  return `/${year}/${month}/${day}/${postUrlSlug(post)}`;
+}
+
+/** @deprecated Use postHref(post) — kept for scripts that pass raw parts. */
+export function postPermalink(pubDate: Date, urlSlug: string): string {
   const { year, month, day } = datePathParts(pubDate);
-  return `/${year}/${month}/${day}/${id}`;
+  return `/${year}/${month}/${day}/${urlSlug}`;
+}
+
+/** Legacy path using the content file id (may contain non-ASCII). */
+export function legacyPostPath(post: BlogEntry): string | null {
+  if (post.id === postUrlSlug(post)) return null;
+  return postPermalink(post.data.pubDate, post.id);
 }
 
 /** Normalize content `heroImage` to a site-root path (`/uploads/...`). */

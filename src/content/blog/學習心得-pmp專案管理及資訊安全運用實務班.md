@@ -6,6 +6,7 @@ topic: business
 series: career
 heroImage: /public/uploads/wp/3834.png
 wpId: 3834
+slug: pmp-3834
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/01/%e5%ad%b8%e7%bf%92%e5%bf%83%e5%be%97-pmp%e5%b0%88%e6%a1%88%e7%ae%a1%e7%90%86%e5%8f%8a%e8%b3%87%e8%a8%8a%e5%ae%89%e5%85%a8%e9%81%8b%e7%94%a8%e5%af%a6%e5%8b%99%e7%8f%ad/"
 ---
 

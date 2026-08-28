@@ -11,6 +11,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import {
+  postHrefFromParts,
+  urlSlugFromEntry,
+} from './blog-slug.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
@@ -50,12 +54,9 @@ function isTruthy(value) {
   return value === 'true' || value === true;
 }
 
-function permalinkFromMeta(meta, slug) {
-  const raw = meta.pubDate;
-  if (!raw) return `/blog/${slug}`;
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return `/blog/${slug}`;
-  return `/${d.getUTCFullYear()}/${pad2(d.getUTCMonth() + 1)}/${pad2(d.getUTCDate())}/${slug}`;
+function permalinkFromMeta(meta, id) {
+  if (!meta.pubDate) return `/blog/${urlSlugFromEntry(id, meta)}`;
+  return postHrefFromParts(meta.pubDate, urlSlugFromEntry(id, meta));
 }
 
 function withUrlYaml(yaml, url, extraLines = []) {
@@ -82,15 +83,15 @@ function collectBlog(catalog) {
   const files = listMarkdown(path.join(root, 'src/content/blog'));
   let count = 0;
   for (const file of files) {
-    const slug = path.basename(file).replace(/\.mdx?$/, '');
+    const id = path.basename(file).replace(/\.mdx?$/, '');
     const raw = fs.readFileSync(file, 'utf8');
     const { yaml, meta, body } = parseFrontmatter(raw);
     if (isTruthy(meta.draft) || isTruthy(meta.protectedOnly)) continue;
-    const url = permalinkFromMeta(meta, slug);
-    const title = meta.title || slug;
+    const url = permalinkFromMeta(meta, id);
+    const title = meta.title || id;
     catalog.push(`- [${title}](${url})`);
     writeDoc(
-      `blog/${slug}.md`,
+      `blog/${id}.md`,
       `---\n${withUrlYaml(yaml, url, ['type: blog'])}\n---\n\n${body.trim()}\n`,
     );
     count += 1;

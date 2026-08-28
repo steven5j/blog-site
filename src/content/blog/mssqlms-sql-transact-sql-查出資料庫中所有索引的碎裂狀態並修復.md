@@ -6,6 +6,7 @@ topic: software
 series: sql
 heroImage: /public/uploads/wp/5398.jpg
 wpId: 5398
+slug: mssqlms-sql-transact-sql-5398
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/01/20/mssqlms-sql-transact-sql-%e6%9f%a5%e5%87%ba%e8%b3%87%e6%96%99%e5%ba%ab%e4%b8%ad%e6%89%80%e6%9c%89%e7%b4%a2%e5%bc%95%e7%9a%84%e7%a2%8e%e8%a3%82%e7%8b%80%e6%85%8b%e4%b8%a6%e4%bf%ae%e5%be%a9/"
 ---
 

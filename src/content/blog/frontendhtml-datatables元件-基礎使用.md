@@ -6,6 +6,7 @@ topic: software
 series: frontend
 heroImage: /public/uploads/wp/6016.jpg
 wpId: 6016
+slug: frontendhtml-datatables-6016
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/04/12/frontendhtml-datatables%e5%85%83%e4%bb%b6-%e5%9f%ba%e7%a4%8e%e4%bd%bf%e7%94%a8/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4587.jpg
 wpId: 4587
+slug: c-asp-net-core-mvc-controllers-4587
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/08/30/c%e5%ad%b8%e7%bf%92asp-net-core-mvc-%e6%8e%a7%e5%88%b6%e5%99%a8controllers-%e4%bd%bf%e7%94%a8%e8%88%87%e7%af%84%e6%9c%ac/"
 ---
 

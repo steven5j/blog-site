@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/4696.jpg
 wpId: 4696
+slug: js-nodelist-htmlcollection-mapset-4696
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/10/23/js-%e9%99%a3%e5%88%97%e3%80%81%e5%ad%97%e4%b8%b2%e3%80%81%e9%a1%9e%e9%99%a3%e5%88%97nodelist%e3%80%81htmlcollection-%e3%80%81%e9%9b%86%e5%90%88mapset/"
 ---
 

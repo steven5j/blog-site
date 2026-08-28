@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Reveal from '@/components/Reveal.astro';
-import { postPermalink, siteAssetPath, TOPIC_LABELS } from '@/utils/permalinks';
+import { postHref, siteAssetPath, TOPIC_LABELS } from '@/utils/permalinks';
 
 const latestPosts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
@@ -186,7 +186,7 @@ const featuredSeries = featuredSeriesIds
             <li>
               <Reveal delay={i * 60} class="h-full">
                 <a
-                  href={postPermalink(post.data.pubDate, post.id)}
+                  href={postHref(post)}
                   class="group flex h-full overflow-hidden border border-line bg-paper-elevated no-underline transition hover:border-brand/40 hover:shadow-sm"
                 >
                   {hero && (

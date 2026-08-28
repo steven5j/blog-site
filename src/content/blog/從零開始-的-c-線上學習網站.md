@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4243.jpg
 wpId: 4243
+slug: post-4243
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/04/28/%e5%be%9e%e9%9b%b6%e9%96%8b%e5%a7%8b-%e7%9a%84-c-%e7%b7%9a%e4%b8%8a%e5%ad%b8%e7%bf%92%e7%b6%b2%e7%ab%99/"
 ---
 

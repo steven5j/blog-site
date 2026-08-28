@@ -4,6 +4,7 @@ description: "多載(Overload)指在一個類別(class)中，定義多個名稱�
 pubDate: 2019-10-10
 topic: software
 wpId: 3308
+slug: java-overload-override-polymorphism-3308
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/10/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e5%a4%9a%e8%bc%89overload%e3%80%81%e8%a6%86%e5%af%aboverride%e3%80%81%e5%a4%9a%e5%9e%8bpolymorphism/"
 ---
 

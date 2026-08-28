@@ -4,6 +4,7 @@ description: Java 程式設計(基礎)-參數與回傳、method
 pubDate: 2019-09-27
 topic: software
 wpId: 901
+slug: java-method-901
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e5%8f%83%e6%95%b8%e8%88%87%e5%9b%9e%e5%82%b3%e3%80%81method/"
 ---
 

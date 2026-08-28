@@ -8,6 +8,7 @@ tags:
   - Access
 heroImage: /public/uploads/wp/5258.png
 wpId: 5258
+slug: access-5258
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/11/access-%e5%95%8f%e9%a1%8c%e6%8e%92%e9%99%a4%e8%88%8a%e7%b3%bb%e7%b5%b1%e8%bd%89%e6%96%b0%e7%b3%bb%e7%b5%b1/"
 ---
 

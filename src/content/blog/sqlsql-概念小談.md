@@ -5,6 +5,7 @@ pubDate: 2020-03-08
 topic: software
 series: sql
 wpId: 3889
+slug: sqlsql-3889
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/08/sqlsql-%e6%a6%82%e5%bf%b5%e5%b0%8f%e8%ab%87/"
 ---
 

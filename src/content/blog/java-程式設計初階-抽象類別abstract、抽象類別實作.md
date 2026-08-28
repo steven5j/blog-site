@@ -4,6 +4,7 @@ description: "抽象類別 可定義「一般函數」與「抽象函數」 抽�
 pubDate: 2019-10-10
 topic: software
 wpId: 3301
+slug: java-abstract-3301
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/10/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%88%9d%e9%9a%8e-%e6%8a%bd%e8%b1%a1%e9%a1%9e%e5%88%a5abstract%e3%80%81%e6%8a%bd%e8%b1%a1%e9%a1%9e%e5%88%a5%e5%af%a6%e4%bd%9c/"
 ---
 

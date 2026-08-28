@@ -4,6 +4,7 @@ description: "Program, Process, Thread 的不同 Program(程式)： 還沒有被
 pubDate: 2019-10-14
 topic: software
 wpId: 3350
+slug: javathread-program-process-thread-thread-extend-3350
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/14/javathread-program%e3%80%81process-%e5%92%8c-thread%e5%85%b6%e5%b7%ae%e5%88%a5%e3%80%81%e5%96%ae%e5%a4%9a%e5%9f%b7%e8%a1%8c%e7%b7%92%e7%a8%8b%e5%bc%8f%e3%80%81thread%e6%87%89%e7%94%a8extend/"
 ---
 

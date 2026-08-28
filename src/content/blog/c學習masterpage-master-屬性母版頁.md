@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4257.png
 wpId: 4257
+slug: c-masterpage-master-4257
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/05/03/c%e5%ad%b8%e7%bf%92masterpage-master-%e5%b1%ac%e6%80%a7%e6%af%8d%e7%89%88%e9%a0%81/"
 ---
 

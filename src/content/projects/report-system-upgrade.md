@@ -5,7 +5,7 @@ year: 2021
 type: project
 order: 60
 image: /uploads/wp/achievement_img2.jpeg
-link: /2021/10/11/專案成就送報件系統升級改版專案
+link: /2021/10/11/post-6582
 role: 工程師、小組長
 outcomes:
   - 約 20 餘險種送報規格與模式統一化

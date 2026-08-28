@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/6990.jpg
 wpId: 6990
+slug: c-net-access-to-the-path-is-denied-iis-6990
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/12/31/c-net%e6%95%85%e9%9a%9c%e6%8e%92%e9%99%a4access-to-the-path-is-denied-%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88-%e9%80%8f%e9%81%8eiis-%e4%b8%ad%e7%9a%84%e8%ba%ab%e5%88%86%e8%ad%98%e5%88%a5/"
 ---
 

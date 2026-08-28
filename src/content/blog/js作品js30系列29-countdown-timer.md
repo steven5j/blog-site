@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/5224.gif
 wpId: 5224
+slug: js-js30-29-countdown-timer-5224
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/11/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9729-countdown-timer/"
 ---
 

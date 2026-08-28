@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/5003.jpg
 wpId: 5003
+slug: docker-5003
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/11/19/docker%e5%b8%b8%e7%94%a8%e6%8c%87%e4%bb%a4%e6%93%8d%e4%bd%9c%e6%95%b4%e7%90%86/"
 ---
 

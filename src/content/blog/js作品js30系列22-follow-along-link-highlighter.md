@@ -7,6 +7,7 @@ series: javascript
 tags:
   - JavaScript 30 Portfolio
 wpId: 4417
+slug: js-js30-22-follow-along-link-highlighter-4417
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/07/30/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9722-follow-along-link-highlighter/"
 ---
 

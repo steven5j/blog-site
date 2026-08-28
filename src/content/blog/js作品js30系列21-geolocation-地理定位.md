@@ -7,6 +7,7 @@ series: javascript
 tags:
   - JavaScript 30 Portfolio
 wpId: 4411
+slug: js-js30-21-geolocation-4411
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/07/29/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9721-geolocation-%e5%9c%b0%e7%90%86%e5%ae%9a%e4%bd%8d/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4602.jpg
 wpId: 4602
+slug: c-asp-net-core-mvc-models-4602
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/08/31/c%e5%ad%b8%e7%bf%92asp-net-core-mvc-%e6%a8%a1%e5%9e%8bmodels-%e4%bd%bf%e7%94%a8%e8%88%87%e7%af%84%e6%9c%ac/"
 ---
 

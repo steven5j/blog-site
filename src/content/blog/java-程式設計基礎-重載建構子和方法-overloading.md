@@ -4,6 +4,7 @@ description: "重載建構子和方法 overloading 第一個有進入點的檔�
 pubDate: 2019-10-01
 topic: software
 wpId: 926
+slug: java-overloading-926
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/01/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e9%87%8d%e8%bc%89%e5%bb%ba%e6%a7%8b%e5%ad%90%e5%92%8c%e6%96%b9%e6%b3%95-overloading/"
 ---
 

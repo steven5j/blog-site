@@ -4,6 +4,7 @@ description: "泛型，即「參數化型態」。一提到參數，最熟悉的
 pubDate: 2019-10-30
 topic: software
 wpId: 3570
+slug: java-generic-3570
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/30/java%e5%9f%ba%e7%a4%8e-%e6%b3%9b%e5%9e%8bgeneric/"
 ---
 

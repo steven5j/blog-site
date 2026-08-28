@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/6169.jpg
 wpId: 6169
+slug: javascript-object-6169
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/06/07/javascript%e7%89%a9%e4%bb%b6-object/"
 ---
 

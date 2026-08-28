@@ -7,6 +7,7 @@ topic: software
 series: portfolio
 heroImage: /uploads/wp/vitawile-logo.png
 wpId: 7794
+slug: vitawile-7794
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2024/04/06/%e5%b0%88%e6%a1%88%e6%88%90%e5%b0%b1%e8%8f%b2%e5%a1%94%e8%96%87%e6%a8%82vitawile-%e4%bf%9d%e5%81%a5%e5%93%81%e5%ae%98%e6%96%b9%e7%b6%b2%e7%ab%99/"
 tags:
   - WordPress

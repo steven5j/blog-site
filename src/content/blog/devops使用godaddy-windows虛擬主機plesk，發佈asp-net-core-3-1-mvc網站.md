@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/5870.jpg
 wpId: 5870
+slug: devops-godaddy-windows-plesk-asp-net-core-3-1-mv-5870
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/04/24/devops%e4%bd%bf%e7%94%a8godaddy-windows%e8%99%9b%e6%93%ac%e4%b8%bb%e6%a9%9fplesk%ef%bc%8c%e7%99%bc%e4%bd%88asp-net-core-3-1-mvc%e7%b6%b2%e7%ab%99/"
 ---
 

@@ -5,6 +5,7 @@ pubDate: 2019-10-27
 topic: software
 series: frontend
 wpId: 3481
+slug: ui-ux-logo-3481
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/27/ui-ux-%e5%80%8b%e4%ba%ba%e7%b6%b2%e7%ab%99logo%e8%a8%ad%e8%a8%88/"
 ---
 

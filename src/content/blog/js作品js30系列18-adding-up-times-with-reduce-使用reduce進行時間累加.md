@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/4044.gif
 wpId: 4044
+slug: js-js30-18-adding-up-times-with-reduce-reduce-4044
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/04/05/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9718-adding-up-times-with-reduce-%e4%bd%bf%e7%94%a8reduce%e9%80%b2%e8%a1%8c%e6%99%82%e9%96%93%e7%b4%af%e5%8a%a0/"
 ---
 

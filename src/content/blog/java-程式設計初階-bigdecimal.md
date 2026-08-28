@@ -4,6 +4,7 @@ description: "一般來說，提到Java裡面的商業計算，我們都知道�
 pubDate: 2019-09-27
 topic: software
 wpId: 880
+slug: java-bigdecimal-880
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%88%9d%e9%9a%8e-bigdecimal/"
 ---
 

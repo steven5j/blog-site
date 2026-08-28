@@ -4,6 +4,7 @@ description: "用JAVA製作陣列(數組): 最公平的骰子和偏差值"
 pubDate: 2019-09-28
 topic: software
 wpId: 906
+slug: java-906
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/28/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e9%99%a3%e5%88%97%e6%95%b8%e7%b5%84%e6%9c%80%e5%85%ac%e5%b9%b3%e7%9a%84%e9%aa%b0%e5%ad%90%e5%92%8c%e5%81%8f%e5%b7%ae%e5%80%bc/"
 ---
 

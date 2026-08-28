@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/5334.jpg
 wpId: 5334
+slug: javascript-http-xmlhttprequest-jquery-ajax-5334
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/23/javascript-%e7%99%bc%e9%80%81http%e8%ab%8b%e6%b1%82-xmlhttprequest-jquery%e6%96%b9%e5%bc%8f-ajax/"
 ---
 

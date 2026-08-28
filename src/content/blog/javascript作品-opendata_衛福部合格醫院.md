@@ -5,6 +5,7 @@ pubDate: 2019-09-27
 topic: software
 series: javascript
 wpId: 894
+slug: javascript-opendata-894
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/javascript%e4%bd%9c%e5%93%81-opendata_%e8%a1%9b%e7%a6%8f%e9%83%a8%e5%90%88%e6%a0%bc%e9%86%ab%e9%99%a2/"
 ---
 

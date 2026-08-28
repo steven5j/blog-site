@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/6162.jpg
 wpId: 6162
+slug: information-security-sonarqube-net-6162
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/05/05/information-security%e8%b3%87%e8%a8%8a%e5%ae%89%e5%85%a8sonarqube%e6%ba%90%e7%a2%bc%e6%8e%83%e6%8f%8f-net-%e5%b0%88%e6%a1%88/"
 ---
 

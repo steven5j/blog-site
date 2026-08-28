@@ -5,7 +5,7 @@ year: 2021
 type: project
 order: 70
 image: /uploads/wp/rental-site.jpg
-link: /2021/12/19/專案成就房屋代租管網站
+link: /2021/12/19/post-6940
 role: PM，100% 獨立開發
 outcomes:
   - 數千筆房屋物件上架供訪客查詢

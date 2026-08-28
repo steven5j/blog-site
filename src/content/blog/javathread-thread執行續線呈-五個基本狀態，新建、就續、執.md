@@ -4,6 +4,7 @@ description: "1.新建狀態(New)： 當用new操作符建立一個執行緒時�
 pubDate: 2019-10-15
 topic: software
 wpId: 3361
+slug: javathread-thread-3361
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/15/javathread-thread%e5%9f%b7%e8%a1%8c%e7%ba%8c%e7%b7%9a%e5%91%88-%e4%ba%94%e5%80%8b%e5%9f%ba%e6%9c%ac%e7%8b%80%e6%85%8b%ef%bc%8c%e6%96%b0%e5%bb%ba%e3%80%81%e5%b0%b1%e7%ba%8c%e3%80%81%e5%9f%b7/"
 ---
 

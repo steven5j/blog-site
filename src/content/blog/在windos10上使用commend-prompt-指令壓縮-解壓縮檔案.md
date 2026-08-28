@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/6403.jpg
 wpId: 6403
+slug: windos10-commend-prompt-6403
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/08/04/%e5%9c%a8windos10%e4%b8%8a%e4%bd%bf%e7%94%a8commend-prompt-%e6%8c%87%e4%bb%a4%e5%a3%93%e7%b8%ae-%e8%a7%a3%e5%a3%93%e7%b8%ae%e6%aa%94%e6%a1%88/"
 ---
 

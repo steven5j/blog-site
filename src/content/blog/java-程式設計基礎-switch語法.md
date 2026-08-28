@@ -4,6 +4,7 @@ description: "Java 程式設計(基礎)-Switch語法 Switch題目： // 撰寫�
 pubDate: 2019-09-27
 topic: software
 wpId: 878
+slug: java-switch-878
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-switch%e8%aa%9e%e6%b3%95/"
 ---
 

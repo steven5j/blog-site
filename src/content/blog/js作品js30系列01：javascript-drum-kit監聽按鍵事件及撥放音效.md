@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/3689.gif
 wpId: 3689
+slug: js-js30-01-javascript-drum-kit-3689
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/11/22/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9701%ef%bc%9ajavascript-drum-kit%e7%9b%a3%e8%81%bd%e6%8c%89%e9%8d%b5%e4%ba%8b%e4%bb%b6%e5%8f%8a%e6%92%a5%e6%94%be%e9%9f%b3%e6%95%88/"
 ---
 

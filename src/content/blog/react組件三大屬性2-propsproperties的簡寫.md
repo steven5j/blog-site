@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/6862.jpg
 wpId: 6862
+slug: react-2-propsproperties-6862
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/11/28/react%e7%b5%84%e4%bb%b6%e4%b8%89%e5%a4%a7%e5%b1%ac%e6%80%a72-propsproperties%e7%9a%84%e7%b0%a1%e5%af%ab/"
 ---
 

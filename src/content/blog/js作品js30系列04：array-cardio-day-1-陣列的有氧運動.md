@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/3729.gif
 wpId: 3729
+slug: js-js30-04-array-cardio-day-1-3729
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/12/22/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9704%ef%bc%9aarray-cardio-day-1-%e9%99%a3%e5%88%97%e7%9a%84%e6%9c%89%e6%b0%a7%e9%81%8b%e5%8b%95/"
 ---
 

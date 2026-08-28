@@ -6,6 +6,7 @@ topic: software
 series: frontend
 heroImage: /public/uploads/wp/4778.jpg
 wpId: 4778
+slug: frontendgoogle-maps-api-google-maps-embed-api-ap-4778
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/11/01/frontendgoogle-maps-api-google-maps-embed-api-%e5%b5%8c%e5%85%a5%e5%bc%8f%e5%9c%b0%e5%9c%96api/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/6523.png
 wpId: 6523
+slug: git-tortoisegit-6523
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/09/26/git%e4%bd%bf%e7%94%a8-tortoisegit-%e5%8c%af%e5%87%ba%e8%ae%8a%e6%9b%b4%e6%aa%94%e6%a1%88/"
 ---
 

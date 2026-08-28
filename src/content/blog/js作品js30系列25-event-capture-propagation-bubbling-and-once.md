@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/5088.gif
 wpId: 5088
+slug: js-js30-25-event-capture-propagation-bubbling-an-5088
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/02/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9725-event-capture-propagation-bubbling-and-once/"
 ---
 

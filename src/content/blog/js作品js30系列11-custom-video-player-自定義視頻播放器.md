@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/3941.gif
 wpId: 3941
+slug: js-js30-11-custom-video-player-3941
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/26/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9711-custom-video-player-%e8%87%aa%e5%ae%9a%e7%be%a9%e8%a6%96%e9%a0%bb%e6%92%ad%e6%94%be%e5%99%a8/"
 ---
 

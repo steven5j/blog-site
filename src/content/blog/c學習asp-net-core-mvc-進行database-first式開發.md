@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4689.jpg
 wpId: 4689
+slug: c-asp-net-core-mvc-database-first-4689
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/10/01/c%e5%ad%b8%e7%bf%92asp-net-core-mvc-%e9%80%b2%e8%a1%8cdatabase-first%e5%bc%8f%e9%96%8b%e7%99%bc/"
 ---
 

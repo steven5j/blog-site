@@ -4,6 +4,7 @@ description: 與main一同進入的命令引述，用ArgsDemo來顯示
 pubDate: 2019-09-30
 topic: software
 wpId: 924
+slug: java-main-args-924
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/30/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e9%80%b2%e5%85%a5%e9%bb%9emain%e7%9a%84%e5%91%bd%e4%bb%a4%e5%bc%95%e6%95%b8args/"
 ---
 

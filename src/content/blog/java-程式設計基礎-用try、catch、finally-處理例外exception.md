@@ -4,6 +4,7 @@ description: "try、catch、finally詳細內容 https://github.com/tomlinNTUB/Ja
 pubDate: 2019-10-05
 topic: software
 wpId: 3236
+slug: java-try-catch-finally-exception-3236
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/05/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e7%94%a8try%e3%80%81catch%e3%80%81finally-%e8%99%95%e7%90%86%e4%be%8b%e5%a4%96exception/"
 ---
 

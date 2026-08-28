@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/6053.jpg
 wpId: 6053
+slug: javascript-6053
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/04/16/javascript%e4%bd%bf%e7%94%a8%e6%8e%a7%e5%88%b6%e7%b5%90%e6%a7%8b/"
 ---
 

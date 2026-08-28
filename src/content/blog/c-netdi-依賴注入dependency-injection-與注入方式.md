@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/6254.jpg
 wpId: 6254
+slug: c-netdi-dependency-injection-6254
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/06/19/c-netdi-%e4%be%9d%e8%b3%b4%e6%b3%a8%e5%85%a5dependency-injection-%e8%88%87%e6%b3%a8%e5%85%a5%e6%96%b9%e5%bc%8f/"
 ---
 

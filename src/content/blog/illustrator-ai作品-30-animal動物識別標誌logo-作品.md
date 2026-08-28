@@ -5,6 +5,7 @@ pubDate: 2019-10-27
 topic: software
 series: frontend
 wpId: 3528
+slug: illustrator-ai-30-animal-logo-3528
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/27/illustrator-ai%e4%bd%9c%e5%93%81-30-animal%e5%8b%95%e7%89%a9%e8%ad%98%e5%88%a5%e6%a8%99%e8%aa%8clogo-%e4%bd%9c%e5%93%81/"
 ---
 

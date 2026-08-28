@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/5921.png
 wpId: 5921
+slug: visual-studio-library-managerlibman-5921
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/03/07/%e5%9c%a8visual-studio-%e4%b8%ad%e4%bd%bf%e7%94%a8-library-managerlibman/"
 ---
 

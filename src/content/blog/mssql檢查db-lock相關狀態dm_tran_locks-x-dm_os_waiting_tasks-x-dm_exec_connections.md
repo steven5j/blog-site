@@ -6,6 +6,7 @@ topic: software
 series: sql
 heroImage: /public/uploads/wp/6089.jpg
 wpId: 6089
+slug: mssql-db-lock-dm_tran_locks-x-dm_os_waiting_task-6089
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/06/03/mssql%e6%aa%a2%e6%9f%a5db-lock%e7%9b%b8%e9%97%9c%e7%8b%80%e6%85%8bdm_tran_locks-x-dm_os_waiting_tasks-x-dm_exec_connections/"
 ---
 

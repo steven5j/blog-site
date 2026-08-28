@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/4958.jpg
 wpId: 4958
+slug: docker-docker-for-windows-4958
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/11/14/docker-docker-for-windows%e8%99%9b%e6%93%ac%e7%a3%81%e7%a2%9f%e5%ad%98%e6%94%be%e4%bd%8d%e7%bd%ae%e7%a7%bb%e5%8b%95%e6%ad%a5%e9%a9%9f/"
 ---
 

@@ -5,6 +5,7 @@ pubDate: 2022-01-24
 topic: software
 series: csharp
 wpId: 7166
+slug: c-net-7166
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/01/24/c-net%e5%8f%8d%e5%b0%84%ef%bc%9a%e9%80%9a%e9%81%8e%e5%ad%97%e4%b8%b2%e4%b8%a6%e4%b8%94%e5%be%9e%e5%8f%a6%e4%b8%80%e5%80%8b%e7%a8%8b%e5%ba%8f%e9%9b%86%e5%b0%88%e6%a1%88%e6%aa%94%e4%b8%ad/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: sql
 heroImage: /public/uploads/wp/5403.jpg
 wpId: 5403
+slug: mssqlsys-sql_modules-keyword-5403
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/01/21/mssqlsys-sql_modules-%e6%89%be%e6%9f%90%e5%80%8b%e9%97%9c%e9%8d%b5%e5%ad%97keyword%e5%9c%a8%e5%93%aa%e4%ba%9b%e7%89%a9%e4%bb%b6%e4%b8%ad%e5%87%ba%e7%8f%be/"
 ---
 

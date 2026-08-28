@@ -4,6 +4,7 @@ description: 找出質數、method回傳boolean
 pubDate: 2019-09-29
 topic: software
 wpId: 908
+slug: java-method-boolean-908
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/29/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-%e6%89%be%e5%87%ba%e8%b3%aa%e6%95%b8%e3%80%81method%e5%9b%9e%e5%82%b3boolean/"
 ---
 

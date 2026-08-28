@@ -5,6 +5,7 @@ pubDate: 2020-02-17
 topic: software
 series: sql
 wpId: 3822
+slug: sql-ms-sql-t-sql-3822
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/02/17/sql-ms-sql-%e4%bf%ae%e6%94%b9%e8%b3%87%e6%96%99%e8%a1%a8%e8%88%87%e6%ac%84%e4%bd%8d-t-sql-%e8%aa%9e%e6%b3%95/"
 ---
 

@@ -16,6 +16,11 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     heroImage: z.string().optional(),
     wpId: z.number().optional(),
+    /** ASCII public URL slug — required when file id contains non-ASCII characters */
+    slug: z
+      .string()
+      .regex(/^[a-zA-Z0-9._~-]+$/)
+      .optional(),
     legacyUrl: z.string().optional(),
     /** Key for protected-content/{slug}.md — unlock via /api/unlock */
     protectedSlug: z.string().optional(),

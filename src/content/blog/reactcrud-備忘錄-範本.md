@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/6762.png
 wpId: 6762
+slug: reactcrud-6762
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/10/30/reactcrud-%e5%82%99%e5%bf%98%e9%8c%84-%e7%af%84%e6%9c%ac/"
 ---
 

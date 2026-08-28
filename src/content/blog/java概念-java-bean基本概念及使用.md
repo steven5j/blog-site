@@ -4,6 +4,7 @@ description: "JavaBeans是Java中一種特殊的類，可以將多個對象封�
 pubDate: 2019-10-30
 topic: software
 wpId: 3558
+slug: java-java-bean-3558
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/30/java%e6%a6%82%e5%bf%b5-java-bean%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5%e5%8f%8a%e4%bd%bf%e7%94%a8/"
 ---
 

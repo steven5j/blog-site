@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/5396.jpg
 wpId: 5396
+slug: javascript-http-fetch-api-5396
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/27/javascript-%e7%99%bc%e9%80%81http%e8%ab%8b%e6%b1%82-fetch-api/"
 ---
 

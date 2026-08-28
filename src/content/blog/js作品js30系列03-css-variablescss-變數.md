@@ -5,6 +5,7 @@ pubDate: 2019-12-06
 topic: software
 series: javascript
 wpId: 3718
+slug: js-js30-03-css-variablescss-3718
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/12/06/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9703-css-variablescss-%e8%ae%8a%e6%95%b8/"
 ---
 

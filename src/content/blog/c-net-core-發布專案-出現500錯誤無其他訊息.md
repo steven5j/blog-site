@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/6576.png
 wpId: 6576
+slug: c-net-core-500-6576
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/10/06/c-net-core-%e7%99%bc%e5%b8%83%e5%b0%88%e6%a1%88-%e5%87%ba%e7%8f%be500%e9%8c%af%e8%aa%a4%e7%84%a1%e5%85%b6%e4%bb%96%e8%a8%8a%e6%81%af/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/3642.jpg
 wpId: 3642
+slug: devopssonarqube-3642
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/11/14/devopssonarqube%e7%a8%8b%e5%bc%8f%e7%a2%bc%e5%93%81%e8%b3%aa%e9%9d%9c%e6%85%8b%e5%88%86%e6%9e%90%e5%b7%a5%e5%85%b7%e6%ba%90%e7%a2%bc%e6%8e%83%e6%8f%8f%e4%bb%8b%e7%b4%b9%e5%92%8c%e7%92%b0%e5%a2%83/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/6074.jpg
 wpId: 6074
+slug: javascriptdate-6074
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/04/21/javascriptdate-%e7%89%a9%e4%bb%b6/"
 ---
 

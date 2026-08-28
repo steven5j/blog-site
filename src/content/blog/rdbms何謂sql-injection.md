@@ -6,6 +6,7 @@ topic: software
 series: sql
 heroImage: /public/uploads/wp/7247.jpg
 wpId: 7247
+slug: rdbms-sql-injection-7247
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/02/18/rdbms%e4%bd%95%e8%ac%82sql-injection/"
 ---
 

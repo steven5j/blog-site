@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/4007.gif
 wpId: 4007
+slug: js-js30-15-localstorage-4007
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/04/03/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9715-localstorage/"
 ---
 

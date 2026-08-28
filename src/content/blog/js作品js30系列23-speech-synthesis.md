@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/4424.jpg
 wpId: 4424
+slug: js-js30-23-speech-synthesis-4424
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/11/26/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9723-speech-synthesis/"
 ---
 

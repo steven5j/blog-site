@@ -9,6 +9,7 @@ tags:
   - 證照
 heroImage: /public/uploads/wp/7453.jpg
 wpId: 7453
+slug: awssaa-7453
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/09/12/awssaa%e8%ad%89%e7%85%a7-%e8%87%aa%e4%bf%ae%e8%80%83%e8%a9%a6%e5%bf%83%e5%be%97/"
 ---
 

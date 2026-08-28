@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/3612.png
 wpId: 3612
+slug: subversionsvn-tortoisesvn-3612
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/11/11/subversionsvn-tortoisesvn%e7%89%88%e6%8e%a7%e5%b7%a5%e5%85%b7/"
 ---
 

@@ -5,6 +5,7 @@ pubDate: 2021-07-13
 topic: software
 series: csharp
 wpId: 6335
+slug: c-net-core-context-6335
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/07/13/c-net-core%e5%a4%9a%e7%b7%9a%e7%a8%8b%e4%b8%ad%e4%bd%bf%e7%94%a8%e4%be%9d%e8%b3%b4%e6%b3%a8%e5%85%a5%e6%96%bc-%e6%95%b8%e6%93%9a%e4%bf%9d%e5%ad%98%e6%99%82context%e8%a2%ab%e9%87%8b%e6%94%be/"
 ---
 

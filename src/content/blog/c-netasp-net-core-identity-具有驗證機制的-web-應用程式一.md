@@ -7,6 +7,7 @@ series: csharp
 tags:
   - Identity
 wpId: 5739
+slug: c-netasp-net-core-identity-web-5739
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/01/25/c-netasp-net-core-identity-%e5%85%b7%e6%9c%89%e9%a9%97%e8%ad%89%e6%a9%9f%e5%88%b6%e7%9a%84-web-%e6%87%89%e7%94%a8%e7%a8%8b%e5%bc%8f%e4%b8%80/"
 ---
 

@@ -6,6 +6,7 @@ topic: software
 series: javascript
 heroImage: /public/uploads/wp/4933.jpg
 wpId: 4933
+slug: javsscript-xmlhttprequest-http-4933
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/12/20/javsscript-xmlhttprequest-%e7%99%bc%e9%80%81-http-%e8%ab%8b%e6%b1%82/"
 ---
 

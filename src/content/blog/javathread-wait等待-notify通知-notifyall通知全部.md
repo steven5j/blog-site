@@ -4,6 +4,7 @@ description: "這三個都不是Thread裡的方法，而是Object裡的方法。
 pubDate: 2019-10-23
 topic: software
 wpId: 3396
+slug: javathread-wait-notify-notifyall-3396
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/23/javathread-wait%e7%ad%89%e5%be%85-notify%e9%80%9a%e7%9f%a5-notifyall%e9%80%9a%e7%9f%a5%e5%85%a8%e9%83%a8/"
 ---
 

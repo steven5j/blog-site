@@ -5,6 +5,7 @@ pubDate: 2023-01-23
 topic: software
 series: frontend
 wpId: 7593
+slug: midjouney-ai-illustrator-7593
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2023/01/23/midjouney%e7%94%a8ai%e5%92%8cillustrator%e5%81%9a%e5%85%94%e5%b9%b4%e8%b3%80%e5%8d%a1/"
 ---
 

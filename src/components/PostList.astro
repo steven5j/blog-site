@@ -1,6 +1,6 @@
 ---
 import Reveal from '@/components/Reveal.astro';
-import { postPermalink, siteAssetPath, TOPIC_LABELS } from '@/utils/permalinks';
+import { postHref, siteAssetPath, TOPIC_LABELS } from '@/utils/permalinks';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -113,7 +113,7 @@ const maxFeaturedReveal = 6;
               <li>
                 <Reveal delay={i < maxFeaturedReveal ? i * 40 : 0}>
                   <a
-                    href={postPermalink(post.data.pubDate, post.id)}
+                    href={postHref(post)}
                     class:list={[
                       'group block py-7 no-underline',
                       hero && 'sm:flex sm:items-start sm:gap-6',
@@ -176,7 +176,7 @@ const maxFeaturedReveal = 6;
                   {group.posts.map((post) => (
                     <li>
                       <a
-                        href={postPermalink(post.data.pubDate, post.id)}
+                        href={postHref(post)}
                         class="group flex items-baseline gap-3 py-2.5 no-underline sm:gap-4"
                       >
                         <time
@@ -208,7 +208,7 @@ const maxFeaturedReveal = 6;
           {compactPosts.map((post) => (
             <li>
               <a
-                href={postPermalink(post.data.pubDate, post.id)}
+                href={postHref(post)}
                 class="group flex items-baseline gap-3 py-2.5 no-underline sm:gap-4"
               >
                 <time

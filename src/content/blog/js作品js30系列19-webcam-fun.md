@@ -7,6 +7,7 @@ series: javascript
 tags:
   - JavaScript 30 Portfolio
 wpId: 4370
+slug: js-js30-19-webcam-fun-4370
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/07/26/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9719-webcam-fun/"
 ---
 

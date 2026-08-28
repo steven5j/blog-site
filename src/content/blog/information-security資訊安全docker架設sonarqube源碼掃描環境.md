@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/5831.jpg
 wpId: 5831
+slug: information-security-docker-sonarqube-5831
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/04/26/information-security%e8%b3%87%e8%a8%8a%e5%ae%89%e5%85%a8docker%e6%9e%b6%e8%a8%adsonarqube%e6%ba%90%e7%a2%bc%e6%8e%83%e6%8f%8f%e7%92%b0%e5%a2%83/"
 ---
 

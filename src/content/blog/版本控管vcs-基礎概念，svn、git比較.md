@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/3618.png
 wpId: 3618
+slug: vcs-svn-git-3618
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/11/11/%e7%89%88%e6%9c%ac%e6%8e%a7%e7%ae%a1vcs-%e5%9f%ba%e7%a4%8e%e6%a6%82%e5%bf%b5%ef%bc%8csvn%e3%80%81git%e6%af%94%e8%bc%83/"
 ---
 

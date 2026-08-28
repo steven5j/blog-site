@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/3906.gif
 wpId: 3906
+slug: js-js30-08-fun-with-html5-canvas-html5-canvas-3906
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/03/15/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9708-fun-with-html5-canvas-html5-canvas%e7%9a%84%e6%a8%82%e8%b6%a3/"
 ---
 

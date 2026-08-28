@@ -89,7 +89,7 @@ API：`POST /api/unlock`（`{ slug, password }`）、`GET /api/unlock?slug=...`�
 - 文章：`src/content/blog/`（frontmatter：`topic`、`series?`、`pubDate`）
 - 系列 Hub：`src/content/series/`
 - 專案／證照：`src/content/projects/`
-- 單篇 permalink：`/YYYY/MM/DD/{slug}`（與舊 WordPress 日期網址對齊）
+- 單篇 permalink：`/YYYY/MM/DD/{slug}`（`slug` 為 ASCII；舊 WordPress 中文網址經 `_redirects` 301）
 - `draft: true` 可於正式建置中隱藏
 
 ### 從 WordPress 遷移
@@ -103,6 +103,9 @@ npm run migrate:wp
 
 # 更新 Cloudflare _redirects（build 前也會自動跑）
 npm run redirects
+
+# 為非 ASCII 檔名的文章補上 slug: frontmatter（遷移後執行一次）
+npm run assign:slugs
 ```
 
 分類對照見 `scripts/wp-category-map.json`。若本機 TLS 驗證失敗，腳本已使用 `node --use-system-ca`。

@@ -8,6 +8,7 @@ tags:
   - JavaScript 30 Portfolio
 heroImage: /public/uploads/wp/4488.gif
 wpId: 4488
+slug: js-js30-24-sticky-nav-4488
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/11/29/js%e4%bd%9c%e5%93%81js30%e7%b3%bb%e5%88%9724-sticky-nav/"
 ---
 

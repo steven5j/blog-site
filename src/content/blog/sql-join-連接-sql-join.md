@@ -5,6 +5,7 @@ pubDate: 2020-01-18
 topic: software
 series: sql
 wpId: 3793
+slug: sql-join-sql-join-3793
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/01/18/sql-join-%e9%80%a3%e6%8e%a5-sql-join/"
 ---
 

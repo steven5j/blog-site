@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/4264.png
 wpId: 4264
+slug: c-ado-net-4264
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2020/05/05/c%e5%ad%b8%e7%bf%92ado-net-%e6%9f%a5%e8%a9%a2%e3%80%81%e6%96%b0%e5%a2%9e%e3%80%81%e4%bf%ae%e6%94%b9%e3%80%81%e5%88%aa%e9%99%a4-%e7%af%84%e6%9c%ac/"
 ---
 

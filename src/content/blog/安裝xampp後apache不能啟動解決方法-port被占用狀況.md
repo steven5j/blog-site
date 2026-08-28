@@ -6,6 +6,7 @@ topic: software
 series: mis
 heroImage: /public/uploads/wp/3662.gif
 wpId: 3662
+slug: xampp-apache-port-3662
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/11/17/%e5%ae%89%e8%a3%9dxampp%e5%be%8capache%e4%b8%8d%e8%83%bd%e5%95%9f%e5%8b%95%e8%a7%a3%e6%b1%ba%e6%96%b9%e6%b3%95-port%e8%a2%ab%e5%8d%a0%e7%94%a8%e7%8b%80%e6%b3%81/"
 ---
 

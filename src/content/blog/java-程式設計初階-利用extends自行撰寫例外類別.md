@@ -4,6 +4,7 @@ description: "所有能夠處理的例外都是繼承 Exception 類別，因此�
 pubDate: 2019-10-13
 topic: software
 wpId: 3345
+slug: java-extends-3345
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/10/13/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%88%9d%e9%9a%8e-%e5%88%a9%e7%94%a8extends%e8%87%aa%e8%a1%8c%e6%92%b0%e5%af%ab%e4%be%8b%e5%a4%96%e9%a1%9e%e5%88%a5/"
 ---
 

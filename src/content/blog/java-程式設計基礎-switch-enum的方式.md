@@ -4,6 +4,7 @@ description: "一般的方式 ->輸入1,2,3->得知向左轉向右轉 使用的�
 pubDate: 2019-09-30
 topic: software
 wpId: 917
+slug: java-switch-enum-917
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/30/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-switch-enum%e7%9a%84%e6%96%b9%e5%bc%8f/"
 ---
 

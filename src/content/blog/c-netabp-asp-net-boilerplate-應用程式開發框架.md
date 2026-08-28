@@ -6,6 +6,7 @@ topic: software
 series: csharp
 heroImage: /public/uploads/wp/6711.png
 wpId: 6711
+slug: c-netabp-asp-net-boilerplate-6711
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2021/10/13/c-netabp-asp-net-boilerplate-%e6%87%89%e7%94%a8%e7%a8%8b%e5%bc%8f%e9%96%8b%e7%99%bc%e6%a1%86%e6%9e%b6/"
 ---
 

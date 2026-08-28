@@ -4,6 +4,7 @@ description: 用JAVA製作終極密碼小遊戲！
 pubDate: 2019-09-27
 topic: software
 wpId: 904
+slug: java-math-random-math-904
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2019/09/27/java-%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88%e5%9f%ba%e7%a4%8e-math-random-math%e7%b5%82%e6%a5%b5%e5%af%86%e7%a2%bc%e9%81%8a%e6%88%b2/"
 ---
 

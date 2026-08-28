@@ -9,6 +9,7 @@ tags:
   - 爬蟲
 heroImage: /public/uploads/wp/7179.jpg
 wpId: 7179
+slug: python-web-crawler-urllib-beautifulsoup-7179
 legacyUrl: "https://wordpress-1652732-6572997.cloudwaysapps.com/2022/02/02/python%e7%88%ac%e8%9f%b2web-crawler-urllib%e3%80%81beautifulsoup-%e5%9f%ba%e6%9c%ac%e7%88%ac%e8%9f%b2/"
 ---
 
