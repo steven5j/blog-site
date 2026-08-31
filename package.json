@@ -8,6 +8,8 @@
     "dev": "astro dev",
     "prebuild": "node scripts/generate-redirects.mjs && node scripts/prepare-protected.mjs",
     "build": "astro build",
+    "postbuild": "pagefind --site dist",
+    "index:search": "pagefind --site dist",
     "preview": "astro preview",
     "preview:cf": "npm run build && npx wrangler pages dev dist",
     "astro": "astro",
@@ -33,6 +35,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "pagefind": "^1.5.0",
     "wrangler": "^4.24.0"
   }
 }

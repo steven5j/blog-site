@@ -110,6 +110,17 @@ npm run assign:slugs
 
 分類對照見 `scripts/wp-category-map.json`。若本機 TLS 驗證失敗，腳本已使用 `node --use-system-ca`。
 
+## 站內搜尋
+
+公開頁面以 [Pagefind](https://pagefind.app/) 在建置時產生全文索引（`dist/pagefind/`），瀏覽器端搜尋標題與正文。密碼保護內容、草稿、列表頁不會進入索引。
+
+```bash
+npm run build          # astro build 之後會自動跑 pagefind
+npm run index:search   # 只重建搜尋索引（需已有 dist/）
+```
+
+開發時若要試搜尋，先建置一次，`astro dev` 會從 `dist/pagefind/` 提供索引。快捷鍵：`Ctrl/Cmd + K` 或 `/`。
+
 ## AI Search（RAG）
 
 公開內容可匯出到 `.rag/`，再上傳至 R2 bucket `stevenjhu-r2` 供 AI Search 索引。上傳為遠端操作，**必須先 `npx wrangler login`**。

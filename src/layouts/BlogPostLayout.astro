@@ -53,10 +53,26 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
   type="article"
   jsonLd={jsonLd}
 >
-  <article class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+  <article
+    class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8"
+    {...(!protectedOnly
+      ? {
+          'data-pagefind-body': true,
+          'data-pagefind-meta': 'kind:article',
+          'data-pagefind-filter': 'kind:article',
+        }
+      : {})}
+  >
+    {
+      !protectedOnly && topic && (
+        <span hidden data-pagefind-meta={`topic:${topic}`} data-pagefind-filter={`topic:${topic}`} />
+      )
+    }
     <header class="mb-12 border-b border-line pb-10">
       <p class="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-mist-muted">
-        <time datetime={pubDate.toISOString()}>{dateFmt.format(pubDate)}</time>
+        <time datetime={pubDate.toISOString()} data-pagefind-meta="date">
+          {dateFmt.format(pubDate)}
+        </time>
         {
           updatedDate && (
             <>
@@ -92,7 +108,11 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
           )
         }
       </p>
-      <h1 class="font-display text-balance text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+      <h1
+        class="font-display text-balance text-4xl font-bold tracking-tight text-ink sm:text-5xl"
+        data-pagefind-meta="title"
+        data-pagefind-weight="10"
+      >
         {title}
       </h1>
       {
@@ -128,7 +148,7 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
 
     {
       protectedOnly && protectedSlug ? (
-        <div class="prose-blog">
+        <div class="prose-blog" data-pagefind-ignore>
           <ProtectedContentGate
             client:load
             slug={protectedSlug}
@@ -145,7 +165,7 @@ const dateFmt = new Intl.DateTimeFormat('zh-TW', {
 
     {
       showFooterGate && (
-        <div class="mt-16 border-t border-line pt-12">
+        <div class="mt-16 border-t border-line pt-12" data-pagefind-ignore>
           <ProtectedContentGate
             client:load
             slug={protectedSlug!}

@@ -1,0 +1,380 @@
+---
+/**
+ * Site-wide search dialog. Uses Pagefind (built into dist/pagefind).
+ * Mount once from Header; opens via [data-search-open] or Ctrl/Cmd+K.
+ */
+---
+
+<div
+  id="site-search-panel"
+  class="site-search-panel pointer-events-none fixed inset-0 z-[70] hidden"
+  data-search-panel
+  hidden
+  aria-hidden="true"
+>
+  <div class="site-search-backdrop absolute inset-0 bg-ink/70" data-search-backdrop></div>
+  <div
+    class="site-search-dialog pointer-events-auto absolute inset-x-0 top-[12vh] mx-auto w-[calc(100%-1.5rem)] max-w-xl overflow-hidden border border-white/10 bg-paper shadow-2xl sm:top-[16vh]"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="site-search-title"
+    tabindex="-1"
+    data-search-dialog
+  >
+    <form class="flex items-center gap-2 border-b border-line bg-paper-elevated px-3 py-2 sm:px-4" action="/search" data-search-form>
+      <span class="text-mist-muted" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+          <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </span>
+      <h2 id="site-search-title" class="sr-only">搜尋站內文章</h2>
+      <label class="sr-only" for="site-search-input">搜尋文章</label>
+      <input
+        id="site-search-input"
+        name="q"
+        type="search"
+        maxlength="200"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+        placeholder="搜尋文章、系列、作品…"
+        class="site-search-input min-w-0 flex-1 border-0 bg-transparent py-2.5 text-base text-ink"
+        data-search-input
+      />
+      <button
+        type="button"
+        class="cursor-pointer border-0 bg-transparent px-1 py-1 text-xs tracking-[0.12em] text-mist-muted uppercase transition hover:text-ink"
+        data-search-close
+      >
+        關閉
+      </button>
+    </form>
+
+    <p class="min-h-[1.1rem] px-4 pt-3 text-xs text-mist-muted" data-search-status></p>
+    <ul class="max-h-[min(24rem,52vh)] overflow-y-auto px-2 pb-2" data-search-results></ul>
+    <div class="hidden px-4 pb-4" data-search-empty>
+      <p class="text-sm text-mist-muted">找不到符合的內容。試試別的關鍵字，或改用語意提問。</p>
+      <button
+        type="button"
+        class="mt-3 cursor-pointer border border-line bg-transparent px-3 py-1.5 text-sm text-ink transition hover:border-brand hover:text-brand"
+        data-search-ask
+      >
+        改用 Ask AI
+      </button>
+    </div>
+    <div class="hidden border-t border-line px-4 py-3" data-search-more>
+      <a class="text-sm text-brand no-underline hover:text-brand-hover" data-search-all href="/search">
+        查看全部結果
+      </a>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  #site-search-panel[hidden] {
+    display: none;
+  }
+
+  #site-search-panel .site-search-input:focus {
+    outline: none;
+  }
+
+  #site-search-panel .site-search-item + .site-search-item {
+    border-top: 1px solid var(--color-line);
+  }
+
+  #site-search-panel .site-search-link {
+    display: block;
+    padding: 0.7rem 0.75rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #site-search-panel .site-search-link:hover,
+  #site-search-panel .site-search-item.is-active .site-search-link {
+    background: rgb(193 59 59 / 0.08);
+  }
+
+  #site-search-panel .site-search-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-mist-muted);
+  }
+
+  #site-search-panel .site-search-title {
+    display: block;
+    margin-top: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  #site-search-panel .site-search-excerpt {
+    margin: 0.25rem 0 0;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--color-mist-muted);
+  }
+
+  #site-search-panel .site-search-excerpt mark {
+    background: rgb(193 59 59 / 0.2);
+    color: inherit;
+    padding: 0 0.1em;
+  }
+
+  #site-search-panel .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  import { isSearchShortcutTarget } from '@/utils/search-query';
+  import {
+    SEARCH_INDEX_MISSING,
+    loadPagefind,
+    resultItemHtml,
+    searchSite,
+    preloadSearch,
+    type SearchHit,
+  } from '@/scripts/site-search';
+
+  function bindSearchPanel() {
+    const panel = document.querySelector<HTMLElement>('[data-search-panel]');
+    const dialog = document.querySelector<HTMLElement>('[data-search-dialog]');
+    const form = document.querySelector<HTMLFormElement>('[data-search-form]');
+    const input = document.querySelector<HTMLInputElement>('[data-search-input]');
+    const results = document.querySelector<HTMLElement>('[data-search-results]');
+    const status = document.querySelector<HTMLElement>('[data-search-status]');
+    const empty = document.querySelector<HTMLElement>('[data-search-empty]');
+    const more = document.querySelector<HTMLElement>('[data-search-more]');
+    const allLink = document.querySelector<HTMLAnchorElement>('[data-search-all]');
+    if (!panel || !dialog || !form || !input || !results || !status || !empty || !more || !allLink) {
+      return;
+    }
+
+    let lastFocus: HTMLElement | null = null;
+    let activeIndex = -1;
+    let currentHits: SearchHit[] = [];
+    let searchSeq = 0;
+
+    const setStatus = (text: string) => {
+      status.textContent = text;
+    };
+
+    const setOpenButtons = (open: boolean) => {
+      document.querySelectorAll<HTMLButtonElement>('[data-search-open]').forEach((btn) => {
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    };
+
+    const isOpen = () => !panel.hidden && panel.classList.contains('is-open');
+
+    const closeAskIfOpen = () => {
+      const ask = document.querySelector<HTMLElement>('[data-ask-panel]');
+      if (ask && !ask.hidden) {
+        document.querySelector<HTMLButtonElement>('[data-ask-close]')?.click();
+      }
+    };
+
+    const lockPage = () => {
+      document.body.style.overflow = 'hidden';
+    };
+
+    const menuIsOpen = () => {
+      const menuPanel = document.querySelector<HTMLElement>('[data-menu-panel]');
+      return Boolean(menuPanel && !menuPanel.hidden);
+    };
+
+    const unlockPageIfSafe = () => {
+      if (!menuIsOpen()) document.body.style.overflow = '';
+    };
+
+    const paintHits = (hits: SearchHit[], total: number, query: string) => {
+      currentHits = hits;
+      activeIndex = hits.length ? 0 : -1;
+      results.innerHTML = hits.map((hit) => resultItemHtml(hit)).join('');
+      syncActive();
+        empty.classList.toggle('hidden', hits.length > 0);
+        more.classList.toggle('hidden', total <= hits.length);
+      allLink.href = `/search?q=${encodeURIComponent(query)}`;
+      allLink.textContent = total > hits.length ? `查看全部 ${total} 筆結果` : '前往搜尋頁';
+      if (!query.trim()) {
+        setStatus('');
+        empty.classList.add('hidden');
+        more.classList.add('hidden');
+        results.innerHTML = '';
+        currentHits = [];
+        activeIndex = -1;
+        return;
+      }
+      if (hits.length) setStatus(`顯示 ${hits.length} / ${total} 筆`);
+      else setStatus('');
+    };
+
+    const syncActive = () => {
+      results.querySelectorAll('.site-search-item').forEach((item, i) => {
+        item.classList.toggle('is-active', i === activeIndex);
+      });
+    };
+
+    const runSearch = async (query: string) => {
+      const seq = ++searchSeq;
+      const q = query.trim();
+      if (!q) {
+        paintHits([], 0, '');
+        return;
+      }
+      setStatus('搜尋中…');
+      try {
+        const result = await searchSite(q, {}, 8);
+        if (seq !== searchSeq || result === null) return;
+        paintHits(result.hits, result.total, q);
+      } catch (err) {
+        if (seq !== searchSeq) return;
+        results.innerHTML = '';
+        empty.classList.add('hidden');
+        more.classList.add('hidden');
+        const missing = err instanceof Error && err.message === SEARCH_INDEX_MISSING;
+        setStatus(missing ? '搜尋索引尚未建立，請先執行 npm run build。' : '搜尋暫時無法使用，請稍後再試。');
+      }
+    };
+
+    const open = () => {
+      closeAskIfOpen();
+      const menuPanel = document.querySelector<HTMLElement>('[data-menu-panel]');
+      if (menuPanel && !menuPanel.hidden) {
+        menuPanel.querySelector<HTMLButtonElement>('[data-menu-close]')?.click();
+      }
+      lastFocus = document.activeElement as HTMLElement | null;
+      panel.hidden = false;
+      panel.classList.remove('hidden');
+      panel.setAttribute('aria-hidden', 'false');
+      panel.classList.add('is-open');
+      setOpenButtons(true);
+      lockPage();
+      input.focus();
+      input.select();
+    };
+
+    const close = () => {
+      panel.classList.remove('is-open');
+      panel.hidden = true;
+      panel.classList.add('hidden');
+      panel.setAttribute('aria-hidden', 'true');
+      setOpenButtons(false);
+      unlockPageIfSafe();
+      lastFocus?.focus?.();
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-search-open]').forEach((btn) => {
+      btn.onclick = () => {
+        if (isOpen()) close();
+        else open();
+      };
+    });
+
+    panel.querySelectorAll('[data-search-close]').forEach((el) => {
+      el.addEventListener('click', close);
+    });
+    panel.querySelector('[data-search-backdrop]')?.addEventListener('click', close);
+
+    panel.querySelector<HTMLButtonElement>('[data-search-ask]')?.addEventListener('click', () => {
+      const q = input.value.trim();
+      close();
+      const askInput = document.querySelector<HTMLTextAreaElement>('[data-ask-input]');
+      if (askInput && q) {
+        askInput.value = q;
+        askInput.dispatchEvent(new Event('input'));
+      }
+      document.querySelector<HTMLButtonElement>('[data-ask-open]')?.click();
+    });
+
+    form.onsubmit = (e) => {
+      const q = input.value.trim();
+      if (!q) {
+        e.preventDefault();
+        return;
+      }
+      if (currentHits.length && activeIndex >= 0 && currentHits[activeIndex]) {
+        e.preventDefault();
+        window.location.href = currentHits[activeIndex].url;
+        return;
+      }
+      form.action = '/search';
+    };
+
+    input.oninput = () => {
+      preloadSearch(input.value);
+      void runSearch(input.value);
+    };
+    input.onfocus = () => {
+      void loadPagefind().catch(() => {
+        /* shown when the user searches */
+      });
+    };
+
+    dialog.onkeydown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+        return;
+      }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!currentHits.length) return;
+        activeIndex = (activeIndex + 1) % currentHits.length;
+        syncActive();
+        results.querySelectorAll('.site-search-item')[activeIndex]?.scrollIntoView({ block: 'nearest' });
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!currentHits.length) return;
+        activeIndex = (activeIndex - 1 + currentHits.length) % currentHits.length;
+        syncActive();
+        results.querySelectorAll('.site-search-item')[activeIndex]?.scrollIntoView({ block: 'nearest' });
+      }
+    };
+
+    const shortcutKey = '__siteSearchShortcut' as const;
+    const prev = (document as Document & { [shortcutKey]?: AbortController })[shortcutKey];
+    prev?.abort();
+    const shortcutAbort = new AbortController();
+    (document as Document & { [shortcutKey]?: AbortController })[shortcutKey] = shortcutAbort;
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        const metaK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
+        const slash = e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey;
+        if (metaK) {
+          e.preventDefault();
+          if (isOpen()) close();
+          else open();
+          return;
+        }
+        if (slash && !isSearchShortcutTarget(e.target) && !isOpen()) {
+          e.preventDefault();
+          open();
+        }
+      },
+      { signal: shortcutAbort.signal },
+    );
+  }
+
+  bindSearchPanel();
+  document.addEventListener('astro:page-load', bindSearchPanel);
+</script>

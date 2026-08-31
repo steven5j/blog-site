@@ -25,7 +25,11 @@ const certs = items.filter((i) => i.data.type === 'cert');
       <p class="text-xs font-semibold tracking-[0.22em] text-white/70 uppercase">
         作品
       </p>
-      <h1 class="mt-2 font-display text-4xl font-bold tracking-tight sm:text-5xl">
+      <h1
+        class="mt-2 font-display text-4xl font-bold tracking-tight sm:text-5xl"
+        data-pagefind-meta="title"
+        data-pagefind-weight="10"
+      >
         專案與證照
       </h1>
       <p class="mt-3 max-w-2xl text-white/75">
@@ -34,8 +38,10 @@ const certs = items.filter((i) => i.data.type === 'cert');
     </div>
   </div>
 
+  <span hidden data-pagefind-meta="kind:project" data-pagefind-filter="kind:project"></span>
+
   <!-- Certification Profile -->
-  <section class="border-b border-line bg-paper-elevated">
+  <section class="border-b border-line bg-paper-elevated" data-pagefind-body>
     <div class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
       <Reveal>
         <p class="text-xs font-semibold tracking-[0.2em] text-brand uppercase">
@@ -68,7 +74,7 @@ const certs = items.filter((i) => i.data.type === 'cert');
   </section>
 
   <!-- Project Achievement -->
-  <section class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+  <section class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8" data-pagefind-body>
     <Reveal>
       <p class="text-xs font-semibold tracking-[0.2em] text-brand uppercase">
         Project Achievement

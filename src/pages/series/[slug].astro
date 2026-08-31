@@ -48,23 +48,35 @@ const banner = covers[seriesId] || '/images/wp/study-notes.jpg';
           {TOPIC_LABELS[entry.data.topic]}
         </a>
       </p>
-      <h1 class="font-display mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+      <h1
+        class="font-display mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+        data-pagefind-meta="title"
+        data-pagefind-weight="10"
+      >
         {entry.data.title}
       </h1>
       {
         entry.data.intro && (
-          <p class="mt-4 max-w-3xl text-lg text-white/80">{entry.data.intro}</p>
+          <p class="mt-4 max-w-3xl text-lg text-white/80" data-pagefind-body>
+            {entry.data.intro}
+          </p>
         )
       }
     </div>
   </div>
 
   <section class="mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
-    <div class="prose-blog" data-reveal>
+    <span hidden data-pagefind-meta="kind:series" data-pagefind-filter="kind:series"></span>
+    <span
+      hidden
+      data-pagefind-meta={`topic:${entry.data.topic}`}
+      data-pagefind-filter={`topic:${entry.data.topic}`}
+    ></span>
+    <div class="prose-blog" data-pagefind-body data-reveal>
       <Content />
     </div>
 
-    <div class="mt-14">
+    <div class="mt-14" data-pagefind-ignore>
       <PostList posts={posts} empty="此系列尚無文章。" />
     </div>
   </section>

@@ -4,3 +4,11 @@
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/pagefind/*.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=3600
+
+/pagefind/wasm.*
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=3600

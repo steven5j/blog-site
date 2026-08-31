@@ -1,0 +1,303 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { TOPIC_LABELS, type Topic } from '@/utils/permalinks';
+
+const topics = Object.keys(TOPIC_LABELS) as Topic[];
+const kinds = [
+  { id: '', label: '全部' },
+  { id: 'article', label: '文章' },
+  { id: 'series', label: '系列' },
+  { id: 'project', label: '作品' },
+  { id: 'about', label: '關於' },
+] as const;
+---
+
+<BaseLayout
+  title="搜尋"
+  description="搜尋 Steven玄 站內公開文章、系列與作品。"
+  noindex
+>
+  <div class="page-banner">
+    <div class="mx-auto w-full max-w-site px-5 py-14 sm:px-6 lg:px-8">
+      <p class="text-xs font-semibold tracking-[0.25em] text-white/60 uppercase">
+        Search
+      </p>
+      <h1 class="font-display mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+        搜尋
+      </h1>
+      <p class="mt-3 text-white/75">搜尋公開文章全文、系列與作品。密碼保護內容不會出現在結果裡。</p>
+    </div>
+  </div>
+
+  <section class="mx-auto w-full max-w-5xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <form class="flex gap-2" action="/search" method="get" data-page-search-form>
+      <label class="sr-only" for="page-search-input">搜尋關鍵字</label>
+      <input
+        id="page-search-input"
+        name="q"
+        type="search"
+        maxlength="200"
+        autocomplete="off"
+        placeholder="搜尋文章內容、標題、標籤…"
+        class="min-w-0 flex-1 border border-line bg-paper-elevated px-4 py-3 text-ink"
+        data-page-search-input
+      />
+      <button
+        type="submit"
+        class="shrink-0 cursor-pointer border border-ink bg-ink px-5 py-3 text-sm font-semibold tracking-[0.12em] text-white uppercase transition hover:border-brand hover:bg-brand"
+      >
+        搜尋
+      </button>
+    </form>
+
+    <div class="mt-6 flex flex-col gap-4">
+      <div>
+        <p class="mb-2 text-xs font-semibold tracking-[0.2em] text-mist-muted uppercase">類型</p>
+        <ul class="flex flex-wrap gap-2" data-page-search-kinds>
+          {
+            kinds.map((kind) => (
+              <li>
+                <button
+                  type="button"
+                  class="search-filter cursor-pointer border border-line bg-paper-elevated px-3 py-1.5 text-sm text-mist-muted transition hover:border-brand hover:text-brand"
+                  data-kind={kind.id}
+                >
+                  {kind.label}
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <p class="mb-2 text-xs font-semibold tracking-[0.2em] text-mist-muted uppercase">主題</p>
+        <ul class="flex flex-wrap gap-2" data-page-search-topics>
+          <li>
+            <button
+              type="button"
+              class="search-filter cursor-pointer border border-line bg-paper-elevated px-3 py-1.5 text-sm text-mist-muted transition hover:border-brand hover:text-brand"
+              data-topic=""
+            >
+              全部
+            </button>
+          </li>
+          {
+            topics.map((topic) => (
+              <li>
+                <button
+                  type="button"
+                  class="search-filter cursor-pointer border border-line bg-paper-elevated px-3 py-1.5 text-sm text-mist-muted transition hover:border-brand hover:text-brand"
+                  data-topic={topic}
+                >
+                  {TOPIC_LABELS[topic]}
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <p class="mt-8 min-h-[1.25rem] text-sm text-mist-muted" data-page-search-status></p>
+    <ul class="site-search-page-list mt-2 divide-y divide-line border-y border-line" data-page-search-results></ul>
+    <div class="mt-8 hidden" data-page-search-empty>
+      <p class="text-mist-muted">找不到符合的內容。試試較短的關鍵字，或改用語意提問。</p>
+      <button
+        type="button"
+        class="mt-4 cursor-pointer border border-line bg-transparent px-4 py-2 text-sm text-ink transition hover:border-brand hover:text-brand"
+        data-page-search-ask
+      >
+        改用 Ask AI
+      </button>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .search-filter.is-active {
+    border-color: var(--color-brand);
+    background: rgb(193 59 59 / 0.08);
+    color: var(--color-brand);
+  }
+
+  .site-search-page-list .site-search-link {
+    display: block;
+    padding: 1.1rem 0.15rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .site-search-page-list .site-search-link:hover {
+    color: var(--color-brand);
+  }
+
+  .site-search-page-list .site-search-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-mist-muted);
+  }
+
+  .site-search-page-list .site-search-title {
+    display: block;
+    margin-top: 0.3rem;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 650;
+    color: var(--color-ink);
+  }
+
+  .site-search-page-list .site-search-link:hover .site-search-title {
+    color: var(--color-brand);
+  }
+
+  .site-search-page-list .site-search-excerpt {
+    margin: 0.35rem 0 0;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--color-mist-muted);
+  }
+
+  .site-search-page-list .site-search-excerpt mark {
+    background: rgb(193 59 59 / 0.18);
+    color: inherit;
+    padding: 0 0.1em;
+  }
+</style>
+
+<script>
+  import {
+    SEARCH_INDEX_MISSING,
+    resultItemHtml,
+    searchSite,
+    preloadSearch,
+    type SearchFilters,
+    type SearchKind,
+  } from '@/scripts/site-search';
+
+  type TopicFilter = NonNullable<SearchFilters['topic']>;
+
+  function bindPageSearch() {
+    const form = document.querySelector<HTMLFormElement>('[data-page-search-form]');
+    const input = document.querySelector<HTMLInputElement>('[data-page-search-input]');
+    const results = document.querySelector<HTMLElement>('[data-page-search-results]');
+    const status = document.querySelector<HTMLElement>('[data-page-search-status]');
+    const empty = document.querySelector<HTMLElement>('[data-page-search-empty]');
+    if (!form || !input || !results || !status || !empty) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const initialQ = params.get('q') ?? '';
+    let kind = (params.get('kind') ?? '') as SearchKind | '';
+    let topic = (params.get('topic') ?? '') as TopicFilter | '';
+    input.value = initialQ;
+
+    const filtersFromState = (): SearchFilters => {
+      const filters: SearchFilters = {};
+      if (kind) filters.kind = kind;
+      if (topic) filters.topic = topic;
+      return filters;
+    };
+
+    const syncFilterButtons = () => {
+      document.querySelectorAll<HTMLButtonElement>('[data-kind]').forEach((btn) => {
+        btn.classList.toggle('is-active', (btn.dataset.kind ?? '') === kind);
+      });
+      document.querySelectorAll<HTMLButtonElement>('[data-topic]').forEach((btn) => {
+        btn.classList.toggle('is-active', (btn.dataset.topic ?? '') === topic);
+      });
+    };
+
+    const writeUrl = (q: string) => {
+      const next = new URLSearchParams();
+      if (q) next.set('q', q);
+      if (kind) next.set('kind', kind);
+      if (topic) next.set('topic', topic);
+      const qs = next.toString();
+      const href = qs ? `/search?${qs}` : '/search';
+      window.history.replaceState({}, '', href);
+    };
+
+    let seq = 0;
+    const run = async () => {
+      const q = input.value.trim();
+      const current = ++seq;
+      writeUrl(q);
+      if (!q) {
+        results.innerHTML = '';
+        empty.classList.add('hidden');
+        status.textContent = '輸入關鍵字即可搜尋全文。';
+        return;
+      }
+      status.textContent = '搜尋中…';
+      try {
+        const result = await searchSite(q, filtersFromState(), 40);
+        if (current !== seq || result === null) return;
+        results.innerHTML = result.hits.map((hit) => resultItemHtml(hit)).join('');
+        empty.classList.toggle('hidden', result.total > 0);
+        status.textContent = result.total ? `共 ${result.total} 筆結果` : '';
+      } catch (err) {
+        if (current !== seq) return;
+        results.innerHTML = '';
+        empty.classList.add('hidden');
+        const missing = err instanceof Error && err.message === SEARCH_INDEX_MISSING;
+        status.textContent = missing
+          ? '搜尋索引尚未建立，請先執行 npm run build。'
+          : '搜尋暫時無法使用，請稍後再試。';
+      }
+    };
+
+    syncFilterButtons();
+    void run();
+
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      void run();
+    };
+    input.oninput = () => {
+      preloadSearch(input.value, filtersFromState());
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-kind]').forEach((btn) => {
+      btn.onclick = () => {
+        kind = (btn.dataset.kind ?? '') as SearchKind | '';
+        syncFilterButtons();
+        void run();
+      };
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-topic]').forEach((btn) => {
+      btn.onclick = () => {
+        topic = (btn.dataset.topic ?? '') as TopicFilter | '';
+        syncFilterButtons();
+        void run();
+      };
+    });
+
+    document.querySelector<HTMLButtonElement>('[data-page-search-ask]')?.addEventListener('click', () => {
+      const q = input.value.trim();
+      const askInput = document.querySelector<HTMLTextAreaElement>('[data-ask-input]');
+      if (askInput && q) {
+        askInput.value = q;
+        askInput.dispatchEvent(new Event('input'));
+      }
+      document.querySelector<HTMLButtonElement>('[data-ask-open]')?.click();
+    });
+  }
+
+  bindPageSearch();
+  document.addEventListener('astro:page-load', bindPageSearch);
+</script>

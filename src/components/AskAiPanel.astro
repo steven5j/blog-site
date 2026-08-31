@@ -773,6 +773,10 @@ const suggestions = [
     };
 
     const open = () => {
+      const searchPanel = document.querySelector<HTMLElement>('[data-search-panel]');
+      if (searchPanel && !searchPanel.hidden) {
+        document.querySelector<HTMLButtonElement>('[data-search-close]')?.click();
+      }
       lastFocus = document.activeElement as HTMLElement | null;
       panel.hidden = false;
       panel.classList.remove('hidden');

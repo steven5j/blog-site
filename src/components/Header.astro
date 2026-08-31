@@ -1,5 +1,6 @@
 ---
 import AskAiPanel from './AskAiPanel.astro';
+import SearchPanel from './SearchPanel.astro';
 
 interface Props {
   transparent?: boolean;
@@ -116,6 +117,22 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
 
       <button
         type="button"
+        class="inline-flex cursor-pointer items-center gap-1.5 border border-white/25 bg-transparent px-2.5 py-1.5 text-xs font-semibold tracking-[0.14em] text-white/90 uppercase transition hover:border-brand hover:text-brand"
+        aria-expanded="false"
+        aria-controls="site-search-panel"
+        aria-haspopup="dialog"
+        aria-label="搜尋文章"
+        data-search-open
+      >
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+          <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <span class="hidden sm:inline">搜尋</span>
+      </button>
+
+      <button
+        type="button"
         class="inline-flex cursor-pointer items-center border border-white/25 bg-transparent px-2.5 py-1.5 text-xs font-semibold tracking-[0.14em] text-white/90 uppercase transition hover:border-brand hover:text-brand"
         aria-expanded="false"
         aria-controls="ask-ai-panel"
@@ -208,6 +225,18 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
         <li class="mt-6 border-t border-white/15 pt-4">
           <button
             type="button"
+            class="block w-full cursor-pointer border-0 bg-transparent py-3 text-left font-display text-2xl font-medium text-white transition hover:text-brand"
+            aria-expanded="false"
+            aria-controls="site-search-panel"
+            data-search-open
+            data-menu-close
+          >
+            搜尋
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
             class="block w-full cursor-pointer border-0 bg-transparent py-3 text-left font-display text-2xl font-medium text-brand transition hover:text-white"
             aria-expanded="false"
             aria-controls="ask-ai-panel"
@@ -220,6 +249,7 @@ function isActive(href: string, match: 'exact' | 'prefix' | 'blog') {
     </div>
   </nav>
 
+  <SearchPanel />
   <AskAiPanel />
 </header>
 
