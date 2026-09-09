@@ -1,0 +1,322 @@
+---
+title: "傳輸加密怎麼選｜HTTPS／TLS、E2EE、P2PE 對照"
+description: "用生活場景分清三種鎖：網頁的 HTTPS／TLS、聊天的 E2EE、刷卡的 P2PE。先看誰能解密，再決定要疊哪一層。"
+pubDate: 2026-09-08
+topic: software
+series: architecture
+tags:
+  - HTTPS
+  - TLS
+  - E2EE
+  - P2PE
+  - 資訊安全
+  - 加密
+slug: https-tls-e2ee-p2pe
+heroImage: /uploads/tls-e2ee-p2pe-hero.svg
+---
+
+加密常被講成一種東西。差別幾乎都在：鎖是鎖在哪兩端，以及路上經過的人有沒有鑰匙。
+
+你把退貨單封進包裹，運將拆不開，賣家倉庫卻一定會拆——不然怎麼退貨？這是 HTTPS／TLS：路上安全，對方伺服器本來就要看到內容。
+
+你把信放進鐵盒，只有朋友有鑰匙。超商、轉運中心、快遞總部都只能搬箱子。這是 E2EE。
+
+超商刷卡時，店員螢幕頂多看到卡號末四碼。卡號不是進店家電腦才加密，是進刷卡機就鎖上，只有銀行／支付處理器有鑰匙。這是 P2PE。
+
+<div class="content-lead">
+  <p>這篇只做一件事：分清 HTTPS／TLS、E2EE、P2PE 誰能讀資料，幫你選定要疊哪一層。</p>
+</div>
+
+這三個不是互斥選項。HTTPS 是地板；E2EE 與 P2PE 是特定場景再加的第二把鎖。WhatsApp 訊息仍走 TLS 連到伺服器，只是內容另外做了 E2EE。
+
+## 先看對照表
+
+<div class="spec-table-wrap" tabindex="0">
+<table class="spec-table">
+  <thead>
+    <tr>
+      <th scope="col">特性</th>
+      <th scope="col">HTTPS／TLS</th>
+      <th scope="col">E2EE</th>
+      <th scope="col">P2PE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">生活比喻</th>
+      <td>封好的包裹，賣家倉庫會拆</td>
+      <td>只有收件人有鑰匙的鐵盒</td>
+      <td>刷卡機當場把卡號鎖進保險箱</td>
+    </tr>
+    <tr>
+      <th scope="row">保護範圍</th>
+      <td>用戶端 ↔ 這台伺服器（或 CDN）</td>
+      <td>發送裝置 ↔ 接收裝置</td>
+      <td>支付終端 ↔ 支付處理器</td>
+    </tr>
+    <tr>
+      <th scope="row">中間能否讀</th>
+      <td>可以。到站就解密，才能處理登入、下單</td>
+      <td>不行。平台沒有私鑰</td>
+      <td>店家／中間系統通常不行；處理器可以（本來就要授權）</td>
+    </tr>
+    <tr>
+      <th scope="row">金鑰在誰手上</th>
+      <td>網站，或終止 TLS 的 CDN／反向代理</td>
+      <td>兩端使用者裝置</td>
+      <td>機具與處理器的安全環境，不在店員電腦</td>
+    </tr>
+    <tr>
+      <th scope="row">常見場景</th>
+      <td>瀏覽網頁、網路銀行登入、呼叫 API</td>
+      <td>Signal、WhatsApp、iMessage</td>
+      <td>實體刷卡、零售支付</td>
+    </tr>
+    <tr>
+      <th scope="row">主要防的是</th>
+      <td>路上被竊聽、假基地台、咖啡廳 Wi-Fi</td>
+      <td>平台業者、駭入伺服器的人讀內容</td>
+      <td>店家中招、店員側錄、POS 中間人</td>
+    </tr>
+    <tr>
+      <th scope="row">防不了的</th>
+      <td>網站把資料存成明文、XSS、釣魚</td>
+      <td>手機中木馬、螢幕被看、metadata</td>
+      <td>偽卡、盜刷後的帳戶層問題</td>
+    </tr>
+    <tr>
+      <th scope="row">與另外兩者</th>
+      <td>所有網站的底線，不能省</td>
+      <td>疊在 TLS 之上</td>
+      <td>疊在支付鏈路上，不是網頁小鎖的替代品</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+比較時不要問「哪一種比較安全」，問「你希望誰讀不到」。希望路上的人讀不到 → TLS 就夠；希望連你自己的伺服器都讀不到 → 才需要 E2EE；希望連店家後台都看不到卡號 → 才是 P2PE。
+
+明文出現在哪，差就在這裡：
+
+<div class="tech-stack">
+  <div class="tech-stack-card">
+    <h4>HTTPS／TLS</h4>
+    <div class="id-bits" aria-hidden="true">
+      <span class="id-bits__meta" style="--w:2">裝置明文</span>
+      <span class="id-bits__time" style="--w:3">路上密文</span>
+      <span class="id-bits__seq" style="--w:3">伺服器明文</span>
+    </div>
+  </div>
+  <div class="tech-stack-card">
+    <h4>E2EE</h4>
+    <div class="id-bits" aria-hidden="true">
+      <span class="id-bits__meta" style="--w:2">裝置明文</span>
+      <span class="id-bits__time" style="--w:3">路上密文</span>
+      <span class="id-bits__time" style="--w:3">伺服器密文</span>
+      <span class="id-bits__seq" style="--w:2">對端明文</span>
+    </div>
+  </div>
+  <div class="tech-stack-card tech-stack-card--wide">
+    <h4>P2PE</h4>
+    <div class="id-bits" aria-hidden="true">
+      <span class="id-bits__time" style="--w:3">機具上鎖</span>
+      <span class="id-bits__time" style="--w:3">店家密文</span>
+      <span class="id-bits__seq" style="--w:3">處理器明文</span>
+    </div>
+  </div>
+</div>
+
+## 三種鎖，三個生活現場
+
+### HTTPS／TLS：封好的包裹，倉庫會拆
+
+<figure class="post-figure">
+  <img src="/uploads/tls-e2ee-p2pe-https.svg?v=2" alt="HTTPS：你把資料封進包裹，路上拆不開，對方伺服器會拆開處理" width="1600" height="500" />
+  <figcaption>路上沒人拆得開，但對方伺服器本來就要拆——不然怎麼處理你的登入和下單。</figcaption>
+</figure>
+
+<div class="tech-stack">
+  <div class="tech-stack-card tech-stack-card--wide">
+    <h4>HTTPS／TLS</h4>
+    <p><strong>原理：</strong>瀏覽器跟伺服器先確認對方身分（憑證），再談一把會話金鑰，之後 HTTP 內容都加密。這就是網址列的小鎖。TLS 是協定，HTTPS 是跑在 TLS 上的 HTTP。</p>
+    <p><strong>優點：</strong>防路上竊聽與大多數中間人；憑證生態成熟，所有網站、API、App 連後端都該有。</p>
+    <p><strong>缺點：</strong>資料抵達伺服器（或 Cloudflare 這類會終止 TLS 的節點）後就是明文。網站自己能讀，才能驗證密碼、算購物車。</p>
+    <p><strong>適用：</strong>任何會把資料交給「對方那台伺服器」處理的服務。這是預設，不是選配。</p>
+  </div>
+</div>
+
+### E2EE：只有朋友有鑰匙的鐵盒
+
+<figure class="post-figure">
+  <img src="/uploads/tls-e2ee-p2pe-e2ee.svg?v=2" alt="E2EE：鐵盒只有收件人有鑰匙，中間的平台只能搬密封箱" width="1600" height="500" />
+  <figcaption>連快遞總部都沒有鑰匙。平台被抄家、工程師開後台，也讀不到內容。</figcaption>
+</figure>
+
+<div class="tech-stack">
+  <div class="tech-stack-card tech-stack-card--wide">
+    <h4>E2EE</h4>
+    <p><strong>原理：</strong>在發送裝置加密，只在接收裝置解密；中間的雲端沒有私鑰。<a href="https://www.cloudflare.com/zh-tw/learning/privacy/what-is-end-to-end-encryption/">Cloudflare</a> 把這件事定義得很乾脆：只有通訊雙方能讀。</p>
+    <p><strong>優點：</strong>連服務提供者都看不到內容。伺服器外洩時，倒出的多半是密文。</p>
+    <p><strong>缺點：</strong>金鑰管理複雜；客服無法代查訊息；時間、誰跟誰說話等 metadata 通常仍可見。手機中木馬時，傳輸加密幫不上忙。</p>
+    <p><strong>適用：</strong>即時通訊、私密檔案、你不希望自己當「能讀用戶內容的中間人」的產品。</p>
+  </div>
+</div>
+
+### P2PE：刷卡機當場把卡號鎖進保險箱
+
+<figure class="post-figure">
+  <img src="/uploads/tls-e2ee-p2pe-p2pe.svg?v=2" alt="P2PE：卡號在刷卡機上鎖，店家系統看不到，支付處理器才解開" width="1600" height="500" />
+  <figcaption>鎖在刷卡機裡，不是鎖在店家的電腦裡。店員螢幕最多顯示末四碼。</figcaption>
+</figure>
+
+<div class="tech-stack">
+  <div class="tech-stack-card tech-stack-card--wide">
+    <h4>P2PE</h4>
+    <p><strong>原理：</strong>支付產業用語（PCI Point-to-Point Encryption）：卡號在通過認證的刷卡機內加密，只在支付處理器的安全環境解密。店家 POS、店內網路、總公司伺服器中間這段通常只有密文。<a href="https://www.splashtop.com/tw/blog/what-is-end-to-end-encryption">Splashtop</a> 也把 P2PE 的兩端寫成支付終端到處理器。</p>
+    <p><strong>優點：</strong>商戶環境中招，也拿不到完整卡號；通過認證的方案可以縮小 PCI DSS 範圍。</p>
+    <p><strong>缺點：</strong>「兩端」是機具與處理器，不是持卡人與商店老闆。處理器當然要能讀，否則無法授權。這點和 E2EE 最容易被寫混。</p>
+    <p><strong>適用：</strong>實體收單、要降低卡號暴露面的零售。一般官網金流導向託管頁，通常不是自建 P2PE。</p>
+  </div>
+</div>
+
+## 最容易混的三組詞
+
+<div class="challenge-grid">
+  <div class="challenge-card">
+    <p class="challenge-label">HTTPS ≠ E2EE</p>
+    <p>小鎖只保證「你到這家網站」沒被路人聽。網站、CDN、客服後台都可能看到你送出的內容。</p>
+  </div>
+  <div class="challenge-card">
+    <p class="challenge-label">P2PE ≠ E2EE</p>
+    <p>E2EE 連服務商都讀不到；P2PE 允許處理器讀，只是不讓店家系統讀。</p>
+  </div>
+  <div class="challenge-card challenge-card--wide">
+    <p class="challenge-label">可以同時存在</p>
+    <p>聊天 App：TLS 護連線，E2EE 護訊息。刷卡機：P2PE 護卡號，機具連銀行仍可能再包一層 TLS。</p>
+  </div>
+</div>
+
+<div class="note-callout">
+  <p><strong>瀏覽器顯示鎖頭，不代表只有你的 origin 能讀。</strong>CDN、WAF、反向代理常在自己那一端解開 TLS。對使用者來說仍是 HTTPS；對架構來說，那台邊緣節點就是「會拆包裹的倉庫」。</p>
+</div>
+
+## 怎麼選：一條決策路徑
+
+先問誰不該看到明文，再決定鎖要跨過誰。
+
+<div class="challenge-grid">
+  <div class="challenge-card">
+    <p class="challenge-label">做網站／API</p>
+    <p>強制 HTTPS。憑證、導向、HSTS 是實作細節，不是跟 E2EE 二選一。</p>
+  </div>
+  <div class="challenge-card">
+    <p class="challenge-label">做聊天、私密檔</p>
+    <p>產品若承諾「我們也看不到」→ E2EE。客服要搜訊息、伺服器要掃毒 → 不要喊 E2EE。</p>
+  </div>
+  <div class="challenge-card">
+    <p class="challenge-label">實體刷卡</p>
+    <p>問收單行／機具商有沒有 PCI 認證的 P2PE。不要把「POS 有裝 TLS」當成 P2PE。</p>
+  </div>
+  <div class="challenge-card">
+    <p class="challenge-label">官網金流</p>
+    <p>優先讓卡號不要經過你的伺服器（託管 Checkout、iframe、token）。這是減範圍，不是自研 P2PE。</p>
+  </div>
+  <div class="challenge-card challenge-card--wide">
+    <p class="challenge-label">已經有 TLS 還要不要再加</p>
+    <p>路上的人已經讀不到。再加鎖，只因為你不信任某一段中間角色：平台自己、店家後台、或會終止 TLS 的 CDN。</p>
+  </div>
+</div>
+
+<div class="experience-block">
+  <h4>三種答案，三種不信任對象</h4>
+  <p>選 TLS 是因為你<strong>需要</strong>伺服器讀內容才能提供服務。選 E2EE 是因為你<strong>故意</strong>讓自己讀不到。選 P2PE 是因為法規與盜刷現實，不讓卡號在店家環境出現明文。</p>
+</div>
+
+## 生活對照速查
+
+<div class="spec-table-wrap" tabindex="0">
+<table class="spec-table">
+  <thead>
+    <tr>
+      <th scope="col">你在做的事</th>
+      <th scope="col">路上的人</th>
+      <th scope="col">中間平台／店家</th>
+      <th scope="col">該有的鎖</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">網銀看餘額</th>
+      <td>不該看到</td>
+      <td>銀行伺服器要看到</td>
+      <td>HTTPS</td>
+    </tr>
+    <tr>
+      <th scope="row">傳地址給朋友</th>
+      <td>不該看到</td>
+      <td>通訊軟體不該看到</td>
+      <td>E2EE（外層仍有 TLS）</td>
+    </tr>
+    <tr>
+      <th scope="row">超商刷卡</th>
+      <td>不該看到</td>
+      <td>超商後台不該看到完整卡號；銀行要看到</td>
+      <td>P2PE</td>
+    </tr>
+    <tr>
+      <th scope="row">官網填卡號</th>
+      <td>不該看到</td>
+      <td>若打進你的表單，你的伺服器會看到</td>
+      <td>別這麼做；改託管頁。TLS 救不了「你自己變成中間人」</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+## 三個常見坑
+
+<div class="note-callout">
+  <p><strong>不要把 HTTPS 講成端到端加密。</strong>端到端的兩端是兩個使用者裝置，不是瀏覽器與網站。<a href="https://www.cloudflare.com/zh-tw/learning/privacy/what-is-end-to-end-encryption/">Cloudflare 對 E2EE 的說明</a>把範圍寫得很清楚。</p>
+</div>
+
+<div class="note-callout">
+  <p><strong>E2EE 不是不會被駭。</strong>手機中木馬、螢幕被錄、備份沒加密、金鑰託管回伺服器，內容一樣外洩。<a href="https://www.splashtop.com/tw/blog/what-is-end-to-end-encryption">Splashtop</a> 也強調端點被攻陷時，傳輸加密幫不上忙。Metadata（誰、何時）通常仍可見。</p>
+</div>
+
+<div class="note-callout">
+  <p><strong>不要把「點對點」三個字當成 P2PE。</strong>市面上有人把任意兩點之間的 TLS 叫 point-to-point。支付語境的 P2PE 指的是 PCI 那套：認證機具、金鑰不進商戶系統。沒通過這套，就不要在金流文件裡寫 P2PE。</p>
+</div>
+
+## 小結
+
+要上路：HTTPS／TLS。要不讓自己的雲讀內容：E2EE。要不讓店家系統碰卡號：P2PE。沒有「比較高級所以取代 HTTPS」這種選法。
+
+---
+
+## 筆者經驗與實踐模式：支付與熱門 API 才疊 E2EE
+
+前文是比較文，三種鎖各有主場。這一節改以筆者口吻，說明我參與的產品線實際怎麼走——以這篇文章撰寫時為準。
+
+### 接觸的經驗
+
+接觸支付相關功能時，傳輸要進行E2EE端到端的加密處理。我當下的直覺是：通訊加密不是已經有 TLS／HTTPS 了嗎？還要在應用程式裡談金鑰、寫雙方協同的加密邏輯，很像多做一層。演算法、金鑰的產生與交換都不熟；同事裡不少人也把這看成特定領域才會碰的麻煩，也不是很熟悉，一時看不出它在防什麼。
+
+後來才意識到，是自己對「伺服器這端會拆包裹」不夠敏感。TLS 保的是你到這台伺服器（或終止 TLS 的節點）；支付與金融領域把卡號、交易細節再鎖一層，是故意讓中間的閘道、日誌、甚至自家部分服務都讀不到明文。
+
+要正派、長久經營的公司，保障的不只是網址列有小鎖HTTPS，而是傳遞過程裡不該看到的人看不到。想通這點，E2EE 就不再像多餘的。
+
+### 我們怎麼處理
+
+我自己帶的團隊，跟前文一致：
+
+- **HTTPS／TLS 固定會上。** 網站、API、回呼，沒有「已經有 E2EE 所以可以省 TLS」這種選法。
+- **E2EE 主要用在支付對接。** 金鑰與演算法留在應用層，疊在 TLS 之上，讓支付相關的明文不要在中間節點攤開。
+- **少部分客戶端重要的呼叫、又容易常被攻擊的 API，** 同樣加一層端到端加密。
+
+不是所有介面都上 E2EE。多數請求只靠 TLS 就夠；真的要讓連我們自己的某段路徑都想要讀不到時，才把第二把鎖加上去。
+
+## 延伸閱讀
+
+- [端對端加密是什麼？｜Cloudflare](https://www.cloudflare.com/zh-tw/learning/privacy/what-is-end-to-end-encryption/)
+- [E2EE 與 TLS、P2PE 的差異｜Splashtop](https://www.splashtop.com/tw/blog/what-is-end-to-end-encryption)
+- [相關討論｜Binance Square](https://www.binance.com/zh-TC/square/post/510884)

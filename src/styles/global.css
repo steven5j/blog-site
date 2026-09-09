@@ -190,6 +190,13 @@
   margin: 0 auto;
 }
 
+.prose-blog .post-figure figcaption {
+  margin: 0.85rem 0 0;
+  font-size: 0.88rem;
+  color: var(--color-mist-muted);
+  text-align: center;
+}
+
 .prose-blog .video-embed {
   position: relative;
   margin: 1.25rem 0 2.5rem;

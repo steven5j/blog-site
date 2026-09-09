@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 720" role="img">
+  <rect width="1600" height="720" fill="#f4f4f4"/>
+  <rect x="120" y="40" width="28" height="10" rx="2" fill="#c13b3b"/>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="158" y="50" font-size="16" fill="#6b6b6b">&#x5BC6;&#x6587;</text>
+  <rect x="230" y="40" width="28" height="10" rx="2" fill="#2a2a2a"/>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="268" y="50" font-size="16" fill="#6b6b6b">&#x660E;&#x6587;</text>
+
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="120" y="96" font-size="18" font-weight="700" fill="#c13b3b">HTTPS / TLS</text>
+  <line x1="120" y1="152" x2="1480" y2="152" stroke="#2a2a2a" stroke-width="4"/>
+  <rect x="120" y="136" width="560" height="32" rx="6" fill="#c13b3b"/>
+  <circle cx="120" cy="152" r="14" fill="#2a2a2a"/>
+  <circle cx="680" cy="152" r="14" fill="#c13b3b"/>
+  <circle cx="1080" cy="152" r="14" fill="#2a2a2a"/>
+  <circle cx="1480" cy="152" r="14" fill="#2a2a2a"/>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="120" y="200" font-size="16" fill="#2a2a2a">&#x4F60;&#x7684;&#x88DD;&#x7F6E;</text>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="620" y="200" font-size="16" fill="#2a2a2a">&#x7DB2;&#x7AD9;&#x4F3A;&#x670D;&#x5668; &#xB7; &#x5728;&#x9019;&#x88E1;&#x89E3;&#x5BC6;</text>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="1010" y="200" font-size="16" fill="#6b6b6b">&#x5F8C;&#x53F0;</text>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="1420" y="200" font-size="16" fill="#6b6b6b">&#x8CC7;&#x6599;&#x5EAB;</text>
+
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="120" y="272" font-size="18" font-weight="700" fill="#c13b3b">E2EE</text>
+  <line x1="120" y1="328" x2="1480" y2="328" stroke="#c13b3b" stroke-width="4"/>
+  <rect x="120" y="312" width="1360" height="32" rx="6" fill="#c13b3b"/>
+  <circle cx="120" cy="328" r="14" fill="#2a2a2a"/>
+  <rect x="640" y="308" width="120" height="40" rx="6" fill="#2a2a2a"/>
+  <circle cx="1480" cy="328" r="14" fill="#2a2a2a"/>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="120" y="376" font-size="16" fill="#2a2a2a">&#x767C;&#x9001;&#x88DD;&#x7F6E;</text>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="610" y="376" font-size="16" fill="#2a2a2a">&#x4E2D;&#x9593;&#x4F3A;&#x670D;&#x5668; &#xB7; &#x53EA;&#x80FD;&#x642C;&#x7BB1;&#x5B50;</text>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="1368" y="376" font-size="16" fill="#2a2a2a">&#x63A5;&#x6536;&#x88DD;&#x7F6E;</text>
+
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="120" y="448" font-size="18" font-weight="700" fill="#c13b3b">P2PE</text>
+  <line x1="120" y1="504" x2="1480" y2="504" stroke="#c13b3b" stroke-width="4"/>
+  <rect x="120" y="488" width="1360" height="32" rx="6" fill="#c13b3b"/>
+  <rect x="104" y="488" width="88" height="32" rx="6" fill="#2a2a2a"/>
+  <rect x="680" y="490" width="88" height="28" rx="4" fill="#6b6b6b"/>
+  <circle cx="1480" cy="504" r="14" fill="#2a2a2a"/>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="120" y="552" font-size="16" fill="#2a2a2a">&#x5237;&#x5361;&#x6A5F; &#xB7; &#x7576;&#x5834;&#x4E0A;&#x9396;</text>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="640" y="552" font-size="16" fill="#2a2a2a">&#x5E97;&#x5BB6;&#x7CFB;&#x7D71; &#xB7; &#x6C92;&#x6709;&#x9470;&#x5319;</text>
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="1368" y="552" font-size="16" fill="#2a2a2a">&#x652F;&#x4ED8;&#x8655;&#x7406;&#x5668;</text>
+
+  <text font-family="ui-sans-serif, system-ui, Microsoft JhengHei, PingFang TC, sans-serif" x="120" y="644" font-size="18" fill="#6b6b6b">&#x7D05;&#x7DDA;&#x662F;&#x5BC6;&#x6587;&#x3002;&#x7070;&#x9EDE;&#x3001;&#x9ED1;&#x9EDE;&#x51FA;&#x73FE;&#x7684;&#x5730;&#x65B9;&#xFF0C;&#x624D;&#x6709;&#x4EBA;&#x8B80;&#x5F97;&#x5230;&#x5167;&#x5BB9;&#x3002;</text>
+</svg>
