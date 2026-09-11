@@ -45,7 +45,7 @@ npx wrangler login
 npx wrangler whoami    # 可選：確認目前登入身分
 ```
 
-未登入時，`pages deploy`、`sync:rag:upload`（R2 `--remote`）、以及 `preview:cf`（`wrangler.toml` 的 AI binding 為 `remote = true`）都會失敗。本機 `npm run dev` 不需登入。
+未登入時，`pages deploy`、`sync:rag:upload`（R2 `--remote`）、以及 `preview:cf`（`wrangler.toml` 的 AI／AI Search binding 為 `remote = true`）都會失敗。本機 `npm run dev` 不需登入。
 
 部署：
 
@@ -123,12 +123,45 @@ npm run index:search   # 只重建搜尋索引（需已有 dist/）
 
 ## AI Search（RAG）
 
-公開內容可匯出到 `.rag/`，再上傳至 R2 bucket `stevenjhu-r2` 供 AI Search 索引。上傳為遠端操作，**必須先 `npx wrangler login`**。
+公開內容匯出到 `.rag/`（Modular 分區），再上傳至 R2 bucket `stevenjhu-r2` 供 AI Search 索引。上傳為遠端操作，**必須先 `npx wrangler login`**。
 
 ```bash
-npx wrangler login          # 尚未登入時
+npx wrangler login          # 尚未登入或出現 CLOUDFLARE_API_TOKEN 錯誤時
+npx wrangler whoami         # 確認已登入
 npm run sync:rag            # 只寫入 .rag/
-npm run sync:rag:upload     # 寫入並 wrangler r2 object put --remote
+npm run sync:rag:upload     # 寫入、put，並刪除舊版根目錄 key／上次上傳多餘 key
 ```
 
-略過草稿與密碼保護文章，不會讀取 `protected-content/`。上傳完成後，到 Cloudflare Dashboard → AI Search → `stevenjhu-ai-search` 等待索引結束。
+若 upload 仍要求 `CLOUDFLARE_API_TOKEN`，在同一終端機重新 `npx wrangler login`，或到 Cloudflare Dashboard 建立 API Token（需 R2 寫入權限）後設環境變數再跑。
+
+`.rag/` 佈局：
+
+| 路徑 | 用途 |
+|------|------|
+| `about/` | 作者 profile、站內 FAQ |
+| `projects/` | 各作品／證照正文 + `index.md` 短清單 |
+| `faq/projects.md` | 跨專案清單與消歧義（不逐項複誦） |
+| `catalog/` | 短地圖（site / projects / blog / series） |
+| `blog/`、`series/` | 文章與系列 |
+
+略過草稿與密碼保護文章，不會讀取 `protected-content/`。
+
+Ask AI：`POST /api/ask` 走 `wrangler.toml` 的 `[[ai_search]]` binding（`ASK_SEARCH` → `stevenjhu-ai-search`），hybrid 檢索 + 意圖 folder 過濾 + 對話 `messages`。
+
+### Dashboard／部署檢查
+
+上傳或改索引後：
+
+1. Cloudflare Dashboard → AI Search → `stevenjhu-ai-search`：**開啟 keyword + vector（hybrid）**
+2. 等待索引跑完
+3. Pages 專案確認已綁定 `ASK_SEARCH`（instance `stevenjhu-ai-search`）；`wrangler.toml` 已宣告 binding
+
+### 驗收題（看 sources 的 key，不只看答案文案）
+
+| 問題 | 期望來源 |
+|------|----------|
+| 作者是誰／專長是什麼？ | `about/` |
+| 有哪些作品或證照？ | `faq/projects.md` 或 `projects/index.md`，連結 `/projects` |
+| 送報件系統升級專案做了什麼？ | `projects/report-system-upgrade.md`（不要 data-fix） |
+| 送報件資料修正輔助系統做了什麼？ | `projects/report-data-fix.md` |
+| 追問「擔任什麼角色？」 | 需對話 messages 才會對到同一專案 |

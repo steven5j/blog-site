@@ -2,8 +2,13 @@ name = "blog-site"
 compatibility_date = "2026-07-22"
 pages_build_output_dir = "dist"
 
-# Pages Functions support Workers AI (`env.AI`). Ask AI uses
-# env.AI.autorag("stevenjhu-ai-search") against the AI Search instance.
+# Legacy Workers AI binding (other features / fallback). Ask AI uses ASK_SEARCH.
 [ai]
 binding = "AI"
+remote = true
+
+# Cloudflare AI Search instance binding for Ask AI (chatCompletions).
+[[ai_search]]
+binding = "ASK_SEARCH"
+instance_name = "stevenjhu-ai-search"
 remote = true

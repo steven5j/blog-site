@@ -737,6 +737,9 @@ const suggestions = [
     let abortController: AbortController | null = null;
     let lastFocus: HTMLElement | null = null;
     const mqMobile = window.matchMedia('(max-width: 767px)');
+    /** Recent user/assistant turns for RAG rewrite (plain text). */
+    const history: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+    const HISTORY_LIMIT = 12;
 
     const setStatus = (text: string) => {
       status.textContent = text;
@@ -841,6 +844,7 @@ const suggestions = [
       abortController = null;
       busy = false;
       submit.disabled = false;
+      history.length = 0;
       messages.querySelectorAll('.ask-ai-row').forEach((row) => row.remove());
       empty?.classList.remove('hidden');
       setStatus('');
@@ -909,6 +913,9 @@ const suggestions = [
       const request = new AbortController();
       abortController = request;
 
+      const prior = history.slice(-HISTORY_LIMIT);
+      const outbound = [...prior, { role: 'user' as const, content: q }];
+
       appendMessage('user', escapeHtml(q));
       const { row, bubble, col } = appendMessage('assistant', typingHtml);
       let answer = '';
@@ -918,7 +925,11 @@ const suggestions = [
         const res = await fetch('/api/ask', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: q, stream: false }),
+          body: JSON.stringify({
+            query: q,
+            messages: outbound,
+            stream: false,
+          }),
           signal: request.signal,
         });
 
@@ -968,6 +979,14 @@ const suggestions = [
         }
 
         paintAnswer(col, bubble, answer, sources);
+        history.push({ role: 'user', content: q });
+        history.push({
+          role: 'assistant',
+          content: (answer.trim() || '站內暫時找不到足夠相關的內容。').slice(0, 2000),
+        });
+        if (history.length > HISTORY_LIMIT) {
+          history.splice(0, history.length - HISTORY_LIMIT);
+        }
         setStatus('');
       } catch (err) {
         if (err instanceof Error && err.name === 'AbortError') return;

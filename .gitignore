@@ -27,6 +27,7 @@ Thumbs.db
 
 # generated AI Search corpus (uploaded to R2)
 .rag/
+.rag-uploaded-keys.json
 
 # generated for Pages Functions (from protected-content/)
 functions/_data/
