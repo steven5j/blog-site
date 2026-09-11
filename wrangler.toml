@@ -2,12 +2,14 @@ name = "blog-site"
 compatibility_date = "2026-07-22"
 pages_build_output_dir = "dist"
 
-# Legacy Workers AI binding (other features / fallback). Ask AI uses ASK_SEARCH.
+# Pages bindings are managed by this file (Dashboard is read-only for bindings).
+# Redeploy after edits. Production may still only show [ai] until [[ai_search]]
+# is recognized by the Pages build; /api/ask falls back to AI.autorag().
+
 [ai]
 binding = "AI"
 remote = true
 
-# Cloudflare AI Search instance binding for Ask AI (chatCompletions).
 [[ai_search]]
 binding = "ASK_SEARCH"
 instance_name = "stevenjhu-ai-search"

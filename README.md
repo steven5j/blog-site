@@ -146,15 +146,9 @@ npm run sync:rag:upload     # 寫入、put，並刪除舊版根目錄 key／上�
 
 略過草稿與密碼保護文章，不會讀取 `protected-content/`。
 
-Ask AI：`POST /api/ask` 走 `wrangler.toml` 的 `[[ai_search]]` binding（`ASK_SEARCH` → `stevenjhu-ai-search`），hybrid 檢索 + 意圖 folder 過濾 + 對話 `messages`。
+Ask AI：`POST /api/ask` 優先使用 `[[ai_search]]` binding（`ASK_SEARCH` → `stevenjhu-ai-search`）；若 Pages 尚未套用該繫結，會自動 fallback 到既有的 Workers AI `AI.autorag()`。
 
-### Dashboard／部署檢查
-
-上傳或改索引後：
-
-1. Cloudflare Dashboard → AI Search → `stevenjhu-ai-search`：**開啟 keyword + vector（hybrid）**
-2. 等待索引跑完
-3. Pages 專案確認已綁定 `ASK_SEARCH`（instance `stevenjhu-ai-search`）；`wrangler.toml` 已宣告 binding
+此專案 **Bindings 由 `wrangler.toml` 管理**（Dashboard 顯示「透過 wrangler.toml 進行管理」時無法在 UI 新增）。改 binding 後必須 **commit + 重新部署**；部署後到 Settings → Bindings 確認是否出現 `ASK_SEARCH`。若只有 `AI`，Ask AI 仍可經 fallback 運作。
 
 ### 驗收題（看 sources 的 key，不只看答案文案）
 

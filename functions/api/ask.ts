@@ -1,23 +1,25 @@
 /**
- * POST /api/ask — site Q&A via Cloudflare AI Search (Workers binding).
+ * POST /api/ask — site Q&A via Cloudflare AI Search.
  *
- * Uses `env.ASK_SEARCH.chatCompletions` (see wrangler.toml [[ai_search]]).
+ * Prefer `env.ASK_SEARCH.chatCompletions` (wrangler.toml [[ai_search]]).
+ * If Pages has not applied that binding yet, fall back to legacy
+ * `env.AI.autorag("stevenjhu-ai-search").aiSearch` (Workers AI binding).
  *
  * Body: { query?: string, messages?: {role,content}[], stream?: boolean }
  * - Prefer messages (recent turns); query alone still works.
  * - stream=false (default): JSON { answer, sources }
- * - stream=true: text/event-stream (chunks event then deltas)
+ * - stream=true: text/event-stream
  *
- * Deploy notes:
- * - Dashboard → AI Search → stevenjhu-ai-search: enable keyword + vector (hybrid)
- * - Wait for R2 re-index after npm run sync:rag:upload
- * - Pages must bind ASK_SEARCH to instance stevenjhu-ai-search
+ * Bindings are managed via wrangler.toml (Dashboard cannot edit them).
+ * Redeploy after changing [[ai_search]] / [ai].
  */
 
 interface Env {
-  ASK_SEARCH: AiSearchInstance;
+  ASK_SEARCH?: AiSearchInstance;
+  AI?: Ai;
 }
 
+const AI_SEARCH_INSTANCE = 'stevenjhu-ai-search';
 const MAX_QUERY_LENGTH = 1000;
 const MAX_MESSAGES = 12;
 const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
@@ -56,13 +58,9 @@ function json(data: unknown, status = 200): Response {
 }
 
 function folderPrefixFilter(prefix: string): Record<string, unknown> {
-  // Matches folder and nested paths: folder >= "about/" and < "about0"
   return { folder: { $gte: prefix, $lt: `${prefix.slice(0, -1)}0` } };
 }
 
-/**
- * Rule-based intent → folder filter. Uncertain → no filter (prefer recall).
- */
 function retrievalFiltersFor(query: string): Record<string, unknown> | undefined {
   const q = query.trim();
   if (!q) return undefined;
@@ -74,7 +72,6 @@ function retrievalFiltersFor(query: string): Record<string, unknown> | undefined
   const portfolioList =
     /有哪些作品|有哪些證照|作品集|證照有哪些|portfolio|看作品|看證照|作品在哪|證照在哪/i.test(q);
 
-  // Specific project questions should not be locked to about/
   const specificProject =
     /送報件|升級|資料修正|vitawile|菲塔薇樂|租管|發信|email\s*api|astro|az-?900|az-?104|aws\s*saa|做了什麼|成效|角色/i.test(
       q,
@@ -85,11 +82,36 @@ function retrievalFiltersFor(query: string): Record<string, unknown> | undefined
   }
 
   if (portfolioList && !specificProject) {
-    return {
-      folder: { $in: ['faq/', 'projects/'] },
-    };
+    return { folder: { $in: ['faq/', 'projects/'] } };
   }
 
+  return undefined;
+}
+
+/** Legacy AutoRAG filter shape (eq / or). */
+function legacyFiltersFor(query: string): Record<string, unknown> | undefined {
+  const modern = retrievalFiltersFor(query);
+  if (!modern) return undefined;
+
+  const folder = modern.folder as Record<string, unknown> | string | undefined;
+  if (typeof folder === 'string') {
+    return { type: 'eq', key: 'folder', value: folder };
+  }
+  if (folder && typeof folder === 'object' && Array.isArray(folder.$in)) {
+    return {
+      type: 'or',
+      filters: (folder.$in as string[]).map((value) => ({
+        type: 'eq',
+        key: 'folder',
+        value,
+      })),
+    };
+  }
+  if (folder && typeof folder === 'object' && typeof folder.$gte === 'string') {
+    // about/ prefix → exact folder about/ (files live directly there)
+    const prefix = String(folder.$gte);
+    return { type: 'eq', key: 'folder', value: prefix };
+  }
   return undefined;
 }
 
@@ -98,9 +120,9 @@ function inferSourceUrl(key: string | null | undefined, text: string): string | 
   if (yamlUrl) return yamlUrl[1];
 
   const k = (key ?? '').replace(/\\/g, '/');
-  if (/(^|\/)about\//i.test(k)) return '/about';
-  if (/(^|\/)faq\//i.test(k)) return '/projects';
-  if (/(^|\/)catalog\/site\.md$/i.test(k)) return '/';
+  if (/(^|\/)about(\/|\.md$)/i.test(k)) return '/about';
+  if (/(^|\/)faq(\/|\.md$)/i.test(k)) return '/projects';
+  if (/(^|\/)catalog\/site\.md$/i.test(k) || /(^|\/)catalog\.md$/i.test(k)) return '/';
   if (/(^|\/)catalog\/projects\.md$/i.test(k) || /(^|\/)projects\//i.test(k)) return '/projects';
   if (/(^|\/)catalog\/blog\.md$/i.test(k)) return '/blog';
   if (/(^|\/)catalog\/series\.md$/i.test(k)) return '/series';
@@ -109,7 +131,7 @@ function inferSourceUrl(key: string | null | undefined, text: string): string | 
   return null;
 }
 
-function mapSources(chunks: AiSearchChunk[] | undefined) {
+function mapChunkSources(chunks: AiSearchChunk[] | undefined) {
   if (!chunks?.length) return [];
   return chunks.map((item) => {
     const key = item.item?.key ?? null;
@@ -122,6 +144,30 @@ function mapSources(chunks: AiSearchChunk[] | undefined) {
       key: url ?? key,
       metadata: {
         ...(item.item?.metadata ?? {}),
+        ...(url ? { url } : {}),
+        ...(key ? { filename: key } : {}),
+      },
+    };
+  });
+}
+
+function mapLegacySources(data: AutoRagSource[] | undefined) {
+  if (!data?.length) return [];
+  return data.map((item) => {
+    const text = item.content?.map((c) => c.text ?? '').join('\n') ?? '';
+    const key = item.filename ?? null;
+    const attrUrl = item.attributes?.url;
+    const url =
+      typeof attrUrl === 'string' && attrUrl.startsWith('/')
+        ? attrUrl
+        : inferSourceUrl(key, text);
+    return {
+      id: item.file_id ?? item.content?.[0]?.id ?? null,
+      score: item.score ?? null,
+      text: item.content?.[0]?.text ?? text,
+      key: url ?? key,
+      metadata: {
+        ...(item.attributes ?? {}),
         ...(url ? { url } : {}),
         ...(key ? { filename: key } : {}),
       },
@@ -180,7 +226,6 @@ function normalizeMessages(
     return { error: 'query or messages is required.' };
   }
 
-  // Keep last N turns (pairs), ensure ends with user
   let trimmed = out.slice(-MAX_MESSAGES);
   while (trimmed.length && trimmed[trimmed.length - 1].role !== 'user') {
     trimmed = trimmed.slice(0, -1);
@@ -194,6 +239,13 @@ function normalizeMessages(
     messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...trimmed],
     lastUserQuery,
   };
+}
+
+/** Compact dialogue for legacy AutoRAG single-query rewrite. */
+function legacySearchQuery(messages: AiSearchMessage[], lastUserQuery: string): string {
+  const turns = messages.filter((m) => m.role === 'user' || m.role === 'assistant').slice(-4);
+  if (turns.length <= 1) return lastUserQuery;
+  return turns.map((m) => `${m.role === 'user' ? '使用者' : '助理'}：${m.content}`).join('\n');
 }
 
 function buildAiSearchOptions(lastUserQuery: string): AiSearchOptions {
@@ -220,21 +272,107 @@ function buildAiSearchOptions(lastUserQuery: string): AiSearchOptions {
   };
 }
 
-function toAskJson(result: AiSearchChatCompletionResult) {
+function toAskJsonFromChat(result: AiSearchChatCompletionResult) {
   return json({
     answer: result.choices?.[0]?.message?.content ?? '',
-    sources: mapSources(result.chunks),
+    sources: mapChunkSources(result.chunks),
     search_query: result.search_query ?? null,
+    mode: 'ai_search',
   });
 }
 
+function toAskJsonFromLegacy(result: AutoRagAiSearchResult) {
+  return json({
+    answer: result.response ?? result.choices?.[0]?.message?.content ?? '',
+    sources: mapLegacySources(result.data),
+    search_query: result.search_query ?? null,
+    mode: 'autorag',
+  });
+}
+
+function streamResponse(sse: Response | ReadableStream): Response {
+  if (isResponseLike(sse)) {
+    const headers = new Headers(sse.headers);
+    if (!headers.get('content-type')?.includes('event-stream')) {
+      headers.set('Content-Type', 'text/event-stream; charset=utf-8');
+    }
+    headers.set('Cache-Control', 'no-cache');
+    return new Response(sse.body, { status: sse.status, headers });
+  }
+  return new Response(sse, {
+    headers: {
+      'Content-Type': 'text/event-stream; charset=utf-8',
+      'Cache-Control': 'no-cache',
+    },
+  });
+}
+
+async function viaAskSearch(
+  ask: AiSearchInstance,
+  messages: AiSearchMessage[],
+  lastUserQuery: string,
+  stream: boolean,
+): Promise<Response> {
+  const params = {
+    messages,
+    model: MODEL,
+    ai_search_options: buildAiSearchOptions(lastUserQuery),
+  };
+
+  if (stream) {
+    const sse = await ask.chatCompletions({ ...params, stream: true });
+    if (isResponseLike(sse) || isReadableStream(sse)) return streamResponse(sse);
+    return toAskJsonFromChat(sse as AiSearchChatCompletionResult);
+  }
+
+  const result = await ask.chatCompletions({ ...params, stream: false });
+  if (isResponseLike(result)) return result;
+  return toAskJsonFromChat(result);
+}
+
+async function viaAutoRag(
+  ai: Ai,
+  messages: AiSearchMessage[],
+  lastUserQuery: string,
+  stream: boolean,
+): Promise<Response> {
+  const rag = ai.autorag(AI_SEARCH_INSTANCE);
+  const filters = legacyFiltersFor(lastUserQuery);
+  const params = {
+    query: legacySearchQuery(messages, lastUserQuery),
+    system_prompt: SYSTEM_PROMPT,
+    model: MODEL,
+    rewrite_query: true,
+    max_num_results: 6,
+    ranking_options: { score_threshold: 0.3 },
+    reranking: {
+      enabled: true,
+      model: '@cf/baai/bge-reranker-base',
+    },
+    ...(filters ? { filters } : {}),
+  };
+
+  if (stream) {
+    const sse = await rag.aiSearch({ ...params, stream: true });
+    if (isResponseLike(sse) || isReadableStream(sse)) return streamResponse(sse);
+    return toAskJsonFromLegacy(sse as AutoRagAiSearchResult);
+  }
+
+  const result = await rag.aiSearch({ ...params, stream: false });
+  if (isResponseLike(result)) return result;
+  return toAskJsonFromLegacy(result);
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
-  const { ASK_SEARCH } = context.env;
-  if (!ASK_SEARCH?.chatCompletions) {
+  const { ASK_SEARCH, AI } = context.env;
+  const hasAskSearch = Boolean(ASK_SEARCH?.chatCompletions);
+  const hasAutoRag = Boolean(AI?.autorag);
+
+  if (!hasAskSearch && !hasAutoRag) {
     return json(
       {
         error:
-          'ASK_SEARCH binding is not configured. Check wrangler.toml [[ai_search]] and Pages bindings.',
+          'Ask AI binding is not configured. wrangler.toml needs [[ai_search]] ASK_SEARCH and/or [ai] AI; redeploy Pages.',
       },
       500,
     );
@@ -260,43 +398,31 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   const stream = body.stream === true;
-  const ai_search_options = buildAiSearchOptions(normalized.lastUserQuery);
-  const params = {
-    messages: normalized.messages,
-    model: MODEL,
-    ai_search_options,
-  };
 
   try {
-    if (stream) {
-      const sse = await ASK_SEARCH.chatCompletions({ ...params, stream: true });
-      if (isResponseLike(sse)) {
-        const headers = new Headers(sse.headers);
-        if (!headers.get('content-type')?.includes('event-stream')) {
-          headers.set('Content-Type', 'text/event-stream; charset=utf-8');
-        }
-        headers.set('Cache-Control', 'no-cache');
-        return new Response(sse.body, { status: sse.status, headers });
-      }
-      if (isReadableStream(sse)) {
-        return new Response(sse, {
-          headers: {
-            'Content-Type': 'text/event-stream; charset=utf-8',
-            'Cache-Control': 'no-cache',
-          },
-        });
-      }
-      return toAskJson(sse as AiSearchChatCompletionResult);
+    if (hasAskSearch && ASK_SEARCH) {
+      return await viaAskSearch(
+        ASK_SEARCH,
+        normalized.messages,
+        normalized.lastUserQuery,
+        stream,
+      );
     }
-
-    const result = await ASK_SEARCH.chatCompletions({ ...params, stream: false });
-    if (isResponseLike(result)) {
-      return result;
-    }
-    return toAskJson(result);
+    return await viaAutoRag(AI!, normalized.messages, normalized.lastUserQuery, stream);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'AI Search request failed.';
     console.error('[api/ask]', message);
+    // If new binding exists but fails oddly, try legacy once
+    if (hasAskSearch && hasAutoRag && AI) {
+      try {
+        console.warn('[api/ask] ASK_SEARCH failed; falling back to AI.autorag');
+        return await viaAutoRag(AI, normalized.messages, normalized.lastUserQuery, stream);
+      } catch (err2) {
+        const message2 = err2 instanceof Error ? err2.message : message;
+        console.error('[api/ask] fallback', message2);
+        return json({ error: message2 }, 502);
+      }
+    }
     return json({ error: message }, 502);
   }
 };

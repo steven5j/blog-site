@@ -655,7 +655,9 @@ const suggestions = [
     if (raw.includes('404')) return '暫時連不上 Ask AI，請稍後再試。';
     if (raw.includes('429')) return '提問太頻繁，請稍候再問。';
     if (raw.includes('502') || raw.includes('503')) return 'AI 服務忙碌中，請稍後再試。';
-    if (raw.includes('binding is not configured')) return 'Ask AI 尚未設定完成。';
+    if (raw.includes('binding is not configured') || raw.includes('Ask AI binding is not configured')) {
+      return 'Ask AI 尚未設定完成。';
+    }
     return '目前無法回答，請稍後再試。';
   }
 
