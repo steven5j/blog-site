@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 560" role="img" aria-label="模組化單體架構設計：單一部署單元與邏輯領域隔離">
+  <!-- Background -->
+  <rect width="1400" height="560" fill="#f8f9fa" rx="12" stroke="#e5e5e5" stroke-width="1.5"/>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Header title inside graphic -->
+    <text x="700" y="44" font-size="22" font-weight="800" fill="#2a2a2a" text-anchor="middle" letter-spacing="0.03em">模組化單體架構核心：實體單一部署 · 邏輯領域嚴格隔離</text>
+    <text x="700" y="70" font-size="13.5" fill="#6b6b6b" text-anchor="middle">對外提供公開介面合約，內部實作對外完全不可見；單一資料庫實例以 Schema 邏輯切分</text>
+
+    <!-- Main Container: Single Monolithic Process -->
+    <rect x="70" y="95" width="1260" height="315" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <!-- Top banner on container -->
+    <path d="M 70 107 Q 70 95 82 95 L 1318 95 Q 1330 95 1330 107 L 1330 135 L 70 135 Z" fill="#2563eb"/>
+    <text x="700" y="122" font-size="14.5" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.05em">模組化單體應用 (單一進程 / 單一二進位檔 / 一鍵本地 F5 啟動 / 單一 CI/CD 管線)</text>
+
+    <!-- Module 1: Auth Module -->
+    <g transform="translate(100, 155)">
+      <rect width="260" height="235" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect width="260" height="32" rx="8" fill="#1e293b"/>
+      <rect y="22" width="260" height="10" fill="#1e293b"/>
+      <text x="130" y="21" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">會員模組 (Auth Module)</text>
+
+      <!-- Public Contract -->
+      <rect x="15" y="42" width="230" height="52" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2"/>
+      <text x="25" y="60" font-size="11" font-weight="700" fill="#1e40af">公開契約 (Public Contracts)：</text>
+      <text x="25" y="78" font-size="11.5" font-weight="600" fill="#2563eb">IAuthModule · UserDto</text>
+
+      <!-- Internal Implementation -->
+      <rect x="15" y="104" width="230" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="25" y="124" font-size="11" font-weight="700" fill="#64748b">內部封裝 (Internal Implementation)：</text>
+      <text x="25" y="145" font-size="11" fill="#334155">· AuthService : IAuthModule</text>
+      <text x="25" y="165" font-size="11" fill="#334155">· UserAggregate (領域實體)</text>
+      <text x="25" y="185" font-size="11" fill="#334155">· AuthDbContext (內部資料庫上下文)</text>
+      <text x="25" y="205" font-size="10" font-weight="600" fill="#dc2626">※ 外部模組禁止跨過介面直接存取</text>
+    </g>
+
+    <!-- In-process arrow from Order to Auth -->
+    <path d="M 400 220 L 360 220" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <text x="380" y="210" font-size="10" font-weight="700" fill="#059669" text-anchor="middle">介面調用 (ns)</text>
+
+    <!-- Module 2: Order Module (Center) -->
+    <g transform="translate(400, 155)">
+      <rect width="280" height="235" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect width="280" height="32" rx="8" fill="#1e293b"/>
+      <rect y="22" width="280" height="10" fill="#1e293b"/>
+      <text x="140" y="21" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">訂單模組 (Orders Module)</text>
+
+      <!-- Public Contract -->
+      <rect x="15" y="42" width="250" height="52" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2"/>
+      <text x="25" y="60" font-size="11" font-weight="700" fill="#1e40af">公開契約 (Public Contracts)：</text>
+      <text x="25" y="78" font-size="11.5" font-weight="600" fill="#2563eb">IOrderModule · OrderPlacedEvent</text>
+
+      <!-- Internal Implementation -->
+      <rect x="15" y="104" width="250" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="25" y="124" font-size="11" font-weight="700" fill="#64748b">內部封裝 (Internal Implementation)：</text>
+      <text x="25" y="145" font-size="11" fill="#334155">· CreateOrderCommandHandler</text>
+      <text x="25" y="165" font-size="11" fill="#334155">· OrderAggregate · OrderItem</text>
+      <text x="25" y="185" font-size="11" fill="#334155">· OrderDbContext (內部持久化)</text>
+      <text x="25" y="205" font-size="10" font-weight="600" fill="#059669">※ 透過依賴注入獲取其他模組介面</text>
+    </g>
+
+    <!-- In-process arrow from Order to Stock -->
+    <path d="M 680 220 L 720 220" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <text x="700" y="210" font-size="10" font-weight="700" fill="#059669" text-anchor="middle">介面調用 (ns)</text>
+
+    <!-- Module 3: Stock Module -->
+    <g transform="translate(720, 155)">
+      <rect width="260" height="235" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect width="260" height="32" rx="8" fill="#1e293b"/>
+      <rect y="22" width="260" height="10" fill="#1e293b"/>
+      <text x="130" y="21" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">庫存模組 (Stock Module)</text>
+
+      <!-- Public Contract -->
+      <rect x="15" y="42" width="230" height="52" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2"/>
+      <text x="25" y="60" font-size="11" font-weight="700" fill="#1e40af">公開契約 (Public Contracts)：</text>
+      <text x="25" y="78" font-size="11.5" font-weight="600" fill="#2563eb">IStockModule · ReserveItemCmd</text>
+
+      <!-- Internal Implementation -->
+      <rect x="15" y="104" width="230" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="25" y="124" font-size="11" font-weight="700" fill="#64748b">內部封裝 (Internal Implementation)：</text>
+      <text x="25" y="145" font-size="11" fill="#334155">· StockService : IStockModule</text>
+      <text x="25" y="165" font-size="11" fill="#334155">· WarehouseEntity · StockItem</text>
+      <text x="25" y="185" font-size="11" fill="#334155">· StockDbContext</text>
+      <text x="25" y="205" font-size="10" font-weight="600" fill="#2563eb">※ 未來可一鍵抽離成獨立服務</text>
+    </g>
+
+    <!-- In-process arrow to Notification Module -->
+    <path d="M 980 220 L 1020 220" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+    <text x="1000" y="210" font-size="10" font-weight="700" fill="#7c3aed" text-anchor="middle">記憶體事件</text>
+
+    <!-- Module 4: Notification Module -->
+    <g transform="translate(1020, 155)">
+      <rect width="280" height="235" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect width="280" height="32" rx="8" fill="#1e293b"/>
+      <rect y="22" width="280" height="10" fill="#1e293b"/>
+      <text x="140" y="21" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">通知模組 (Notification)</text>
+
+      <!-- Public Contract -->
+      <rect x="15" y="42" width="250" height="52" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2"/>
+      <text x="25" y="60" font-size="11" font-weight="700" fill="#1e40af">公開契約 (Public Contracts)：</text>
+      <text x="25" y="78" font-size="11.5" font-weight="600" fill="#7c3aed">INotificationModule · EmailDto</text>
+
+      <!-- Internal Implementation -->
+      <rect x="15" y="104" width="250" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="25" y="124" font-size="11" font-weight="700" fill="#64748b">內部封裝 (Internal Implementation)：</text>
+      <text x="25" y="145" font-size="11" fill="#334155">· OrderPlacedEventHandler</text>
+      <text x="25" y="165" font-size="11" fill="#334155">· SmtpClient · SmsGateway</text>
+      <text x="25" y="185" font-size="11" fill="#334155">· In-Memory Queue / Channel</text>
+      <text x="25" y="205" font-size="10" font-weight="600" fill="#059669">※ 非同步解耦，不卡主業務流程</text>
+    </g>
+
+    <!-- Connector line to Database -->
+    <path d="M 700 410 L 700 445" stroke="#475569" stroke-width="2.5" marker-end="url(#arrow-dark)"/>
+    <text x="715" y="432" font-size="11" font-weight="700" fill="#475569">單一資料庫連線實例 (零分散式維運開銷)</text>
+
+    <!-- Database Section: Single Instance with Schema Isolation -->
+    <g transform="translate(180, 450)">
+      <rect width="1040" height="85" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.8"/>
+      <rect width="1040" height="26" rx="8" fill="#334155"/>
+      <rect y="16" width="1040" height="10" fill="#334155"/>
+      <text x="520" y="18" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">關聯式資料庫實例 (PostgreSQL / SQL Server) —— 邏輯 Schema 隔離規範 (嚴禁跨模組直接 SQL JOIN)</text>
+
+      <!-- Schema 1 -->
+      <rect x="30" y="36" width="220" height="38" rx="5" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+      <text x="140" y="52" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">auth_schema.*</text>
+      <text x="140" y="66" font-size="10" fill="#64748b" text-anchor="middle">users · roles · permissions</text>
+
+      <!-- Schema 2 -->
+      <rect x="280" y="36" width="220" height="38" rx="5" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+      <text x="390" y="52" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">order_schema.*</text>
+      <text x="390" y="66" font-size="10" fill="#64748b" text-anchor="middle">orders · order_items · payments</text>
+
+      <!-- Schema 3 -->
+      <rect x="530" y="36" width="220" height="38" rx="5" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+      <text x="640" y="52" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">stock_schema.*</text>
+      <text x="640" y="66" font-size="10" fill="#64748b" text-anchor="middle">inventory · warehouses · logs</text>
+
+      <!-- Schema 4 -->
+      <rect x="780" y="36" width="230" height="38" rx="5" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+      <text x="895" y="52" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">notify_schema.*</text>
+      <text x="895" y="66" font-size="10" fill="#64748b" text-anchor="middle">notification_logs · templates</text>
+    </g>
+
+    <!-- Marker Definitions -->
+    <defs>
+      <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 8 5 L 0 9 z" fill="#059669"/>
+      </marker>
+      <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 8 5 L 0 9 z" fill="#7c3aed"/>
+      </marker>
+      <marker id="arrow-dark" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569"/>
+      </marker>
+    </defs>
+  </g>
+</svg>

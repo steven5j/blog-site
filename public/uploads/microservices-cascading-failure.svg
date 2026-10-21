@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 580" role="img" aria-label="單體本地調用 vs 微服務跨網路級聯調用與雪崩連鎖比較">
+  <!-- Background -->
+  <rect width="1400" height="580" fill="#f8f9fa" rx="12" stroke="#e5e5e5" stroke-width="1.5"/>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Header title inside graphic -->
+    <text x="700" y="46" font-size="22" font-weight="800" fill="#2a2a2a" text-anchor="middle" letter-spacing="0.03em">微服務的隱形代價：進程內通訊 vs 跨網路級聯與雪崩效應</text>
+    <text x="700" y="72" font-size="13.5" fill="#6b6b6b" text-anchor="middle">奈秒級本地記憶體調用與 ACID 交易，對比跨網路 RPC 延遲、連鎖超時與分散式補償 (Saga)</text>
+
+    <!-- ==================== LEFT PANEL: 單體本地呼叫 ==================== -->
+    <g transform="translate(60, 100)">
+      <!-- Outer Card -->
+      <rect width="580" height="430" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+      <!-- Header Bar -->
+      <path d="M 0 10 Q 0 0 10 0 L 570 0 Q 580 0 580 10 L 580 44 L 0 44 Z" fill="#2a2a2a"/>
+      <text x="290" y="28" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">傳統 / 模組化單體：記憶體內直接調用 (In-Process)</text>
+
+      <!-- App Process Boundary -->
+      <rect x="25" y="65" width="530" height="230" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="40" y="88" font-size="12" font-weight="700" fill="#475569">單一作業系統進程 (App Process Boundary)</text>
+
+      <!-- Controller / Entry -->
+      <rect x="45" y="110" width="130" height="60" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="110" y="135" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle">訂單控制器</text>
+      <text x="110" y="153" font-size="11" fill="#64748b" text-anchor="middle">OrderController</text>
+
+      <!-- Arrow 1: in-process call -->
+      <path d="M 175 140 L 225 140" stroke="#059669" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+      <text x="200" y="132" font-size="10.5" font-weight="700" fill="#059669" text-anchor="middle">~15 ns</text>
+
+      <!-- Stock Service -->
+      <rect x="230" y="105" width="140" height="70" rx="6" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+      <text x="300" y="132" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle">庫存模組</text>
+      <text x="300" y="150" font-size="11" fill="#64748b" text-anchor="middle">StockModule</text>
+      <text x="300" y="166" font-size="10" fill="#059669" text-anchor="middle">C# 介面指針調用</text>
+
+      <!-- Arrow 2: in-process call to payment -->
+      <path d="M 370 140 L 415 140" stroke="#059669" stroke-width="2.5"/>
+      <text x="392" y="132" font-size="10.5" font-weight="700" fill="#059669" text-anchor="middle">~15 ns</text>
+
+      <!-- Payment Service -->
+      <rect x="420" y="105" width="120" height="70" rx="6" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+      <text x="480" y="132" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle">金流帳務</text>
+      <text x="480" y="150" font-size="11" fill="#64748b" text-anchor="middle">BillingModule</text>
+      <text x="480" y="166" font-size="10" fill="#059669" text-anchor="middle">本地執行緒共享</text>
+
+      <!-- Transaction Bracket -->
+      <path d="M 50 195 L 50 205 L 530 205 L 530 195" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="290" y="222" font-size="11.5" font-weight="700" fill="#2563eb" text-anchor="middle">本地資料庫原生 ACID 交易 (BEGIN TRANSACTION ... COMMIT)</text>
+      <text x="290" y="238" font-size="10.5" fill="#64748b" text-anchor="middle">任一步驟出錯立即回滾，強一致性保證，零帳面差錯</text>
+
+      <!-- Arrow to DB -->
+      <path d="M 290 248 L 290 310" stroke="#2a2a2a" stroke-width="2" marker-end="url(#arrow-dark)"/>
+
+      <!-- DB Box -->
+      <rect x="180" y="315" width="220" height="50" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="290" y="337" font-size="12.5" font-weight="700" fill="#1e293b" text-anchor="middle">關聯式資料庫 (PostgreSQL / SQL Server)</text>
+      <text x="290" y="353" font-size="10.5" fill="#475569" text-anchor="middle">單一資料庫實例 · 原生 Row Lock 與強一致</text>
+
+      <!-- Summary Pill -->
+      <rect x="25" y="378" width="530" height="38" rx="6" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1"/>
+      <text x="290" y="402" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">優勢：極速通訊 (奈秒級)、單機事務完整、本地 F5 一鍵除錯</text>
+    </g>
+
+    <!-- ==================== RIGHT PANEL: 微服務跨網呼叫與雪崩 ==================== -->
+    <g transform="translate(760, 100)">
+      <!-- Outer Card -->
+      <rect width="580" height="430" rx="10" fill="#ffffff" stroke="#fecaca" stroke-width="2"/>
+      <!-- Header Bar -->
+      <path d="M 0 10 Q 0 0 10 0 L 570 0 Q 580 0 580 10 L 580 44 L 0 44 Z" fill="#c13b3b"/>
+      <text x="290" y="28" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">微服務架構：跨網路級聯與連鎖雪崩風險</text>
+
+      <!-- Gateway -->
+      <rect x="25" y="65" width="105" height="55" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+      <text x="77" y="88" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">API Gateway</text>
+      <text x="77" y="105" font-size="10" fill="#64748b" text-anchor="middle">路由 / 驗證</text>
+
+      <!-- Arrow Gateway -> Order -->
+      <path d="M 130 92 L 180 92" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-amber)"/>
+      <text x="155" y="84" font-size="9.5" font-weight="700" fill="#d97706" text-anchor="middle">HTTP 20ms</text>
+
+      <!-- Order Microservice -->
+      <rect x="185" y="65" width="115" height="55" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="242" y="88" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">訂單微服務</text>
+      <text x="242" y="105" font-size="10" fill="#64748b" text-anchor="middle">Order Pod (8080)</text>
+
+      <!-- Arrow Order -> Stock -->
+      <path d="M 300 82 L 365 72" stroke="#059669" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+      <text x="330" y="68" font-size="9.5" font-weight="700" fill="#059669" text-anchor="middle">gRPC 15ms</text>
+
+      <!-- Stock Microservice -->
+      <rect x="370" y="55" width="185" height="42" rx="6" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+      <text x="462" y="74" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">庫存微服務 (Pod A)</text>
+      <text x="462" y="89" font-size="9.5" fill="#059669" text-anchor="middle">專屬庫存 DB · 正常回應</text>
+
+      <!-- Arrow Order -> Payment (CRASH/TIMEOUT) -->
+      <path d="M 300 102 L 365 125" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="4,2" marker-end="url(#arrow-red)"/>
+      <text x="332" y="128" font-size="9.5" font-weight="700" fill="#dc2626" text-anchor="middle">RPC 逾時!</text>
+
+      <!-- Payment Microservice (FAILED) -->
+      <rect x="370" y="108" width="185" height="52" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+      <text x="462" y="128" font-size="11.5" font-weight="800" fill="#b91c1c" text-anchor="middle">金流微服務 (Pod B 塞爆)</text>
+      <text x="462" y="146" font-size="9.5" font-weight="700" fill="#dc2626" text-anchor="middle">連線池耗盡 / 504 Gateway Timeout</text>
+
+      <!-- Cascading Blast Effect Box -->
+      <rect x="25" y="180" width="530" height="120" rx="8" fill="#fff1f2" stroke="#fda4af" stroke-width="1.5"/>
+      <text x="45" y="202" font-size="12" font-weight="800" fill="#be123c">連鎖雪崩效應 (Cascading Failure)：</text>
+      
+      <text x="45" y="224" font-size="11" fill="#475569">1. <tspan font-weight="700" fill="#1e293b">執行緒阻塞</tspan>：訂單服務等待金流回應，HTTP 連線佔用不放，造成訂單服務連線池跟著被耗盡。</text>
+      <text x="45" y="244" font-size="11" fill="#475569">2. <tspan font-weight="700" fill="#1e293b">重試風暴 (Retry Storm)</tspan>：客戶端與 API Gateway 重複重試請求，加劇下游金流節點崩潰。</text>
+      <text x="45" y="264" font-size="11" fill="#475569">3. <tspan font-weight="700" fill="#1e293b">資料不一致 (Saga 補償代價)</tspan>：庫存已扣除但金流超時，必須實作複雜補償交易回滾庫存。</text>
+      <text x="45" y="284" font-size="11" fill="#be123c">4. 防禦必須額外建置：斷路器 (Circuit Breaker)、隔艙 (Bulkhead)、死信隊列 (DLQ)。</text>
+
+      <!-- Distributed DBs -->
+      <g transform="translate(140, 315)">
+        <rect x="0" y="0" width="130" height="48" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+        <text x="65" y="20" font-size="11" font-weight="700" fill="#1e293b" text-anchor="middle">訂單資料庫</text>
+        <text x="65" y="36" font-size="9.5" fill="#64748b" text-anchor="middle">DB per Service</text>
+
+        <rect x="150" y="0" width="130" height="48" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+        <text x="215" y="20" font-size="11" font-weight="700" fill="#1e293b" text-anchor="middle">金流資料庫</text>
+        <text x="215" y="36" font-size="9.5" fill="#dc2626" text-anchor="middle">跨網無本地事務</text>
+      </g>
+
+      <!-- Summary Pill -->
+      <rect x="25" y="378" width="530" height="38" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+      <text x="290" y="402" font-size="12" font-weight="700" fill="#b91c1c" text-anchor="middle">代價：網路延遲累積 (毫秒級)、Saga/Outbox 補償代價高、維運觀測複雜</text>
+    </g>
+
+    <!-- Marker Definitions -->
+    <defs>
+      <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 8 5 L 0 9 z" fill="#059669"/>
+      </marker>
+      <marker id="arrow-dark" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 8 5 L 0 9 z" fill="#2a2a2a"/>
+      </marker>
+      <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 8 5 L 0 9 z" fill="#d97706"/>
+      </marker>
+      <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 8 5 L 0 9 z" fill="#dc2626"/>
+      </marker>
+    </defs>
+  </g>
+</svg>

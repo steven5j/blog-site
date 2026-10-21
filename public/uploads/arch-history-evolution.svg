@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 520" role="img" aria-label="軟體架構四階段歷史演進歷程">
+  <!-- Background -->
+  <rect width="1600" height="520" fill="#f8f9fa" rx="12" stroke="#e5e5e5" stroke-width="1.5"/>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Header title inside graphic -->
+    <text x="800" y="48" font-size="22" font-weight="800" fill="#2a2a2a" text-anchor="middle" letter-spacing="0.05em">軟體架構四階段歷史演進：從巨石、解耦狂熱到理性共識</text>
+    <text x="800" y="74" font-size="13.5" fill="#6b6b6b" text-anchor="middle">每一步演進都是為了解決前一代的痛點，卻也引入了新的架構取捨</text>
+
+    <!-- Connecting Timeline Track -->
+    <line x1="120" y1="120" x2="1480" y2="120" stroke="#d5d5d5" stroke-width="4" stroke-linecap="round"/>
+    <!-- Active gradient/colored bar on timeline -->
+    <line x1="120" y1="120" x2="1480" y2="120" stroke="#c13b3b" stroke-width="4" stroke-dasharray="16, 8" stroke-linecap="round"/>
+
+    <!-- ==================== Milestone 1: 傳統單體 ==================== -->
+    <g transform="translate(100, 120)">
+      <!-- Timeline Node Circle -->
+      <circle cx="150" cy="0" r="14" fill="#2a2a2a" stroke="#ffffff" stroke-width="3"/>
+      <circle cx="150" cy="0" r="6" fill="#ffffff"/>
+
+      <!-- Card -->
+      <rect x="0" y="30" width="300" height="310" rx="10" fill="#ffffff" stroke="#e5e5e5" stroke-width="2"/>
+      <rect x="0" y="30" width="300" height="42" rx="10" fill="#2a2a2a"/>
+      <rect x="0" y="62" width="300" height="10" fill="#2a2a2a"/>
+      
+      <text x="150" y="56" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">階段一 · 1990s - 2000s</text>
+      <text x="150" y="102" font-size="17" font-weight="800" fill="#c13b3b" text-anchor="middle">傳統單體架構 (Monolith)</text>
+
+      <g transform="translate(20, 125)">
+        <text x="0" y="15" font-size="12.5" font-weight="700" fill="#2a2a2a">代表技術：</text>
+        <text x="70" y="15" font-size="12" fill="#555555">MVC、LAMP、.NET DLL、WAR</text>
+
+        <text x="0" y="42" font-size="12.5" font-weight="700" fill="#2a2a2a">架構特點：</text>
+        <text x="0" y="62" font-size="12" fill="#555555">· 單一進程、單一部署單元</text>
+        <text x="0" y="82" font-size="12" fill="#555555">· 資料庫原生 ACID 強一致性</text>
+        <text x="0" y="102" font-size="12" fill="#555555">· 本地 F5 即刻啟動偵錯</text>
+
+        <!-- Pros/Cons pill -->
+        <rect x="0" y="125" width="260" height="60" rx="6" fill="#fff5f5" stroke="#ffcdd2" stroke-width="1"/>
+        <text x="10" y="148" font-size="11.5" font-weight="700" fill="#c13b3b">痛點 (引發下一代變革)：</text>
+        <text x="10" y="168" font-size="11" fill="#666666">代碼庫腐化成巨石，大規模團隊協作衝突</text>
+      </g>
+    </g>
+
+    <!-- ==================== Milestone 2: SOA ==================== -->
+    <g transform="translate(460, 120)">
+      <!-- Timeline Node Circle -->
+      <circle cx="150" cy="0" r="14" fill="#2a2a2a" stroke="#ffffff" stroke-width="3"/>
+      <circle cx="150" cy="0" r="6" fill="#ffffff"/>
+
+      <!-- Card -->
+      <rect x="0" y="30" width="300" height="310" rx="10" fill="#ffffff" stroke="#e5e5e5" stroke-width="2"/>
+      <rect x="0" y="30" width="300" height="42" rx="10" fill="#2a2a2a"/>
+      <rect x="0" y="62" width="300" height="10" fill="#2a2a2a"/>
+
+      <text x="150" y="56" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">階段二 · 2000s - 2010s</text>
+      <text x="150" y="102" font-size="17" font-weight="800" fill="#2a2a2a" text-anchor="middle">面向服務架構 (SOA)</text>
+
+      <g transform="translate(20, 125)">
+        <text x="0" y="15" font-size="12.5" font-weight="700" fill="#2a2a2a">代表技術：</text>
+        <text x="70" y="15" font-size="12" fill="#555555">ESB 匯流排、SOAP、WSDL、XML</text>
+
+        <text x="0" y="42" font-size="12.5" font-weight="700" fill="#2a2a2a">架構特點：</text>
+        <text x="0" y="62" font-size="12" fill="#555555">· 企業級多系統協議轉換</text>
+        <text x="0" y="82" font-size="12" fill="#555555">· Smart pipes, dumb endpoints</text>
+        <text x="0" y="102" font-size="12" fill="#555555">· 透過中央總線進行業務編排</text>
+
+        <!-- Pros/Cons pill -->
+        <rect x="0" y="125" width="260" height="60" rx="6" fill="#fff5f5" stroke="#ffcdd2" stroke-width="1"/>
+        <text x="10" y="148" font-size="11.5" font-weight="700" fill="#c13b3b">痛點 (引發下一代變革)：</text>
+        <text x="10" y="168" font-size="11" fill="#666666">ESB 淪為全公司最沉重、最脆弱的巨石</text>
+      </g>
+    </g>
+
+    <!-- ==================== Milestone 3: 微服務狂潮 ==================== -->
+    <g transform="translate(820, 120)">
+      <!-- Timeline Node Circle -->
+      <circle cx="150" cy="0" r="14" fill="#c13b3b" stroke="#ffffff" stroke-width="3"/>
+      <circle cx="150" cy="0" r="6" fill="#ffffff"/>
+
+      <!-- Card -->
+      <rect x="0" y="30" width="300" height="310" rx="10" fill="#ffffff" stroke="#c13b3b" stroke-width="2"/>
+      <rect x="0" y="30" width="300" height="42" rx="10" fill="#c13b3b"/>
+      <rect x="0" y="62" width="300" height="10" fill="#c13b3b"/>
+
+      <text x="150" y="56" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">階段三 · 2011 - 2019</text>
+      <text x="150" y="102" font-size="17" font-weight="800" fill="#c13b3b" text-anchor="middle">微服務狂潮 (Microservices)</text>
+
+      <g transform="translate(20, 125)">
+        <text x="0" y="15" font-size="12.5" font-weight="700" fill="#2a2a2a">代表技術：</text>
+        <text x="70" y="15" font-size="12" fill="#555555">Docker、Kubernetes、Spring Cloud</text>
+
+        <text x="0" y="42" font-size="12.5" font-weight="700" fill="#2a2a2a">架構特點：</text>
+        <text x="0" y="62" font-size="12" fill="#555555">· 團隊自治、獨立部署與擴充</text>
+        <text x="0" y="82" font-size="12" fill="#555555">· Database-per-service 專屬庫</text>
+        <text x="0" y="102" font-size="12" fill="#555555">· Smart endpoints, dumb pipes</text>
+
+        <!-- Pros/Cons pill -->
+        <rect x="0" y="125" width="260" height="60" rx="6" fill="#fff5f5" stroke="#ffcdd2" stroke-width="1"/>
+        <text x="10" y="148" font-size="11.5" font-weight="700" fill="#c13b3b">痛點 (引發下一代變革)：</text>
+        <text x="10" y="168" font-size="11" fill="#666666">高昂微服務稅：分散式事務、雪崩、維運黑洞</text>
+      </g>
+    </g>
+
+    <!-- ==================== Milestone 4: 現代模組化單體與理性共識 ==================== -->
+    <g transform="translate(1180, 120)">
+      <!-- Timeline Node Circle -->
+      <circle cx="150" cy="0" r="14" fill="#2e7d32" stroke="#ffffff" stroke-width="3"/>
+      <circle cx="150" cy="0" r="6" fill="#ffffff"/>
+
+      <!-- Card -->
+      <rect x="0" y="30" width="300" height="310" rx="10" fill="#ffffff" stroke="#2e7d32" stroke-width="2"/>
+      <rect x="0" y="30" width="300" height="42" rx="10" fill="#2e7d32"/>
+      <rect x="0" y="62" width="300" height="10" fill="#2e7d32"/>
+
+      <text x="150" y="56" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">階段四 · 2020s 至今</text>
+      <text x="150" y="102" font-size="17" font-weight="800" fill="#2e7d32" text-anchor="middle">模組化單體與務實混合態</text>
+
+      <g transform="translate(20, 125)">
+        <text x="0" y="15" font-size="12.5" font-weight="700" fill="#2a2a2a">代表思想：</text>
+        <text x="70" y="15" font-size="12" fill="#555555">Modular Monolith、FinOps、下雲</text>
+
+        <text x="0" y="42" font-size="12.5" font-weight="700" fill="#2a2a2a">架構特點：</text>
+        <text x="0" y="62" font-size="12" fill="#555555">· 物理單體部署，邏輯微服務邊界</text>
+        <text x="0" y="82" font-size="12" fill="#555555">· 核心單體 + 邊緣非同步 Worker</text>
+        <text x="0" y="102" font-size="12" fill="#555555">· 零跨網延遲，享有高開發者體驗</text>
+
+        <!-- Pros/Cons pill -->
+        <rect x="0" y="125" width="260" height="60" rx="6" fill="#f1f8e9" stroke="#c8e6c9" stroke-width="1"/>
+        <text x="10" y="148" font-size="11.5" font-weight="700" fill="#2e7d32">當前理性共識：</text>
+        <text x="10" y="168" font-size="11" fill="#444444">先從模組化單體起步，有真痛點才剝離服務</text>
+      </g>
+    </g>
+  </g>
+</svg>

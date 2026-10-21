@@ -1,16 +1,47 @@
 ---
 interface Props {
   title?: string;
+  type?: 'info' | 'warning' | 'danger' | 'success' | 'tip';
 }
 
-const { title = '提示' } = Astro.props;
+const { title = '提示', type = 'info' } = Astro.props;
+
+const colorMap = {
+  info: {
+    border: 'border-teal/30',
+    bg: 'bg-teal/5',
+    title: 'text-teal',
+  },
+  warning: {
+    border: 'border-amber-600/30',
+    bg: 'bg-amber-500/8',
+    title: 'text-amber-800',
+  },
+  danger: {
+    border: 'border-rose-600/30',
+    bg: 'bg-rose-500/8',
+    title: 'text-rose-800',
+  },
+  success: {
+    border: 'border-emerald-600/30',
+    bg: 'bg-emerald-500/8',
+    title: 'text-emerald-800',
+  },
+  tip: {
+    border: 'border-sky-600/30',
+    bg: 'bg-sky-500/8',
+    title: 'text-sky-800',
+  },
+};
+
+const current = colorMap[type] || colorMap.info;
 ---
 
 <aside
-  class="my-8 rounded-lg border border-teal/30 bg-teal/5 px-5 py-4 text-base not-italic"
+  class={`my-8 rounded-lg border ${current.border} ${current.bg} px-5 py-4 text-base not-italic`}
   role="note"
 >
-  <p class="mb-2 text-sm font-semibold tracking-wide text-teal">{title}</p>
+  <p class={`mb-2 text-sm font-semibold tracking-wide ${current.title}`}>{title}</p>
   <div class="text-mist [&_p]:m-0">
     <slot />
   </div>
