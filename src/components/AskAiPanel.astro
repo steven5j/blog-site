@@ -439,6 +439,7 @@ const suggestions = [
   type AskJsonResponse = {
     answer?: string;
     sources?: AskSource[];
+    low_relevance?: boolean;
     error?: string;
   };
 
@@ -615,36 +616,47 @@ const suggestions = [
     if (href && PATH_LABELS[href]) return PATH_LABELS[href];
     const meta = source.metadata;
     if (meta && typeof meta.title === 'string' && meta.title.trim()) return meta.title;
-    if (href) return href;
+    if (href) return pathLabel(href);
     if (source.key) return source.key.replace(/^https?:\/\/stevenjhu\.com/, '');
     return '相關頁面';
+  }
+
+  function isValidSource(source: AskSource): boolean {
+    const href = sourceHref(source);
+    if (!href) return false;
+    const label = sourceLabel(source).trim();
+    if (!label || label === '相關頁面') return false;
+    return true;
   }
 
   function renderSources(sources: AskSource[], extraPaths: string[] = []): string {
     const chips: string[] = [];
     const seen = new Set<string>();
 
-    for (const source of sources.slice(0, 5)) {
-      const href = sourceHref(source);
+    // Filter valid sources and render up to 5
+    for (const source of sources) {
+      if (!isValidSource(source)) continue;
+      const href = sourceHref(source)!;
       const label = sourceLabel(source);
-      const key = href ?? label;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      if (href) {
-        chips.push(
-          `<a href="${escapeHtml(href)}" data-astro-prefetch>${escapeHtml(label)}</a>`,
-        );
-      }
+      if (seen.has(href)) continue;
+      seen.add(href);
+      chips.push(
+        `<a href="${escapeHtml(href)}" data-astro-prefetch title="${escapeHtml(label)}">${escapeHtml(label)}</a>`,
+      );
+      if (chips.length >= 5) break;
     }
 
+    // Add extra paths from answer text
     for (const path of extraPaths) {
       if (!isAllowedPath(path)) continue;
       const href = normalizePath(path);
       if (seen.has(href)) continue;
       seen.add(href);
+      const label = pathLabel(href);
       chips.push(
-        `<a href="${escapeHtml(href)}" data-astro-prefetch>${escapeHtml(pathLabel(href))}</a>`,
+        `<a href="${escapeHtml(href)}" data-astro-prefetch title="${escapeHtml(label)}">${escapeHtml(label)}</a>`,
       );
+      if (chips.length >= 5) break;
     }
 
     if (!chips.length) return '';
@@ -922,6 +934,7 @@ const suggestions = [
       const { row, bubble, col } = appendMessage('assistant', typingHtml);
       let answer = '';
       let sources: AskSource[] = [];
+      let lowRelevance = false;
 
       try {
         const res = await fetch('/api/ask', {
@@ -973,11 +986,13 @@ const suggestions = [
               });
             },
           );
+          // Stream mode: no low_relevance flag available in SSE
         } else {
           const data = (await res.json()) as AskJsonResponse;
           if (data.error) throw new Error(data.error);
           answer = data.answer ?? '';
           sources = data.sources ?? [];
+          lowRelevance = data.low_relevance ?? false;
         }
 
         paintAnswer(col, bubble, answer, sources);

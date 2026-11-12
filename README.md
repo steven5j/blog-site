@@ -150,12 +150,44 @@ Ask AI：`POST /api/ask` 優先使用 `[[ai_search]]` binding（`ASK_SEARCH` →
 
 此專案 **Bindings 由 `wrangler.toml` 管理**（Dashboard 顯示「透過 wrangler.toml 進行管理」時無法在 UI 新增）。改 binding 後必須 **commit + 重新部署**；部署後到 Settings → Bindings 確認是否出現 `ASK_SEARCH`。若只有 `AI`，Ask AI 仍可經 fallback 運作。
 
-### 驗收題（看 sources 的 key，不只看答案文案）
+### 黃金評估集
 
-| 問題 | 期望來源 |
-|------|----------|
-| 作者是誰／專長是什麼？ | `about/` |
-| 有哪些作品或證照？ | `faq/projects.md` 或 `projects/index.md`，連結 `/projects` |
-| 送報件系統升級專案做了什麼？ | `projects/report-system-upgrade.md`（不要 data-fix） |
-| 送報件資料修正輔助系統做了什麼？ | `projects/report-data-fix.md` |
-| 追問「擔任什麼角色？」 | 需對話 messages 才會對到同一專案 |
+檢入的評估資料集：`eval-golden-questions.json`（約 30 題，JSON 格式）。
+
+涵蓋範圍：
+- **身分與關於**：作者是誰、性別、專長、聯絡方式（應從 `about/` 檢索）
+- **作品集清單**：有哪些作品或證照（應返回 `faq/` 或 `projects/`，連結 `/projects`）
+- **單一專案細節**：送報件系統升級、送報件資料修正、Vitawile、租管、發信 API、Astro 重構
+- **易混淆陷阱**：送報件系統升級 vs 送報件資料修正（兩者絕不可混淆；升級是 Cobol→C#，資料修正是輔助工具）
+- **證照查詢**：AZ-104、AWS SAA、AZ-900
+- **系列與文章**：C# 系列、房地產系列、職涯系列、依賴注入文章
+- **低相關性拒絕**：離題問題（天氣、不存在的專案、捏造經歷）應拒絕並建議站內入口
+- **對話跟進**：「那這個專案用了什麼技術？」需前文 messages
+- **錯字容忍**：「難的還是女的」應理解為「男的還是女的」
+- **密碼保護內容**：應拒絕回答並說明需解鎖
+
+每題包含：
+- `question`：主要問法（繁體中文）
+- `variants`：自然變體與口語問法
+- `expectedIntent`：意圖標籤
+- `expectedSources`：期望檢索到的 `.rag/` 資料夾或檔案
+- `mustInclude` / `mustNotInclude`：答案文字要求（避免捏造、混淆）
+- `notes`：驗收重點與陷阱說明
+
+**使用方式**：
+1. 測試時依序問每個 `question`（或抽樣變體）
+2. 驗證 API 返回的 `sources[].key` 是否符合 `expectedSources`（檢查路徑前綴，不只看答案文案）
+3. 檢查答案是否包含 `mustInclude`、不包含 `mustNotInclude`
+4. 確認引用連結格式正確（Markdown `[文字](路徑)`，非裸露「來源：」附錄）
+5. 低相關性問題應觸發拒絕，並提供站內入口連結（`/`、`/blog`、`/projects`、`/series`、`/about`）
+
+**快速驗收題（看 sources 的 key，不只看答案文案）**：
+
+| 問題 | 期望來源 | 關鍵檢查 |
+|------|----------|----------|
+| 作者是誰／專長是什麼？ | `about/` | 軟體工程師，不是 AI 專家 |
+| 有哪些作品或證照？ | `faq/projects.md` 或 `projects/index.md` | 連結 `/projects`，不是 `/about/works` |
+| 送報件系統升級專案做了什麼？ | `projects/report-system-upgrade.md` | Cobol→C#、20 餘險種；不混淆資料修正 |
+| 送報件資料修正輔助系統做了什麼？ | `projects/report-data-fix.md` | 千萬筆修正預覽；不混淆系統升級 |
+| 追問「擔任什麼角色？」 | 需對話 messages | 應對應前一輪提到的專案 |
+| 明天天氣如何？ | 應拒絕 | 找不到站內內容，建議入口連結 |

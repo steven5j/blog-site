@@ -27,6 +27,7 @@ const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const SYSTEM_PROMPT = [
   '你是 stevenjhu.com（Steven玄）的繁體中文助理。',
   '只根據檢索到的站內內容回答；找不到就直說不知道，不要捏造經歷、文章或網址。',
+  '**檢索結果相關性不足時（例如分數過低、內容明顯不對題），務必誠實回應「站內目前找不到相關內容」，並建議使用者瀏覽 [首頁](/)、[文章](/blog)、[作品](/projects)、[系列](/series)、[關於](/about)。不要勉強湊答案。**',
   '問作者、性別、專長、經歷、聯絡方式時，優先採用 about/ 或 type: about／faq 的內容，不要用單篇技術文概括他的職業。',
   '可用同義改寫已寫明的事實（例如「魔羯男」= 男性、用「他」稱呼）。使用者明顯錯字時依語意理解（例如「難的還是女的」=「男的還是女的」）。',
   '作者專長是軟體工程（C#／.NET、前後端、資料庫）、專案管理、商務與行銷、投資與房地產；不是資料科學家，也不是 AI／機器學習研究員。不要把個人網站作者說成 AI 專家。',
@@ -77,12 +78,44 @@ function retrievalFiltersFor(query: string): Record<string, unknown> | undefined
       q,
     );
 
+  // Series questions (without strong project/blog keywords)
+  const seriesIntent =
+    /系列|series|有哪些系列|系列文章|系列列表/i.test(q) &&
+    !/這篇|這則|文章內容|post|blog|怎麼寫|內容是什麼/i.test(q);
+
+  // Blog post questions (specific post or general blog browsing)
+  const blogPostIntent =
+    /這篇|這則|文章|post|blog|筆記|心得|教學|怎麼寫|內容|寫過|發過|有沒有寫|哪篇|哪些文|提到過|說過/i.test(
+      q,
+    ) && !/系列|series/i.test(q);
+
+  // Named series (stronger than general series intent)
+  const namedSeries = /c#|csharp|\.net|javascript|js|react|python|sql|mssql|android|frontend|前端|後端|架構|architecture|職涯|career|房地產|real.*estate|產業|industry|fintech|金融科技|mis|資管|作品集系列|portfolio/i.test(
+    q,
+  );
+
+  // Specific priority rules
   if (about && !specificProject && !portfolioList) {
     return folderPrefixFilter('about/');
   }
 
   if (portfolioList && !specificProject) {
     return { folder: { $in: ['faq/', 'projects/'] } };
+  }
+
+  // Series-scoped questions
+  if (seriesIntent && !specificProject && !blogPostIntent) {
+    return folderPrefixFilter('series/');
+  }
+
+  // Series + Blog combo for named series (e.g., "C# 系列有哪些文章")
+  if (namedSeries && (seriesIntent || blogPostIntent)) {
+    return { folder: { $in: ['series/', 'blog/'] } };
+  }
+
+  // Blog-only questions (avoid pulling project docs when asking about posts)
+  if (blogPostIntent && !specificProject && !portfolioList && !seriesIntent) {
+    return folderPrefixFilter('blog/');
   }
 
   return undefined;
@@ -108,7 +141,7 @@ function legacyFiltersFor(query: string): Record<string, unknown> | undefined {
     };
   }
   if (folder && typeof folder === 'object' && typeof folder.$gte === 'string') {
-    // about/ prefix → exact folder about/ (files live directly there)
+    // prefix filter (about/, blog/, series/) → exact folder match
     const prefix = String(folder.$gte);
     return { type: 'eq', key: 'folder', value: prefix };
   }
@@ -149,6 +182,42 @@ function mapChunkSources(chunks: AiSearchChunk[] | undefined) {
       },
     };
   });
+}
+
+/**
+ * Check if retrieval results meet minimum relevance threshold.
+ * Returns true if evidence is sufficient for answering.
+ */
+function hasAdequateRelevance(
+  chunks: AiSearchChunk[] | undefined,
+  sources: AutoRagSource[] | undefined,
+): boolean {
+  // If using AI Search chunks (modern binding)
+  if (chunks && chunks.length > 0) {
+    // Require at least one chunk with score >= 0.4, or top-2 avg >= 0.35
+    const topScores = chunks
+      .map((c) => c.score ?? 0)
+      .filter((s) => s > 0)
+      .slice(0, 2);
+    if (topScores.length === 0) return false;
+    const hasStrongMatch = topScores.some((s) => s >= 0.4);
+    const avgTop = topScores.reduce((a, b) => a + b, 0) / topScores.length;
+    return hasStrongMatch || avgTop >= 0.35;
+  }
+
+  // If using legacy AutoRAG sources
+  if (sources && sources.length > 0) {
+    const topScores = sources
+      .map((s) => s.score ?? 0)
+      .filter((s) => s > 0)
+      .slice(0, 2);
+    if (topScores.length === 0) return false;
+    const hasStrongMatch = topScores.some((s) => s >= 0.4);
+    const avgTop = topScores.reduce((a, b) => a + b, 0) / topScores.length;
+    return hasStrongMatch || avgTop >= 0.35;
+  }
+
+  return false;
 }
 
 function mapLegacySources(data: AutoRagSource[] | undefined) {
@@ -273,19 +342,25 @@ function buildAiSearchOptions(lastUserQuery: string): AiSearchOptions {
 }
 
 function toAskJsonFromChat(result: AiSearchChatCompletionResult) {
+  const chunks = result.chunks;
+  const adequate = hasAdequateRelevance(chunks, undefined);
   return json({
     answer: result.choices?.[0]?.message?.content ?? '',
-    sources: mapChunkSources(result.chunks),
+    sources: mapChunkSources(chunks),
     search_query: result.search_query ?? null,
+    low_relevance: !adequate,
     mode: 'ai_search',
   });
 }
 
 function toAskJsonFromLegacy(result: AutoRagAiSearchResult) {
+  const sources = result.data;
+  const adequate = hasAdequateRelevance(undefined, sources);
   return json({
     answer: result.response ?? result.choices?.[0]?.message?.content ?? '',
-    sources: mapLegacySources(result.data),
+    sources: mapLegacySources(sources),
     search_query: result.search_query ?? null,
+    low_relevance: !adequate,
     mode: 'autorag',
   });
 }

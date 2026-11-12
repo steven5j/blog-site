@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ask AI Golden Question Set",
+  "description": "Regression test fixture for stevenjhu.com Ask AI (RAG). Each question includes expected intent, source folders/paths, and answer requirements. Use to verify retrieval accuracy, refusal behavior, and citation correctness.",
+  "version": "1.0.0",
+  "questions": [
+    {
+      "id": "about-identity-1",
+      "question": "這個網站的作者是誰？",
+      "variants": ["網站作者是誰", "Steven玄是誰"],
+      "expectedIntent": "author identity",
+      "expectedSources": ["about/"],
+      "mustInclude": ["Steven玄", "Steven J. Hu"],
+      "mustNotInclude": ["AI 專家", "AI 研究", "資料科學家", "機器學習"],
+      "notes": "Should return author name and basic identity from about/profile.md"
+    },
+    {
+      "id": "about-gender-1",
+      "question": "作者是男的還是女的？",
+      "variants": ["作者性別", "男性還是女性", "難的還是女的"],
+      "expectedIntent": "author gender",
+      "expectedSources": ["about/"],
+      "mustInclude": ["男", "他"],
+      "mustNotInclude": [],
+      "notes": "Should confirm male, handle typo '難的'. Can mention '魔羯男' from profile."
+    },
+    {
+      "id": "about-specialty-1",
+      "question": "作者專長是什麼？",
+      "variants": ["Steven玄專長", "做什麼工作", "職稱是什麼"],
+      "expectedIntent": "author specialty",
+      "expectedSources": ["about/"],
+      "mustInclude": ["軟體工程", "C#", ".NET"],
+      "mustNotInclude": ["AI 專家", "資料科學家", "機器學習研究"],
+      "notes": "Should mention software engineer, NOT AI/ML researcher. Primary skills: C#/.NET, frontend, backend, DB, PM, business."
+    },
+    {
+      "id": "about-contact-1",
+      "question": "怎麼聯絡作者？",
+      "variants": ["聯絡方式", "聯繫作者", "作者 GitHub"],
+      "expectedIntent": "author contact",
+      "expectedSources": ["about/"],
+      "mustInclude": ["GitHub", "CakeResume"],
+      "mustNotInclude": [],
+      "notes": "Should include GitHub (steven5j), Facebook, CakeResume links from about/"
+    },
+    {
+      "id": "portfolio-list-1",
+      "question": "有哪些作品或證照可以看？",
+      "variants": ["作品集在哪", "證照有哪些", "看作品", "作品集"],
+      "expectedIntent": "portfolio list",
+      "expectedSources": ["faq/", "projects/"],
+      "mustInclude": ["/projects"],
+      "mustNotInclude": ["/about/works", "/about/certifications"],
+      "notes": "Should direct to /projects, list major works and certs from faq/projects.md or projects/index.md"
+    },
+    {
+      "id": "project-report-upgrade-1",
+      "question": "送報件系統升級專案做了什麼？",
+      "variants": ["送報件系統改版", "送報件升級", "壽險送報件升級專案"],
+      "expectedIntent": "specific project detail",
+      "expectedSources": ["projects/report-system-upgrade.md"],
+      "mustInclude": ["20 餘險種", "Cobol", "C#", "上千份報表", "上億筆"],
+      "mustNotInclude": ["資料修正輔助", "送報件資料修正"],
+      "notes": "CRITICAL: Must NOT confuse with report-data-fix. This is the big system rewrite (Cobol → C#)."
+    },
+    {
+      "id": "project-report-datafix-1",
+      "question": "送報件資料修正輔助系統做了什麼？",
+      "variants": ["資料修正輔助系統", "送報件修正", "送報件資料修正專案"],
+      "expectedIntent": "specific project detail",
+      "expectedSources": ["projects/report-data-fix.md"],
+      "mustInclude": ["資料修正", "千萬筆", "背景雙系統", "預覽"],
+      "mustNotInclude": ["系統升級", "Cobol"],
+      "notes": "CRITICAL: Must NOT confuse with report-system-upgrade. This is the data fix helper tool."
+    },
+    {
+      "id": "project-mixup-trap",
+      "question": "送報件專案有哪些？",
+      "variants": ["送報件相關專案", "作者做過哪些送報件"],
+      "expectedIntent": "disambiguation",
+      "expectedSources": ["projects/report-system-upgrade.md", "projects/report-data-fix.md", "faq/"],
+      "mustInclude": ["系統升級", "資料修正"],
+      "mustNotInclude": [],
+      "notes": "Should distinguish both projects clearly: upgrade (Cobol→C#) vs data-fix tool."
+    },
+    {
+      "id": "project-vitawile-1",
+      "question": "Vitawile 專案做了什麼？",
+      "variants": ["菲塔薇樂", "vitawile 官網"],
+      "expectedIntent": "specific project detail",
+      "expectedSources": ["projects/vitawile.md"],
+      "mustInclude": ["vitawile", "保健品"],
+      "mustNotInclude": [],
+      "notes": "Should return Vitawile project details from projects/vitawile.md"
+    },
+    {
+      "id": "project-rental-1",
+      "question": "租管網站專案做了什麼？",
+      "variants": ["房屋代租管", "租管系統", "租管專案"],
+      "expectedIntent": "specific project detail",
+      "expectedSources": ["projects/rental-management.md"],
+      "mustInclude": ["租管", "物件上架"],
+      "mustNotInclude": [],
+      "notes": "Should return rental management project details"
+    },
+    {
+      "id": "project-email-api-1",
+      "question": "發信 API 專案做了什麼？",
+      "variants": ["email API", "共用寄信", "email api 專案"],
+      "expectedIntent": "specific project detail",
+      "expectedSources": ["projects/email-api.md"],
+      "mustInclude": ["發信", "email"],
+      "mustNotInclude": [],
+      "notes": "Should return email API project details"
+    },
+    {
+      "id": "cert-az104-1",
+      "question": "AZ-104 證照是什麼？",
+      "variants": ["Azure AZ-104", "az104 考試"],
+      "expectedIntent": "certification detail",
+      "expectedSources": ["projects/azure-az-104.md"],
+      "mustInclude": ["AZ-104", "Azure Administrator"],
+      "mustNotInclude": [],
+      "notes": "Should return AZ-104 cert details from projects/azure-az-104.md"
+    },
+    {
+      "id": "cert-aws-saa-1",
+      "question": "AWS SAA 證照考了哪些內容？",
+      "variants": ["AWS Solutions Architect Associate", "AWS SAA"],
+      "expectedIntent": "certification detail",
+      "expectedSources": ["projects/aws-saa.md"],
+      "mustInclude": ["AWS", "Solutions Architect"],
+      "mustNotInclude": [],
+      "notes": "Should return AWS SAA cert details"
+    },
+    {
+      "id": "series-list-1",
+      "question": "有哪些系列文章？",
+      "variants": ["系列列表", "網站有哪些系列", "series 有哪些"],
+      "expectedIntent": "series browsing",
+      "expectedSources": ["series/", "catalog/"],
+      "mustInclude": ["/series"],
+      "mustNotInclude": [],
+      "notes": "Should list series or direct to /series page. May pull from catalog/series.md."
+    },
+    {
+      "id": "series-csharp-1",
+      "question": "C# 系列有哪些文章？",
+      "variants": ["C# 系列", "csharp series", "C# 相關文章"],
+      "expectedIntent": "series + blog browsing",
+      "expectedSources": ["series/", "blog/"],
+      "mustInclude": ["C#", "系列"],
+      "mustNotInclude": [],
+      "notes": "Should scope to series/ and blog/. May mention series/csharp.md and related blog posts."
+    },
+    {
+      "id": "series-realestate-1",
+      "question": "房地產系列有哪些內容？",
+      "variants": ["房地產系列", "real estate 系列", "收租系列"],
+      "expectedIntent": "series browsing",
+      "expectedSources": ["series/real-estate.md", "blog/"],
+      "mustInclude": ["房地產", "租"],
+      "mustNotInclude": [],
+      "notes": "Should return real-estate series details"
+    },
+    {
+      "id": "blog-post-di-1",
+      "question": "依賴注入那篇文章寫了什麼？",
+      "variants": ["DI 文章", "Dependency Injection 筆記", "依賴注入文章內容"],
+      "expectedIntent": "specific blog post",
+      "expectedSources": ["blog/"],
+      "mustInclude": ["依賴注入", "DI"],
+      "mustNotInclude": [],
+      "notes": "Should retrieve blog/c-netdi-依賴注入dependency-injection-與注入方式.md or similar"
+    },
+    {
+      "id": "blog-general-1",
+      "question": "作者寫過哪些技術文章？",
+      "variants": ["有哪些文章", "文章列表", "blog 文章"],
+      "expectedIntent": "blog browsing",
+      "expectedSources": ["blog/", "catalog/"],
+      "mustInclude": ["/blog"],
+      "mustNotInclude": [],
+      "notes": "Should direct to /blog or list from catalog/blog.md"
+    },
+    {
+      "id": "refusal-offtopic-1",
+      "question": "明天天氣如何？",
+      "variants": ["今天天氣", "台北天氣預報"],
+      "expectedIntent": "off-topic (should refuse)",
+      "expectedSources": [],
+      "mustInclude": ["找不到", "不知道", "站內", "首頁", "文章", "作品"],
+      "mustNotInclude": [],
+      "notes": "Should refuse and suggest site entry points (/blog, /projects, /series, /about)"
+    },
+    {
+      "id": "refusal-unknown-project-1",
+      "question": "作者做過 LINE Bot 專案嗎？",
+      "variants": ["LINE Bot 作品", "有沒有做過 chatbot"],
+      "expectedIntent": "unknown project query (should refuse or check)",
+      "expectedSources": ["projects/", "faq/"],
+      "mustInclude": [],
+      "mustNotInclude": ["LINE Bot 專案"],
+      "notes": "Should either refuse (not found) or check projects/ carefully. Do NOT invent projects."
+    },
+    {
+      "id": "refusal-fabrication-trap-1",
+      "question": "作者在 Google 工作過嗎？",
+      "variants": ["作者在 FAANG", "作者在大公司"],
+      "expectedIntent": "career history (must not fabricate)",
+      "expectedSources": ["about/"],
+      "mustInclude": [],
+      "mustNotInclude": ["Google", "Facebook 工作", "Amazon 工作"],
+      "notes": "Should NOT fabricate work history. Only mention what's in about/profile.md."
+    },
+    {
+      "id": "multiproject-role-1",
+      "question": "送報件系統升級專案中作者擔任什麼角色？",
+      "variants": ["送報件升級 role", "送報件系統改版的角色"],
+      "expectedIntent": "project role detail",
+      "expectedSources": ["projects/report-system-upgrade.md"],
+      "mustInclude": ["工程師", "小組長"],
+      "mustNotInclude": ["資料修正"],
+      "notes": "Role: 工程師、小組長. Should not mix with report-data-fix project."
+    },
+    {
+      "id": "multiproject-role-2",
+      "question": "送報件資料修正專案中作者的角色是什麼？",
+      "variants": ["資料修正輔助系統 role"],
+      "expectedIntent": "project role detail",
+      "expectedSources": ["projects/report-data-fix.md"],
+      "mustInclude": ["規劃者", "小組長"],
+      "mustNotInclude": ["Cobol", "系統升級"],
+      "notes": "Role: 規劃者、小組長. Should not mix with report-system-upgrade."
+    },
+    {
+      "id": "conversation-followup-1",
+      "question": "那這個專案用了什麼技術？",
+      "variants": ["用了哪些技術", "技術棧是什麼"],
+      "expectedIntent": "follow-up (needs conversation context)",
+      "expectedSources": ["projects/"],
+      "mustInclude": [],
+      "mustNotInclude": [],
+      "notes": "Requires previous turn context (conversation messages). Should refer to last-mentioned project."
+    },
+    {
+      "id": "typo-tolerance-1",
+      "question": "作者是難的還是女的？",
+      "variants": ["作者難性還是女性"],
+      "expectedIntent": "author gender (with typo)",
+      "expectedSources": ["about/"],
+      "mustInclude": ["男", "他"],
+      "mustNotInclude": [],
+      "notes": "System prompt says to handle typo '難的' as '男的'. Should answer correctly."
+    },
+    {
+      "id": "synonym-understanding-1",
+      "question": "作者的職業是什麼？",
+      "variants": ["作者職稱", "工作是什麼"],
+      "expectedIntent": "author specialty",
+      "expectedSources": ["about/"],
+      "mustInclude": ["軟體工程", "工程師"],
+      "mustNotInclude": ["AI 專家", "資料科學"],
+      "notes": "Should return software engineer role, not AI/ML researcher."
+    },
+    {
+      "id": "link-format-check-1",
+      "question": "在哪裡可以看到作者的作品？",
+      "variants": ["作品集連結", "作品頁面"],
+      "expectedIntent": "portfolio navigation",
+      "expectedSources": ["faq/", "projects/"],
+      "mustInclude": ["[作品](/projects)", "/projects"],
+      "mustNotInclude": ["網站路徑：", "來源：", "/about/works"],
+      "notes": "Should use Markdown link format [作品](/projects), not bare 'URL: /projects' appendix."
+    },
+    {
+      "id": "project-astro-rebuild-1",
+      "question": "Astro 重構專案做了什麼？",
+      "variants": ["個人網站重建", "stevenjhu.com 重構"],
+      "expectedIntent": "specific project detail",
+      "expectedSources": ["projects/blog-astro-rebuild.md"],
+      "mustInclude": ["Astro"],
+      "mustNotInclude": [],
+      "notes": "Should return Astro rebuild project details from projects/blog-astro-rebuild.md"
+    },
+    {
+      "id": "protected-content-refusal-1",
+      "question": "2022 年目標檢討文章寫了什麼？",
+      "variants": ["2022 目標完成狀況", "2022年檢討"],
+      "expectedIntent": "protected content (should refuse or warn)",
+      "expectedSources": [],
+      "mustInclude": ["密碼", "鎖", "保護", "無法"],
+      "mustNotInclude": [],
+      "notes": "2022年目標完成狀況與相關自我檢討🔒密碼保護.md is protected. Should say it's locked and can't reveal content."
+    },
+    {
+      "id": "series-career-1",
+      "question": "職涯系列有哪些內容？",
+      "variants": ["career 系列", "職涯 series"],
+      "expectedIntent": "series browsing",
+      "expectedSources": ["series/career.md", "blog/"],
+      "mustInclude": ["職涯", "career"],
+      "mustNotInclude": [],
+      "notes": "Should return career series details from series/career.md"
+    },
+    {
+      "id": "edge-case-empty-query",
+      "question": "",
+      "variants": [],
+      "expectedIntent": "empty query (should reject at API level)",
+      "expectedSources": [],
+      "mustInclude": [],
+      "mustNotInclude": [],
+      "notes": "API should return error 'query or messages is required.' Empty query should be rejected before RAG."
+    }
+  ],
+  "usage": "To test: iterate through questions, call POST /api/ask with { query }, verify answer sources match expectedSources and answer text includes mustInclude / excludes mustNotInclude. Check that citations are clickable and link format is correct. Ensure low-relevance questions trigger refusal with site entry point suggestions."
+}
