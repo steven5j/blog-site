@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 580" role="img" aria-label="N² 義大利麵管線 vs 以 Kafka 為中心的星狀解耦對比圖">
+  <!-- Background -->
+  <rect width="1400" height="580" fill="#f8f9fa"/>
+
+  <!-- Main Container Grids -->
+  <!-- Left Side: Spaghetti Pipeline -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Panel Box -->
+    <rect x="40" y="30" width="630" height="520" rx="12" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+    <rect x="40" y="30" width="630" height="46" rx="12" fill="#fef2f2"/>
+    <rect x="40" y="64" width="630" height="12" fill="#fef2f2"/>
+    <text x="60" y="60" font-size="16" font-weight="800" fill="#991b1b">2010 年前：N² 義大利麵資料管線 (Spaghetti Pipelines)</text>
+    <rect x="530" y="40" width="120" height="26" rx="5" fill="#fecaca"/>
+    <text x="590" y="58" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">複雜度 O(N²)</text>
+
+    <!-- Subtitle -->
+    <text x="60" y="104" font-size="13" fill="#6b7280">每新增一個下游系統，就得從各個生產端拉專屬管線，架構極度脆弱</text>
+
+    <!-- Left Producers Column -->
+    <!-- Producer 1: App Server -->
+    <rect x="70" y="140" width="140" height="50" rx="8" fill="#f3f4f6" stroke="#4b5563" stroke-width="1.5"/>
+    <text x="140" y="170" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">線上應用程式</text>
+
+    <!-- Producer 2: Core DB -->
+    <rect x="70" y="240" width="140" height="50" rx="8" fill="#f3f4f6" stroke="#4b5563" stroke-width="1.5"/>
+    <text x="140" y="270" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">核心交易資料庫</text>
+
+    <!-- Producer 3: Server Logs -->
+    <rect x="70" y="340" width="140" height="50" rx="8" fill="#f3f4f6" stroke="#4b5563" stroke-width="1.5"/>
+    <text x="140" y="370" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">伺服器行為日誌</text>
+
+    <!-- Right Consumers Column -->
+    <!-- Consumer 1: Search -->
+    <rect x="500" y="130" width="140" height="46" rx="8" fill="#ffffff" stroke="#991b1b" stroke-width="1.5"/>
+    <text x="570" y="158" font-size="12.5" font-weight="700" fill="#991b1b" text-anchor="middle">搜尋引擎 (Lucene)</text>
+
+    <!-- Consumer 2: Hadoop -->
+    <rect x="500" y="200" width="140" height="46" rx="8" fill="#ffffff" stroke="#991b1b" stroke-width="1.5"/>
+    <text x="570" y="228" font-size="12.5" font-weight="700" fill="#991b1b" text-anchor="middle">離線分析 (Hadoop)</text>
+
+    <!-- Consumer 3: Monitoring -->
+    <rect x="500" y="270" width="140" height="46" rx="8" fill="#ffffff" stroke="#991b1b" stroke-width="1.5"/>
+    <text x="570" y="298" font-size="12.5" font-weight="700" fill="#991b1b" text-anchor="middle">即時監控系統</text>
+
+    <!-- Consumer 4: Recommendation -->
+    <rect x="500" y="340" width="140" height="46" rx="8" fill="#ffffff" stroke="#991b1b" stroke-width="1.5"/>
+    <text x="570" y="368" font-size="12.5" font-weight="700" fill="#991b1b" text-anchor="middle">社交推薦圖譜</text>
+
+    <!-- Tangled Lines (The Spaghetti!) -->
+    <!-- From App -->
+    <path d="M 210,160 Q 320,130 500,150" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,2"/>
+    <path d="M 210,165 Q 360,200 500,220" fill="none" stroke="#ef4444" stroke-width="2"/>
+    <path d="M 210,170 Q 300,320 500,360" fill="none" stroke="#f87171" stroke-width="1.5"/>
+
+    <!-- From DB -->
+    <path d="M 210,255 Q 320,170 500,155" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    <path d="M 210,265 Q 350,230 500,225" fill="none" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3,3"/>
+    <path d="M 210,275 Q 330,300 500,295" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    <path d="M 210,285 Q 380,360 500,365" fill="none" stroke="#dc2626" stroke-width="2"/>
+
+    <!-- From Logs -->
+    <path d="M 210,355 Q 330,220 500,230" fill="none" stroke="#fca5a5" stroke-width="1.5"/>
+    <path d="M 210,365 Q 360,330 500,300" fill="none" stroke="#f87171" stroke-width="2"/>
+    <path d="M 210,375 Q 350,400 500,370" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+    <!-- Bottom Warning Box -->
+    <rect x="70" y="440" width="570" height="80" rx="8" fill="#fff1f2" stroke="#fecdd3" stroke-width="1.5"/>
+    <text x="90" y="468" font-size="13" font-weight="800" fill="#991b1b">✖ 點對點網狀痛點：</text>
+    <text x="90" y="492" font-size="12" fill="#4b5563">• 各系統格式不相容，資料解析重工</text>
+    <text x="320" y="492" font-size="12" fill="#4b5563">• 跨網路直連爭搶資源，拖垮核心 DB</text>
+    <text x="90" y="510" font-size="12" fill="#4b5563">• 一個下游延遲或當機，上游生產者跟著阻塞</text>
+  </g>
+
+  <!-- Right Side: Star Topology with Kafka -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Panel Box -->
+    <rect x="730" y="30" width="630" height="520" rx="12" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+    <rect x="730" y="30" width="630" height="46" rx="12" fill="#ecfdf5"/>
+    <rect x="730" y="64" width="630" height="12" fill="#ecfdf5"/>
+    <text x="750" y="60" font-size="16" font-weight="800" fill="#065f46">現代：以 Kafka Commit Log 為中心的星狀解耦</text>
+    <rect x="1220" y="40" width="120" height="26" rx="5" fill="#a7f3d0"/>
+    <text x="1280" y="58" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">複雜度 O(N)</text>
+
+    <!-- Subtitle -->
+    <text x="750" y="104" font-size="13" fill="#6b7280">以不可變日誌為單一事實來源（Single Source of Truth），徹底解耦</text>
+
+    <!-- Left Producers -->
+    <rect x="760" y="140" width="130" height="50" rx="8" fill="#f3f4f6" stroke="#4b5563" stroke-width="1.5"/>
+    <text x="825" y="170" font-size="12.5" font-weight="700" fill="#1f2937" text-anchor="middle">線上應用程式</text>
+
+    <rect x="760" y="240" width="130" height="50" rx="8" fill="#f3f4f6" stroke="#4b5563" stroke-width="1.5"/>
+    <text x="825" y="270" font-size="12.5" font-weight="700" fill="#1f2937" text-anchor="middle">核心交易資料庫</text>
+
+    <rect x="760" y="340" width="130" height="50" rx="8" fill="#f3f4f6" stroke="#4b5563" stroke-width="1.5"/>
+    <text x="825" y="370" font-size="12.5" font-weight="700" fill="#1f2937" text-anchor="middle">伺服器行為日誌</text>
+
+    <!-- Flow into Kafka Arrows -->
+    <path d="M 890,165 L 940,240" fill="none" stroke="#059669" stroke-width="2.5"/>
+    <polygon points="935,243 944,246 941,237" fill="#059669"/>
+
+    <path d="M 890,265 L 940,265" fill="none" stroke="#059669" stroke-width="2.5"/>
+    <polygon points="936,260 946,265 936,270" fill="#059669"/>
+
+    <path d="M 890,365 L 940,290" fill="none" stroke="#059669" stroke-width="2.5"/>
+    <polygon points="941,293 944,284 935,287" fill="#059669"/>
+
+    <!-- Central Kafka Pillar / Log Box -->
+    <rect x="950" y="130" width="150" height="270" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2.5"/>
+    <rect x="950" y="130" width="150" height="34" rx="10" fill="#059669"/>
+    <rect x="950" y="152" width="150" height="12" fill="#059669"/>
+    <text x="1025" y="154" font-size="13" font-weight="800" fill="#ffffff" text-anchor="middle">Apache Kafka</text>
+    <text x="1025" y="180" font-size="11" font-weight="700" fill="#047857" text-anchor="middle">中央分散式日誌</text>
+
+    <!-- Log segment items inside Kafka -->
+    <g transform="translate(965, 195)">
+      <rect x="0" y="0" width="120" height="24" rx="4" fill="#a7f3d0"/>
+      <text x="60" y="16" font-size="10.5" font-weight="700" fill="#065f46" text-anchor="middle">Event #1043 [Order]</text>
+
+      <rect x="0" y="30" width="120" height="24" rx="4" fill="#a7f3d0"/>
+      <text x="60" y="46" font-size="10.5" font-weight="700" fill="#065f46" text-anchor="middle">Event #1044 [Pay]</text>
+
+      <rect x="0" y="60" width="120" height="24" rx="4" fill="#a7f3d0"/>
+      <text x="60" y="76" font-size="10.5" font-weight="700" fill="#065f46" text-anchor="middle">Event #1045 [Ship]</text>
+
+      <rect x="0" y="90" width="120" height="24" rx="4" fill="#6ee7b7"/>
+      <text x="60" y="106" font-size="10.5" font-weight="800" fill="#065f46" text-anchor="middle">Append-only...</text>
+    </g>
+    <text x="1025" y="380" font-size="11" font-weight="700" fill="#065f46" text-anchor="middle">持久保留 · 支援重播</text>
+
+    <!-- Outflow to Consumers Arrows -->
+    <path d="M 1100,240 L 1170,155" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+    <polygon points="1165,152 1175,150 1171,160" fill="#0284c7"/>
+
+    <path d="M 1100,255 L 1170,225" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+    <polygon points="1165,221 1175,222 1169,230" fill="#0284c7"/>
+
+    <path d="M 1100,270 L 1170,295" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+    <polygon points="1169,290 1175,298 1165,299" fill="#0284c7"/>
+
+    <path d="M 1100,285 L 1170,365" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+    <polygon points="1171,360 1175,370 1165,368" fill="#0284c7"/>
+
+    <!-- Right Consumers -->
+    <rect x="1180" y="130" width="140" height="46" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="1250" y="158" font-size="12.5" font-weight="700" fill="#0369a1" text-anchor="middle">搜尋引擎 (Lucene)</text>
+
+    <rect x="1180" y="200" width="140" height="46" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="1250" y="228" font-size="12.5" font-weight="700" fill="#0369a1" text-anchor="middle">離線分析 (Hadoop)</text>
+
+    <rect x="1180" y="270" width="140" height="46" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="1250" y="298" font-size="12.5" font-weight="700" fill="#0369a1" text-anchor="middle">即時監控系統</text>
+
+    <rect x="1180" y="340" width="140" height="46" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="1250" y="368" font-size="12.5" font-weight="700" fill="#0369a1" text-anchor="middle">社交推薦圖譜</text>
+
+    <!-- Bottom Benefit Box -->
+    <rect x="760" y="440" width="570" height="80" rx="8" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.5"/>
+    <text x="780" y="468" font-size="13" font-weight="800" fill="#065f46">✔ 星狀解耦核心效益：</text>
+    <text x="780" y="492" font-size="12" fill="#4b5563">• 生產者只需發送一次，下游各系統依各自速度獨立消費</text>
+    <text x="780" y="510" font-size="12" fill="#4b5563">• 系統完全解耦：任何下游崩潰或改版，完全不影響線上核心業務</text>
+  </g>
+</svg>

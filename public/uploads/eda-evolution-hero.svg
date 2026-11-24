@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 750" role="img" aria-label="高併發事件驅動架構演進史：預存程序、訊息佇列到 Kafka 事件串流">
+  <!-- Background -->
+  <rect width="1600" height="750" fill="#f4f4f4"/>
+
+  <!-- Header & Legend Bar -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Title in hero -->
+    <text x="60" y="44" font-size="20" font-weight="900" fill="#2a2a2a" letter-spacing="0.02em">高併發架構三代演進史：從資料庫中心到事件串流</text>
+    <text x="560" y="44" font-size="13" fill="#6b6b6b">Data-Centric Monolith ➔ Task Queue Decoupling ➔ Distributed Event Streaming</text>
+
+    <!-- Legend Indicators -->
+    <rect x="1100" y="32" width="18" height="12" rx="3" fill="#c13b3b"/>
+    <text x="1126" y="43" font-size="13" font-weight="600" fill="#2a2a2a">計算運算單元</text>
+
+    <rect x="1230" y="32" width="18" height="12" rx="3" fill="#0284c7"/>
+    <text x="1256" y="43" font-size="13" font-weight="600" fill="#2a2a2a">隊列/緩衝儲存</text>
+
+    <rect x="1370" y="32" width="18" height="12" rx="3" fill="#059669"/>
+    <text x="1396" y="43" font-size="13" font-weight="600" fill="#2a2a2a">事件串流 Log</text>
+  </g>
+
+  <!-- ======================================================= -->
+  <!-- COLUMN 1: 第一代 預存程序 (Database-Centric Architecture) -->
+  <!-- ======================================================= -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Category Card Header -->
+    <rect x="60" y="70" width="460" height="570" rx="14" fill="#ffffff" stroke="#e5e5e5" stroke-width="2"/>
+    <rect x="60" y="70" width="460" height="48" rx="14" fill="#2a2a2a"/>
+    <rect x="60" y="104" width="460" height="14" fill="#2a2a2a"/>
+    <text x="80" y="100" font-size="15" font-weight="800" fill="#ffffff">第一代：資料庫中心架構 (2000 年代)</text>
+    <rect x="380" y="80" width="124" height="26" rx="6" fill="#c13b3b"/>
+    <text x="442" y="98" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Code to Data</text>
+
+    <!-- Content Area 1 -->
+    <text x="80" y="142" font-size="15" font-weight="700" fill="#2a2a2a">預存程序 + 集中式關聯資料庫</text>
+    <text x="80" y="162" font-size="12.5" fill="#6b6b6b">請求直接穿透至資料庫 · 靠單機硬體與行鎖硬頂並發</text>
+
+    <!-- Client Box -->
+    <rect x="190" y="180" width="200" height="40" rx="8" fill="#f8f9fa" stroke="#2a2a2a" stroke-width="1.5"/>
+    <text x="290" y="205" font-size="13" font-weight="700" fill="#2a2a2a" text-anchor="middle">高併發請求 (Web Client)</text>
+
+    <!-- Arrow down -->
+    <line x1="290" y1="220" x2="290" y2="250" stroke="#2a2a2a" stroke-width="2"/>
+    <polygon points="286,245 290,253 294,245" fill="#2a2a2a"/>
+
+    <!-- App Server -->
+    <rect x="180" y="254" width="220" height="44" rx="8" fill="#f3f4f6" stroke="#4b5563" stroke-width="1.5"/>
+    <text x="290" y="281" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">應用程式伺服器 (App Server)</text>
+
+    <!-- Arrow down -->
+    <line x1="290" y1="298" x2="290" y2="330" stroke="#c13b3b" stroke-width="2.5"/>
+    <polygon points="285,324 290,334 295,324" fill="#c13b3b"/>
+    <text x="300" y="318" font-size="11" font-weight="700" fill="#c13b3b">RPC 呼叫 SP</text>
+
+    <!-- Database Cylinder (Big Monolith) -->
+    <g transform="translate(140, 340)">
+      <!-- Cylinder Body -->
+      <path d="M 0,25 L 0,165 A 150,25 0 0,0 300,165 L 300,25 Z" fill="#ffffff" stroke="#2a2a2a" stroke-width="2.5"/>
+      <!-- Cylinder Bottom Cap -->
+      <ellipse cx="150" cy="165" rx="150" ry="25" fill="#f8f9fa" stroke="#2a2a2a" stroke-width="2.5"/>
+      <!-- Inner Module Box 1: Stored Procedure -->
+      <rect x="25" y="45" width="250" height="46" rx="6" fill="#fef2f2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="150" y="66" font-size="13" font-weight="800" fill="#991b1b" text-anchor="middle">預存程序 (Stored Procedure)</text>
+      <text x="150" y="82" font-size="11" fill="#b91c1c" text-anchor="middle">In-Memory 執行 · 零網路反覆延遲</text>
+
+      <!-- Inner Module Box 2: ACID Locking -->
+      <rect x="25" y="100" width="250" height="46" rx="6" fill="#fef2f2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="150" y="121" font-size="13" font-weight="800" fill="#991b1b" text-anchor="middle">ACID 本地悲觀鎖 / 行鎖</text>
+      <text x="150" y="137" font-size="11" fill="#b91c1c" text-anchor="middle">保證強一致性 · 不超賣不扣錯</text>
+
+      <!-- Cylinder Top Cap -->
+      <ellipse cx="150" cy="25" rx="150" ry="25" fill="#fee2e2" stroke="#2a2a2a" stroke-width="2.5"/>
+      <text x="150" y="30" font-size="13" font-weight="800" fill="#991b1b" text-anchor="middle">集中式關聯資料庫 (RDBMS)</text>
+    </g>
+
+    <!-- Key Characteristics Box at Bottom -->
+    <rect x="80" y="542" width="420" height="82" rx="8" fill="#fef2f2" stroke="#fee2e2" stroke-width="1.5"/>
+    <text x="96" y="565" font-size="12" font-weight="800" fill="#991b1b">✔ 優勢：</text>
+    <text x="146" y="565" font-size="12" fill="#4a4a4a">記憶體運算極快、絕對強一致性、零分散式故障</text>
+    <text x="96" y="590" font-size="12" font-weight="800" fill="#b91c1c">✖ 瓶頸：</text>
+    <text x="146" y="590" font-size="12" fill="#4a4a4a">連線池與 CPU 物理極限、單點崩潰、巨石邏輯難維護</text>
+    <text x="96" y="612" font-size="11.5" font-weight="700" fill="#6b6b6b">典範：Data at Rest · Command-driven 狀態直接覆寫</text>
+  </g>
+
+  <!-- ======================================================= -->
+  <!-- COLUMN 2: 第二代 非同步任務佇列 (Task / Message Queue)    -->
+  <!-- ======================================================= -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Category Card Header -->
+    <rect x="570" y="70" width="460" height="570" rx="14" fill="#ffffff" stroke="#e5e5e5" stroke-width="2"/>
+    <rect x="570" y="70" width="460" height="48" rx="14" fill="#2a2a2a"/>
+    <rect x="570" y="104" width="460" height="14" fill="#2a2a2a"/>
+    <text x="590" y="100" font-size="15" font-weight="800" fill="#ffffff">第二代：非同步任務佇列 (2006~2012)</text>
+    <rect x="910" y="80" width="104" height="26" rx="6" fill="#0284c7"/>
+    <text x="962" y="98" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">削峰填谷</text>
+
+    <!-- Content Area 2 -->
+    <text x="590" y="142" font-size="15" font-weight="700" fill="#2a2a2a">非同步訊息佇列架構 (Message Queue)</text>
+    <text x="590" y="162" font-size="12.5" fill="#6b6b6b">時間解耦 · 競爭消費者模式 · 依算力主動拉取保護後端</text>
+
+    <!-- Web API Box -->
+    <rect x="700" y="180" width="200" height="40" rx="8" fill="#f8f9fa" stroke="#2a2a2a" stroke-width="1.5"/>
+    <text x="800" y="205" font-size="13" font-weight="700" fill="#2a2a2a" text-anchor="middle">API 接收高併發請求</text>
+
+    <!-- Arrow down (1ms async send) -->
+    <line x1="800" y1="220" x2="800" y2="250" stroke="#0284c7" stroke-width="2"/>
+    <polygon points="796,245 800,253 804,245" fill="#0284c7"/>
+    <text x="810" y="238" font-size="11" font-weight="700" fill="#0284c7">非同步投遞 (1ms)</text>
+
+    <!-- Queue Container (Pipeline shape) -->
+    <rect x="630" y="254" width="340" height="70" rx="10" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+    <text x="646" y="276" font-size="13" font-weight="800" fill="#0369a1">訊息佇列 (Message Queue: SQS / RabbitMQ)</text>
+    <!-- Message blocks in Queue -->
+    <g transform="translate(646, 286)">
+      <rect x="0" y="0" width="54" height="26" rx="4" fill="#0284c7"/>
+      <text x="27" y="17" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">Task 4</text>
+
+      <rect x="64" y="0" width="54" height="26" rx="4" fill="#0284c7"/>
+      <text x="91" y="17" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">Task 3</text>
+
+      <rect x="128" y="0" width="54" height="26" rx="4" fill="#0284c7"/>
+      <text x="155" y="17" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">Task 2</text>
+
+      <rect x="192" y="0" width="54" height="26" rx="4" fill="#38bdf8"/>
+      <text x="219" y="17" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">Task 1</text>
+
+      <text x="270" y="18" font-size="11" font-weight="700" fill="#0369a1">──► 佇列緩衝</text>
+    </g>
+
+    <!-- Pull Arrows to Workers -->
+    <path d="M 720,324 L 720,360 L 680,360 L 680,380" fill="none" stroke="#2a2a2a" stroke-width="2"/>
+    <polygon points="676,375 680,383 684,375" fill="#2a2a2a"/>
+
+    <path d="M 880,324 L 880,360 L 920,360 L 920,380" fill="none" stroke="#2a2a2a" stroke-width="2"/>
+    <polygon points="916,375 920,383 924,375" fill="#2a2a2a"/>
+    <text x="800" y="354" font-size="11" font-weight="700" fill="#4b5563" text-anchor="middle">競爭消費者 (Pull-based)</text>
+
+    <!-- Background Worker Nodes -->
+    <rect x="600" y="384" width="160" height="52" rx="8" fill="#ffffff" stroke="#2a2a2a" stroke-width="1.5"/>
+    <text x="680" y="407" font-size="12.5" font-weight="700" fill="#2a2a2a" text-anchor="middle">背景工作節點 1 (Worker)</text>
+    <text x="680" y="424" font-size="10.5" fill="#6b6b6b" text-anchor="middle">依算力主動拉取慢慢消化</text>
+
+    <rect x="840" y="384" width="160" height="52" rx="8" fill="#ffffff" stroke="#2a2a2a" stroke-width="1.5"/>
+    <text x="920" y="407" font-size="12.5" font-weight="700" fill="#2a2a2a" text-anchor="middle">背景工作節點 2 (Worker)</text>
+    <text x="920" y="424" font-size="10.5" fill="#6b6b6b" text-anchor="middle">無狀態節點，可彈性水平擴展</text>
+
+    <!-- Converge to DB -->
+    <path d="M 680,436 L 680,465 L 790,465 L 790,485" fill="none" stroke="#2a2a2a" stroke-width="2"/>
+    <path d="M 920,436 L 920,465 L 810,465 L 810,485" fill="none" stroke="#2a2a2a" stroke-width="2"/>
+    <polygon points="796,482 800,490 804,482" fill="#2a2a2a"/>
+
+    <!-- Database at bottom of col 2 -->
+    <rect x="670" y="490" width="260" height="38" rx="6" fill="#f8f9fa" stroke="#4a4a4a" stroke-width="1.5"/>
+    <text x="800" y="514" font-size="12.5" font-weight="700" fill="#2a2a2a" text-anchor="middle">後端資料庫 (平穩均速寫入，不崩潰)</text>
+
+    <!-- Key Characteristics Box at Bottom -->
+    <rect x="590" y="542" width="420" height="82" rx="8" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1.5"/>
+    <text x="606" y="565" font-size="12" font-weight="800" fill="#0369a1">✔ 優勢：</text>
+    <text x="656" y="565" font-size="12" fill="#4a4a4a">架構高度解耦、完美削峰填谷、Worker 依負載水平伸縮</text>
+    <text x="606" y="590" font-size="12" font-weight="800" fill="#0284c7">✖ 瓶頸：</text>
+    <text x="656" y="590" font-size="12" fill="#4a4a4a">破壞性讀取（閱後即焚）、無法多系統獨立重複廣播與重播</text>
+    <text x="606" y="612" font-size="11.5" font-weight="700" fill="#6b6b6b">典範：Work Queuing · 點對點任務解耦</text>
+  </g>
+
+  <!-- ======================================================= -->
+  <!-- COLUMN 3: 第三代 分散式事件串流 (Kafka / Streaming)       -->
+  <!-- ======================================================= -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <!-- Category Card Header -->
+    <rect x="1080" y="70" width="460" height="570" rx="14" fill="#ffffff" stroke="#e5e5e5" stroke-width="2"/>
+    <rect x="1080" y="70" width="460" height="48" rx="14" fill="#2a2a2a"/>
+    <rect x="1080" y="104" width="460" height="14" fill="#2a2a2a"/>
+    <text x="1100" y="100" font-size="15" font-weight="800" fill="#ffffff">第三代：分散式事件串流 (2011 至今)</text>
+    <rect x="1400" y="80" width="124" height="26" rx="6" fill="#059669"/>
+    <text x="1462" y="98" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Data in Motion</text>
+
+    <!-- Content Area 3 -->
+    <text x="1100" y="142" font-size="15" font-weight="700" fill="#2a2a2a">Apache Kafka / Append-only Commit Log</text>
+    <text x="1100" y="162" font-size="12.5" fill="#6b6b6b">日誌中心化 · Offset 指標 · 多方獨立消費 (Fan-out)</text>
+
+    <!-- Producer -->
+    <rect x="1210" y="180" width="200" height="40" rx="8" fill="#f8f9fa" stroke="#2a2a2a" stroke-width="1.5"/>
+    <text x="1310" y="205" font-size="13" font-weight="700" fill="#2a2a2a" text-anchor="middle">Producers (業務事件事實發布)</text>
+
+    <!-- Arrow down to Log -->
+    <line x1="1310" y1="220" x2="1310" y2="250" stroke="#059669" stroke-width="2"/>
+    <polygon points="1306,245 1310,253 1314,245" fill="#059669"/>
+    <text x="1320" y="238" font-size="11" font-weight="700" fill="#059669">Append-only 寫入</text>
+
+    <!-- Kafka Distributed Commit Log Box -->
+    <rect x="1110" y="254" width="400" height="110" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="1126" y="276" font-size="13" font-weight="800" fill="#065f46">Kafka Topic: events-order (持久化日誌)</text>
+
+    <!-- Partition 0 representation -->
+    <g transform="translate(1126, 286)">
+      <rect x="0" y="0" width="42" height="30" rx="3" fill="#059669"/>
+      <text x="21" y="20" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle">0</text>
+
+      <rect x="46" y="0" width="42" height="30" rx="3" fill="#059669"/>
+      <text x="67" y="20" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+
+      <rect x="92" y="0" width="42" height="30" rx="3" fill="#059669"/>
+      <text x="113" y="20" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle">2</text>
+
+      <rect x="138" y="0" width="42" height="30" rx="3" fill="#059669"/>
+      <text x="159" y="20" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle">3</text>
+
+      <rect x="184" y="0" width="42" height="30" rx="3" fill="#34d399"/>
+      <text x="205" y="20" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle">4</text>
+
+      <rect x="230" y="0" width="42" height="30" rx="3" fill="#a7f3d0"/>
+      <text x="251" y="20" font-size="11" font-weight="800" fill="#065f46" text-anchor="middle">5...</text>
+
+      <!-- Offset Indicators -->
+      <text x="286" y="20" font-size="11" font-weight="700" fill="#065f46">順序追加 (不斷保留)</text>
+    </g>
+    <!-- Consumers pointers note -->
+    <text x="1126" y="348" font-size="11" font-weight="600" fill="#047857">▲ 各消費者群組只記錄各自的 Offset 指標，資料不被刪除</text>
+
+    <!-- Fan-out lines to multiple consumers -->
+    <path d="M 1210,364 L 1210,390 L 1150,390 L 1150,410" fill="none" stroke="#059669" stroke-width="2"/>
+    <polygon points="1146,405 1150,413 1154,405" fill="#059669"/>
+
+    <path d="M 1310,364 L 1310,410" fill="none" stroke="#059669" stroke-width="2"/>
+    <polygon points="1306,405 1310,413 1314,405" fill="#059669"/>
+
+    <path d="M 1410,364 L 1410,390 L 1470,390 L 1470,410" fill="none" stroke="#059669" stroke-width="2"/>
+    <polygon points="1466,405 1470,413 1474,405" fill="#059669"/>
+
+    <!-- Consumer 1: Microservice Core -->
+    <rect x="1100" y="414" width="105" height="58" rx="6" fill="#ffffff" stroke="#2a2a2a" stroke-width="1.5"/>
+    <text x="1152" y="438" font-size="12" font-weight="700" fill="#2a2a2a" text-anchor="middle">訂單/庫存微服務</text>
+    <text x="1152" y="456" font-size="10" fill="#6b6b6b" text-anchor="middle">即時線上消費</text>
+
+    <!-- Consumer 2: Big Data / Spark -->
+    <rect x="1230" y="414" width="160" height="58" rx="6" fill="#ffffff" stroke="#2a2a2a" stroke-width="1.5"/>
+    <text x="1310" y="438" font-size="12" font-weight="700" fill="#2a2a2a" text-anchor="middle">大數據分析 / Hadoop</text>
+    <text x="1310" y="456" font-size="10" fill="#6b6b6b" text-anchor="middle">離線批次/即時統計</text>
+
+    <!-- Consumer 3: AI / Risk Engine -->
+    <rect x="1415" y="414" width="110" height="58" rx="6" fill="#ffffff" stroke="#2a2a2a" stroke-width="1.5"/>
+    <text x="1470" y="438" font-size="12" font-weight="700" fill="#2a2a2a" text-anchor="middle">AI 推薦 / 風控</text>
+    <text x="1470" y="456" font-size="10" fill="#6b6b6b" text-anchor="middle">即時特徵運算</text>
+
+    <!-- Replay / Time travel badge -->
+    <rect x="1160" y="490" width="300" height="34" rx="6" fill="#ecfdf5" stroke="#34d399" stroke-width="1.5"/>
+    <text x="1310" y="512" font-size="12" font-weight="800" fill="#065f46" text-anchor="middle">支援「時間旅行」：Offset 倒退歷史重播 (Replay)</text>
+
+    <!-- Key Characteristics Box at Bottom -->
+    <rect x="1100" y="542" width="420" height="82" rx="8" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.5"/>
+    <text x="1116" y="565" font-size="12" font-weight="800" fill="#065f46">✔ 優勢：</text>
+    <text x="1166" y="565" font-size="12" fill="#4a4a4a">百萬級吞吐、多方獨立消費（Fan-out）、歷史重播</text>
+    <text x="1116" y="590" font-size="12" font-weight="800" fill="#059669">✖ 代價：</text>
+    <text x="1166" y="590" font-size="12" fill="#4a4a4a">叢集運維門檻高、需面對最終一致性與冪等性防護</text>
+    <text x="1116" y="612" font-size="11.5" font-weight="700" fill="#6b6b6b">典範：Event Streaming · 統一的日誌抽象 (Unified Log)</text>
+  </g>
+
+  <!-- ======================================================= -->
+  <!-- Bottom Evolution Progress Bar                            -->
+  <!-- ======================================================= -->
+  <g transform="translate(60, 660)" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif">
+    <rect x="0" y="0" width="1480" height="60" rx="10" fill="#ffffff" stroke="#e5e5e5" stroke-width="2"/>
+    
+    <text x="30" y="35" font-size="14" font-weight="800" fill="#2a2a2a">典範轉移進程：</text>
+
+    <!-- Phase 1 pill -->
+    <rect x="150" y="14" width="370" height="32" rx="6" fill="#fef2f2"/>
+    <text x="335" y="35" font-size="12.5" font-weight="700" fill="#991b1b" text-anchor="middle">Data at Rest (靜態狀態覆寫 · 集中計算)</text>
+
+    <!-- Arrow 1 -->
+    <text x="545" y="35" font-size="16" font-weight="900" fill="#9ca3af" text-anchor="middle">➔</text>
+
+    <!-- Phase 2 pill -->
+    <rect x="575" y="14" width="370" height="32" rx="6" fill="#f0f9ff"/>
+    <text x="760" y="35" font-size="12.5" font-weight="700" fill="#0369a1" text-anchor="middle">Task as Message (非同步削峰 · 閱後即焚)</text>
+
+    <!-- Arrow 2 -->
+    <text x="970" y="35" font-size="16" font-weight="900" fill="#9ca3af" text-anchor="middle">➔</text>
+
+    <!-- Phase 3 pill -->
+    <rect x="1000" y="14" width="450" height="32" rx="6" fill="#ecfdf5"/>
+    <text x="1225" y="35" font-size="12.5" font-weight="700" fill="#065f46" text-anchor="middle">Data in Motion (不可變事件河流 · 多方消費)</text>
+  </g>
+</svg>
